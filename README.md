@@ -4,6 +4,7 @@ A frontend web application so for other necessary information please refer [to t
 
 ## Usage
 
+Validate if there is new packages added:
 ```term
 pnpm install
 ```
