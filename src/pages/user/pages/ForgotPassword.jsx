@@ -37,7 +37,7 @@ const ForgotPassword = ({ onNavigateToLogin }) => {
 
   if (isSubmitted) {
     return (
-      <div className="forgot-password-container">
+      <div className="forgot-password-containe">
         <div className="welcome-text">WELCOME</div>
         
         <div className="forgot-password-form-container">

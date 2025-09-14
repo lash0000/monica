@@ -1,41 +1,31 @@
-import { useState } from 'react'
-import Login from './pages/user/Login'
-import SignUp from './pages/user/SignUp'
-import Registration from './pages/user/Registration'
-import ForgotPassword from './pages/user/ForgotPassword'
+import { useState, useEffect, Fragment } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
-function App() {
-  const [currentPage, setCurrentPage] = useState('login') // 'login', 'signup', 'registration', or 'forgot-password'
+import LandingRoutes from './pages/user/routes/LandingRoutes';
+const pageTitles = {
+  "/": "Hotels & Condominiums Just for You!",
+};
 
-  const navigateToSignup = () => {
-    setCurrentPage('signup')
-  }
+function TitleUpdater() {
+  const location = useLocation();
 
-  const navigateToLogin = () => {
-    setCurrentPage('login')
-  }
+  useEffect(() => {
+    document.title = pageTitles[location.pathname] || "Hotels & Condominiums Just for You!";
+  }, [location.pathname]);
 
-  const navigateToRegistration = () => {
-    setCurrentPage('registration')
-  }
-
-  const navigateToForgotPassword = () => {
-    setCurrentPage('forgot-password')
-  }
-
-  return (
-    <div>
-      {currentPage === 'login' ? (
-        <Login onNavigateToSignup={navigateToSignup} onNavigateToForgotPassword={navigateToForgotPassword} />
-      ) : currentPage === 'signup' ? (
-        <SignUp onNavigateToLogin={navigateToLogin} onNavigateToRegistration={navigateToRegistration} />
-      ) : currentPage === 'registration' ? (
-        <Registration onNavigateToLogin={navigateToLogin} />
-      ) : (
-        <ForgotPassword onNavigateToLogin={navigateToLogin} />
-      )}
-    </div>
-  )
+  return null;
 }
 
-export default App
+function App() {
+
+  return (
+    <Router>
+      <TitleUpdater />
+      <Routes>
+        // {LandingRoutes()}
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;

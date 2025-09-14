@@ -1,1 +1,0 @@
-// Incidents data hook
