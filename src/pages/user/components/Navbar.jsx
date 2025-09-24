@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom"
-import { User } from "lucide-react"
 
 export function Navbar_Public() {
   return (

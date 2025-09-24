@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import LandingRoutes from './pages/user/routes/LandingRoutes';
+import AdminRoutes from './pages/admin/routes/AdminRoutes';
 
 const pageTitles = {
   "/": "Santa Monica | Umaagos ang Pag Asa",
@@ -22,6 +23,7 @@ function App() {
       <TitleUpdater />
       <Routes>
         {LandingRoutes()}
+        {AdminRoutes()}
       </Routes>
     </Router>
   );
