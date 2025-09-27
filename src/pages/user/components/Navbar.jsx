@@ -1,22 +1,26 @@
+import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom"
 
+
+
+{/* Navbar */}
 export function Navbar_Public() {
   return (
     <div id="nav-wrapper">
-      <nav className="bg-green-700 p-4">
+      <nav className="p-4" style={{ backgroundColor: '#4B663B' }}>
         <div className="max-w-7xl mx-auto flex justify-end space-x-8">
-          <Link to="/" className="text-white hover:text-gray-200">Dashboard</Link>
+          <Link to="/dashboard" className="text-white hover:text-gray-200">Dashboard</Link>
           <Link to="/new-page" className="text-white hover:text-gray-200">Map View</Link>
-          <Link to="/new-page" className="text-white hover:text-gray-200">Notifications</Link>
           <Link to="/new-page" className="text-white hover:text-gray-200">Statistics</Link>
-          <Link to="/new-page" className="text-white hover:text-gray-200">Profile</Link>
-          <Link to="/login" className="text-white hover:text-gray-200">Sign In</Link>
+          <Link to="/login" className="text-white hover:text-gray-200"><FaUserCircle size={25} /></Link>
         </div>
       </nav>
     </div>
   )
 }
 
+
+{/* Footer */}
 export function Footer() {
   return (
     <footer className="bg-green-700 text-white p-8">

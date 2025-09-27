@@ -1,8 +1,12 @@
+import { IoPin } from "react-icons/io5";
+import { MdOutlineFamilyRestroom } from "react-icons/md";
+
+
 function Landing() {
   return (
     <div className="w-full min-h-screen bg-white overflow-x-hidden">
       {/* Header Section */}
-      <section className="bg-green-700 text-white py-16 px-4">
+      <section className="bg-green-700 text-white py-2 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-5xl font-bold mb-4">Incident Report</h1>
           <p className="text-xl mb-2">Community Safety, Reimagined</p>
@@ -37,6 +41,13 @@ function Landing() {
               />
             </div>
           </div>
+          
+          {/* Submit Report Button */}
+          <div className="mt-8">
+            <button className="bg-white text-gray-700 px-8 py-4 mb-6 mt-2 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg">
+              Submit Report
+            </button>
+          </div>
         </div>
       </section>
 
@@ -66,7 +77,7 @@ function Landing() {
                   <li>Free Medicine</li>
                 </ul>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-4 items-end -mt-66">
                 <div className="rounded-lg overflow-hidden h-32">
                   <img
                     src="/assets/images/Flood.png"
@@ -122,8 +133,9 @@ function Landing() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Information */}
             <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">��</span>
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl text-red-500"><IoPin />
+                  </span>
                 <span>Location: Novaliches, District 5, Quezon City</span>
               </div>
               <div className="flex items-center space-x-3">
@@ -139,7 +151,8 @@ function Landing() {
                 <span>Households: ~12,500</span>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">��‍��‍👧‍👦</span>
+                <span className="text-2xl ml-1.5"><MdOutlineFamilyRestroom size={25} />
+                </span>
                 <span>Average Household Size: 4.2</span>
               </div>
               <div className="flex items-center space-x-3">
