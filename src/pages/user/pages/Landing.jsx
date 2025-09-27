@@ -92,6 +92,7 @@ function Landing() {
             <button className="bg-green-700 text-white px-8 py-3 rounded-lg hover:bg-primary-dark transition-colors shadow-lg">
               Submit Report
             </button>
+
           </div>
         </div>
       </main>
