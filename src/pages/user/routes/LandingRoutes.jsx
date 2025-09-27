@@ -7,6 +7,8 @@ import SignUp from '../pages/SignUp';
 import PersonalInfo from '../pages/PersonalInfo';
 import OTPVerification from '../pages/OTPVerification';
 import NewPage from '../pages/NewPage';
+import Practice from '../pages/Practice';
+import ForgotPassword from '../pages/ForgotPassword';
 
 
 const LandingRoutes = () => [
@@ -15,10 +17,15 @@ const LandingRoutes = () => [
   </Route>,
 
   <Route path="/login" element={<Public_Layout />}>
+
     <Route index element={<Login />} />
   </Route>,
-  <Route path="/register" element={<Public_Layout />}>
-    <Route index element={<SignUp />} />
+  <Route path="/register" element={<SignUp />} />,
+  <Route path="/new-page" element={<NewPage />} />,
+  <Route path="/forgotpassword" element={<ForgotPassword />} />,
+
+  <Route path="/practice" element={<Public_Layout />}>
+    <Route index element={<Practice />} />
   </Route>,
   <Route path="/personal-info" element={<Public_Layout />}>
     <Route index element={<PersonalInfo />} />

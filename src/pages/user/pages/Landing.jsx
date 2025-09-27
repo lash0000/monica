@@ -1,8 +1,29 @@
+import { IoPin } from "react-icons/io5";
+import { MdOutlineFamilyRestroom } from "react-icons/md";
+import { FaMapLocation } from "react-icons/fa6";
+import { FaPhoneAlt } from "react-icons/fa";
+import { FaEnvelope } from "react-icons/fa";
+import { FaRegClock } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import { FaSquareXTwitter } from "react-icons/fa6";
+import { FaInstagramSquare } from "react-icons/fa";
+import { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // 👈 this is important
+
+
 function Landing() {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // ⏱️ animation duration in ms
+      once: true,     // ✅ animate only once on scroll
+    });
+  }, []);
+
   return (
     <div className="w-full min-h-screen bg-white overflow-x-hidden">
       {/* Header Section */}
-      <section className="bg-[#4B663B] text-white py-16 px-4">
+      <section className="bg-green-700 text-white py-2 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-5xl font-bold mb-4">Barangay Santa Monica</h1>
           <p className="text-xl mb-2">Community Safety, Reimagined</p>
@@ -37,21 +58,28 @@ function Landing() {
               />
             </div>
           </div>
+          
+          {/* Submit Report Button */}
+          <div className="mt-8">
+            <button className="bg-white text-gray-700 px-8 py-4 mb-6 mt-2 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg">
+              Submit Report
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Announcements Section */}
       <div className="py-8 px-4">
-           <h2 className="text-4xl font-bold text-center text-black">Announcements</h2>
+           <h2 className="text-4xl font-bold text-center text-black" data-aos="fade-up">Announcements</h2>
                 </div>
-      <section className="py-16 px-4" style={{ backgroundColor: '#6A994E' }}>
+      <section className="py-16 px-4" style={{ backgroundColor: '#6A994E' }} data-aos="fade-up">
   <div className="max-w-6xl mx-auto">
     <div className="rounded-lg p-4 mb-8">
     </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Medical Mission */}
-            <div className="bg-white rounded-lg p-6 shadow-lg"> 
+            <div className="bg-white rounded-lg p-6 shadow-lg" data-aos="fade-right"> 
               <h3 className="text-2xl font-bold text-green-600 mb-4">Free medical mission</h3>
               <div className="space-y-2 mb-4">
                 <p><span className="font-semibold">Where:</span> Barangay Hall</p>
@@ -66,7 +94,7 @@ function Landing() {
                   <li>Free Medicine</li>
                 </ul>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-4 items-end -mt-66">
                 <div className="rounded-lg overflow-hidden h-32">
                   <img
                     src="/assets/images/Flood.png"
@@ -85,7 +113,7 @@ function Landing() {
             </div>
 
             {/* Anti-Rabies Vaccine Drive */}
-            <div className="bg-white rounded-lg p-6 shadow-lg">
+            <div className="bg-white rounded-lg p-6 shadow-lg" data-aos="fade-left">
               <h3 className="text-2xl font-bold text-green-600 mb-2">Free Anti-Rabies Vaccine Drive</h3>
               <p className="text-sm mb-4">for your beloved dogs and cats.</p>
               <div className="space-y-2 mb-4">
@@ -115,63 +143,65 @@ function Landing() {
       </section>
 
       {/* About Our Barangay Section */}
-      <section className="bg-pink-100 py-16 px-4">
+      <section className="bg-pink-100 py-16 px-4" data-aos="fade-up">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-black mb-12">About our Barangay</h2>
+          <h2 className="text-4xl font-bold text-center text-black mb-12" data-aos="fade-down">About our Barangay</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Information */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">��</span>
+            <div className="space-y-4" data-aos="fade-right">
+                <div className="flex items-center space-x-3" data-aos="fade-up" data-aos-delay="200">
+                  <span className="text-2xl text-red-500"><IoPin />
+                  </span>
                 <span>Location: Novaliches, District 5, Quezon City</span>
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3" data-aos="fade-up" data-aos-delay="300">
                 <span className="text-2xl">🏢</span>
                 <span>Barangay Hall: Moises Street, Jordan Plains Subdivision</span>
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3" data-aos="fade-up" data-aos-delay="400">
                 <span className="text-2xl">👥</span>
                 <span>Population: 51,785 residents</span>
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3" data-aos="fade-up" data-aos-delay="500">
                 <span className="text-2xl">🏠</span>
                 <span>Households: ~12,500</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">��‍��‍👧‍👦</span>
+              <div className="flex items-center space-x-3" data-aos="fade-up" data-aos-delay="600">
+                <span className="text-2xl ml-1.5"><MdOutlineFamilyRestroom size={25} />
+                </span>
                 <span>Average Household Size: 4.2</span>
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3" data-aos="fade-up" data-aos-delay="700">
                 <span className="text-2xl">👤</span>
                 <span>Punong Barangay: Charles D.J. Manalad</span>
               </div>
             </div>
 
             {/* Images Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-lg overflow-hidden h-32">
+            <div className="grid grid-cols-2 gap-4" data-aos="fade-left">
+              <div className="rounded-lg overflow-hidden h-32" data-aos="zoom-in" data-aos-delay="200">
                 <img
                   src="/assets/images/Flood.png"
                   alt="Novaliches Map"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="rounded-lg overflow-hidden h-32">
+              <div className="rounded-lg overflow-hidden h-32" data-aos="zoom-in" data-aos-delay="300">
                 <img
                   src="/assets/images/Flood.png"
                   alt="Barangay Officials"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="rounded-lg overflow-hidden h-32">
+              <div className="rounded-lg overflow-hidden h-32" data-aos="zoom-in" data-aos-delay="400">
                 <img
                   src="/assets/images/Flood.png"
                   alt="Barangay Hall"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="rounded-lg overflow-hidden h-32">
+              <div className="rounded-lg overflow-hidden h-32" data-aos="zoom-in" data-aos-delay="500">
                 <img
                   src="/assets/images/Flood.png"
                   alt="Community Gathering"
@@ -184,11 +214,11 @@ function Landing() {
       </section>
 
       {/* Barangay Officials Section */}
-<section className="bg-pink-100 py-16 px-4">
+<section className="bg-pink-100 py-16 px-4" data-aos="fade-up">
   <div className="max-w-6xl mx-auto">
-    <h2 className="text-4xl font-bold text-center text-black mb-12">Barangay Officials</h2>
+    <h2 className="text-4xl font-bold text-center text-black mb-12" data-aos="fade-down">Barangay Officials</h2>
     
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6" data-aos="fade-up" data-aos-delay="200">
       {[
         { name: "Chaewon Batumbakal", position: "Punong Barangay", image: "/assets/images/officials/chaewon.jpg" },
         { name: "Na uy Sc Buenaventura", position: "Secretary", image: "/assets/images/officials/" },
@@ -199,7 +229,7 @@ function Landing() {
         { name: "Alfie Manluctao", position: "Kagawad", image: "/assets/images/officials/" },
         { name: "Hon. blab bla bla", position: "Punong Barangay", image: "/assets/images/" }
       ].map((official, index) => (
-        <div key={index} className="bg-white rounded-lg p-4 text-center shadow-lg">
+        <div key={index} className="bg-white rounded-lg p-4 text-center shadow-lg" data-aos="zoom-in" data-aos-delay={`${300 + (index * 100)}`}>
           <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden">
             <img
               src={official.image}
@@ -231,32 +261,55 @@ function Landing() {
               <h3 className="text-2xl font-bold text-black-800 mb-6">Get in Touch</h3>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">��</span>
+                  <span className="text-2xl text-white"> <FaMapLocation size={15} />
+                  </span>
                   <span className="text-black-700">Novaliches, District 5, Quezon City</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">��</span>
+                  <span className="text-2xl text-white"><FaPhoneAlt size={15}/></span>
                   <span className="text-black-700">+1 6267464596</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">✉️</span>
+                  <span className="text-2xl text-white"><FaEnvelope size={15}/></span>
                   <span className="text-black-700">stamonica@gmail.com</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">🕒</span>
+                  <span className="text-2xl text-white"><FaRegClock size={15} /></span>
                   <span className="text-black-700">Monday to Saturday, 8:00 AM - 5:00 PM</span>
                 </div>
               </div>
               
-              <div className="mt-8">
-                <p className="text-black-800 mb-4">Follow Us</p>
-                <div className="flex space-x-4">
-                  <span className="text-2xl">��</span>
-                  <span className="text-2xl">��</span>
-                  <span className="text-2xl">📷</span>
-                </div>
-              </div>
-            </div>
+                       <div className="mt-8">
+                    <p className="text-black mb-4">Follow Us</p>
+                    <div className="flex space-x-4 items-center text-white">
+                      <a
+                        href="https://facebook.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-2xl hover:text-blue-600 transition-colors"
+                      >
+                        <FaFacebook />
+                      </a>
+                      <a
+                        href="https://twitter.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-2xl hover:text-black transition-colors"
+                      >
+                        <FaSquareXTwitter size={24} />
+                      </a>
+                      <a
+                        href="https://instagram.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-2xl hover:text-pink-600 transition-colors"
+                      >
+                        <FaInstagramSquare />
+                      </a>
+                    </div>
+                  </div>
+                  </div>
+
 
             {/* Send us a Message */}
                 <div>
