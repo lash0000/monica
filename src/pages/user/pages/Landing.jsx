@@ -1,102 +1,294 @@
-
-
 function Landing() {
   return (
     <div className="w-full min-h-screen bg-white overflow-x-hidden">
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="border border-gray-500 shadow-2xl rounded-lg p-8">
-          <div className="text-center mb-12">
-            <p className="text-black leading-loose mb-2 max-w-5xl mx-auto font-bold text-xl">
-              Community Safety, Reimagined
-            </p>
-            <h1 className="text-4xl font-semibold text-black mb-4">
-              Connecting Your Barangay, One Report at a Time
-            </h1>
-            <p className="text-black leading-tight mt-10 max-w-5xl mx-auto">
-              Mata Taumbayan is a smart incident reporting system that empowers residents
-              and equips barangay officials to build a safer, more responsive community
-              through technology
-            </p>
-          </div>
-
-          {/* Image Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div className="rounded-lg overflow-hidden h-48">
-              <img
-                src="/assets/images/Flood.png"
-                alt="Emergency Flood Response"
-                className="w-full h-full object-cover transition duration-500 transform hover:scale-110 hover:-translate-y-2 hover:shadow-2xl hover:brightness-110"
-              />
-            </div>
-            <div className="rounded-lg overflow-hidden h-48">
-              <img
-                src="/assets/images/Flood.png"
-                alt="Drainage Infrastructure"
-                className="w-full h-full object-cover transition duration-500 transform hover:scale-110 hover:-translate-y-2 hover:shadow-2xl hover:brightness-110"
-              />
-            </div>
-            <div className="rounded-lg overflow-hidden h-48">
-              <img
-                src="/assets/images/Flood.png"
-                alt="Community Assistance"
-                className="w-full h-full object-cover transition duration-500 transform hover:scale-110 hover:-translate-y-2 hover:shadow-2xl hover:brightness-110"
-              />
-            </div>
-          </div>
-
-          <p className="text-black leading-tight mt-4 max-w-5xl mx-auto text-center mb-12 text-xl">
-            Discover the features that make our platform the ideal solution
-            <br />
-            <span>for modern community incident management.</span>
+      {/* Header Section */}
+      <section className="bg-green-700 text-white py-16 px-4">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className="text-5xl font-bold mb-4">Incident Report</h1>
+          <p className="text-xl mb-2">Community Safety, Reimagined</p>
+          <h2 className="text-3xl font-semibold mb-6">Connecting Your Barangay, One Report at a Time</h2>
+          <p className="text-lg max-w-4xl mx-auto mb-8">
+            Mata Taumbayan is a smart incident reporting system that empowers residents
+            and equips barangay officials to build a safer, more responsive community
+            through technology
           </p>
-
-          {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <div className="bg-white rounded-lg p-6 shadow-lg border border-black transition-transform duration-150 transform hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:ring-4 hover:ring-gray-400/30">
-              <h3 className="text-xl font-semibold text-black mb-4">
-                AI Powered <br /> Reporting
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Our system uses AI to validate and triage incident reports, ensuring urgent matters are prioritized and officials are notified instantly
-              </p>
+          
+          {/* Emergency Images */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            <div className="rounded-lg overflow-hidden h-48">
+              <img
+                src="/assets/images/Flood.png"
+                alt="Emergency Fire Response"
+                className="w-full h-full object-cover"
+              />
             </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-lg border border-black transition-transform duration-150 transform hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:ring-4 hover:ring-gray-400/30">
-              <h3 className="text-xl font-semibold text-black mb-4">
-                Community Credit <br /> Score
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Build trust within your community. Earn points for reliable reporting and contribute to a safer barangay for everyone.
-              </p>
+            <div className="rounded-lg overflow-hidden h-48">
+              <img
+                src="/assets/images/Flood.png"
+                alt="Street Emergency Scene"
+                className="w-full h-full object-cover"
+              />
             </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-lg border border-black transition-transform duration-150 transform hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:ring-4 hover:ring-gray-400/30">
-              <h3 className="text-xl font-semibold text-black mb-4">
-                Seamless Verification
-              </h3>
-              <p className="text-gray-600 text-sm mt-10">
-                Admins can quickly confirm or reject reports, which automatically updates the incident status and user credit scores.
-              </p>
+            <div className="rounded-lg overflow-hidden h-48">
+              <img
+                src="/assets/images/Flood.png"
+                alt="Medical Emergency Response"
+                className="w-full h-full object-cover"
+              />
             </div>
-          </div>
-
-          {/* Submit Report Section */}
-          <div className="text-center mt-20 mb-8">
-            <h2 className="text-4xl font-semibold text-gray-800 mb-4">
-              Visualize Your Community's Safety
-            </h2>
-            <p className="text-gray-600 mb-8 text-2xl">
-              Our dashboard provides a clear overview of all incidents, helping you stay informed.
-            </p>
-            <button className="bg-green-700 text-white px-8 py-3 rounded-lg hover:bg-primary-dark transition-colors shadow-lg">
-              Submit Report
-            </button>
-
           </div>
         </div>
-      </main>
+      </section>
+
+      {/* Announcements Section */}
+      <div className="py-8 px-4">
+           <h2 className="text-4xl font-bold text-center text-black">Announcements</h2>
+                </div>
+      <section className="py-16 px-4" style={{ backgroundColor: '#6A994E' }}>
+  <div className="max-w-6xl mx-auto">
+    <div className="rounded-lg p-4 mb-8">
     </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Medical Mission */}
+            <div className="bg-white rounded-lg p-6 shadow-lg"> 
+              <h3 className="text-2xl font-bold text-green-600 mb-4">Free medical mission</h3>
+              <div className="space-y-2 mb-4">
+                <p><span className="font-semibold">Where:</span> Barangay Hall</p>
+                <p><span className="font-semibold">Date:</span> Saturday, October 26, 2025</p>
+                <p><span className="font-semibold">Time:</span> 8:00 AM - 4:00 PM</p>
+              </div>
+              <div className="mb-4">
+                <p className="font-semibold mb-2">Services Offered:</p>
+                <ul className="list-disc list-inside space-y-1">
+                  <li>General Check-ups</li>
+                  <li>Dental Services (Tooth Extraction)</li>
+                  <li>Free Medicine</li>
+                </ul>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-lg overflow-hidden h-32">
+                  <img
+                    src="/assets/images/Flood.png"
+                    alt="Medical Check-up"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="rounded-lg overflow-hidden h-32">
+                  <img
+                    src="/assets/images/Flood.png"
+                    alt="Dental Treatment"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Anti-Rabies Vaccine Drive */}
+            <div className="bg-white rounded-lg p-6 shadow-lg">
+              <h3 className="text-2xl font-bold text-green-600 mb-2">Free Anti-Rabies Vaccine Drive</h3>
+              <p className="text-sm mb-4">for your beloved dogs and cats.</p>
+              <div className="space-y-2 mb-4">
+                <p><span className="font-semibold">Date:</span> Saturday, November 9, 2025</p>
+                <p><span className="font-semibold">Time:</span> 9:00 AM - 3:00 PM</p>
+                <p><span className="font-semibold">Location:</span> Barangay Covered Court</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-lg overflow-hidden h-32">
+                  <img
+                    src="/assets/images/Flood.png"
+                    alt="Cat Vaccination"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="rounded-lg overflow-hidden h-32">
+                  <img
+                    src="/assets/images/Flood.png"
+                    alt="Dog Vaccination"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Our Barangay Section */}
+      <section className="bg-pink-100 py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center text-black mb-12">About our Barangay</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Information */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <span className="text-2xl">��</span>
+                <span>Location: Novaliches, District 5, Quezon City</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <span className="text-2xl">🏢</span>
+                <span>Barangay Hall: Moises Street, Jordan Plains Subdivision</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <span className="text-2xl">👥</span>
+                <span>Population: 51,785 residents</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <span className="text-2xl">🏠</span>
+                <span>Households: ~12,500</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <span className="text-2xl">��‍��‍👧‍👦</span>
+                <span>Average Household Size: 4.2</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <span className="text-2xl">👤</span>
+                <span>Punong Barangay: Charles D.J. Manalad</span>
+              </div>
+            </div>
+
+            {/* Images Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="rounded-lg overflow-hidden h-32">
+                <img
+                  src="/assets/images/Flood.png"
+                  alt="Novaliches Map"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="rounded-lg overflow-hidden h-32">
+                <img
+                  src="/assets/images/Flood.png"
+                  alt="Barangay Officials"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="rounded-lg overflow-hidden h-32">
+                <img
+                  src="/assets/images/Flood.png"
+                  alt="Barangay Hall"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="rounded-lg overflow-hidden h-32">
+                <img
+                  src="/assets/images/Flood.png"
+                  alt="Community Gathering"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Barangay Officials Section */}
+<section className="bg-pink-100 py-16 px-4">
+  <div className="max-w-6xl mx-auto">
+    <h2 className="text-4xl font-bold text-center text-black mb-12">Barangay Officials</h2>
+    
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      {[
+        { name: "Chaewon Batumbakal", position: "Punong Barangay", image: "/assets/images/officials/chaewon.jpg" },
+        { name: "Na uy Sc Buenaventura", position: "Secretary", image: "/assets/images/officials/" },
+        { name: "Nelson Alcantara", position: "Kagawad", image: "/assets/images/officials/" },
+        { name: "Ogie S. Francisco", position: "Kagawad", image: "/assets/images/officials/" },
+        { name: "Ramil Borre", position: "Kagawad", image: "/assets/images/officials/" },
+        { name: "Roger A. Ternida", position: "Kagawad", image: "/assets/images/officials/" },
+        { name: "Alfie Manluctao", position: "Kagawad", image: "/assets/images/officials/" },
+        { name: "Hon. blab bla bla", position: "Punong Barangay", image: "/assets/images/" }
+      ].map((official, index) => (
+        <div key={index} className="bg-white rounded-lg p-4 text-center shadow-lg">
+          <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden">
+            <img
+              src={official.image}
+              alt={official.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'block';
+              }}
+            />
+            <span className="text-white text-2xl" style={{ display: 'none' }}>👤</span>
+          </div>
+          <h3 className="font-semibold text-sm mb-1">{official.name}</h3>
+          <p className="text-xs text-gray-600">{official.position}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+            {/* Contact Us Section */}
+        <section className="py-16 px-4" style={{ backgroundColor: '#8BA77A' }}>
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center text-black-800 mb-12">Contact Us</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Get in Touch */}
+            <div>
+              <h3 className="text-2xl font-bold text-black-800 mb-6">Get in Touch</h3>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl">��</span>
+                  <span className="text-black-700">Novaliches, District 5, Quezon City</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl">��</span>
+                  <span className="text-black-700">+1 6267464596</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl">✉️</span>
+                  <span className="text-black-700">stamonica@gmail.com</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl">🕒</span>
+                  <span className="text-black-700">Monday to Saturday, 8:00 AM - 5:00 PM</span>
+                </div>
+              </div>
+              
+              <div className="mt-8">
+                <p className="text-black-800 mb-4">Follow Us</p>
+                <div className="flex space-x-4">
+                  <span className="text-2xl">��</span>
+                  <span className="text-2xl">��</span>
+                  <span className="text-2xl">📷</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Send us a Message */}
+                <div>
+                  <h3 className="text-2xl font-bold text-black-800 mb-6">Send us a Message</h3>
+                  <form className="space-y-4">
+                    <input
+                      type="text"
+                      placeholder="Full Name"
+                      className="w-full p-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    />
+                    <input
+                      type="email"
+                      placeholder="Email Address"
+                      className="w-full p-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    />
+                    <textarea
+                      placeholder="Message"
+                      rows="4"
+                      className="w-full p-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    ></textarea>
+                    <button
+                      type="submit"
+                      className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                    >
+                      Send Message
+                    </button>
+                  </form>
+                </div>
+                </div>
+              </div>
+            </section>
+          </div>
   )
 }
 

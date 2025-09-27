@@ -5,12 +5,12 @@ export function Navbar_Public() {
     <div id="nav-wrapper">
       <nav className="bg-green-700 p-4">
         <div className="max-w-7xl mx-auto flex justify-end space-x-8">
-          <Link to="" className="text-white hover:text-gray-200">Dashboard</Link>
-          <a href="#" className="text-white hover:text-gray-200">Map View</a>
-          <a href="#" className="text-white hover:text-gray-200">Notifications</a>
-          <a href="#" className="text-white hover:text-gray-200">Statistics</a>
-          <a href="#" className="text-white hover:text-gray-200">Profile</a>
-          <Link to="" className="text-white hover:text-gray-200">Sign In</Link>
+          <Link to="/" className="text-white hover:text-gray-200">Dashboard</Link>
+          <Link to="/new-page" className="text-white hover:text-gray-200">Map View</Link>
+          <Link to="/new-page" className="text-white hover:text-gray-200">Notifications</Link>
+          <Link to="/new-page" className="text-white hover:text-gray-200">Statistics</Link>
+          <Link to="/new-page" className="text-white hover:text-gray-200">Profile</Link>
+          <Link to="/login" className="text-white hover:text-gray-200">Sign In</Link>
         </div>
       </nav>
     </div>
@@ -33,8 +33,8 @@ export function Footer() {
         <div>
           <h3 className="text-2xl font-bold mb-4 text-center">Quick Links</h3>
           <ul className="space-y-2 text-center">
-            <li><a href="#" className="text-white hover:text-gray-200">Dashboard</a></li>
-            <li><a href="#" className="text-white hover:text-gray-200">Report Incident</a></li>
+            <li><Link to="/" className="text-white hover:text-gray-200">Dashboard</Link></li>
+            <li><Link to="/new-page" className="text-white hover:text-gray-200">Report Incident</Link></li>
           </ul>
         </div>
 
