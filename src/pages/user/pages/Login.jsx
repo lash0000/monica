@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
+import SignUpLink from "../components/SignUpLink";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -8,30 +9,30 @@ function Login() {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Background Image */}
-      <div className="hidden lg:flex lg:w-1/2 bg-cover bg-center bg-no-repeat" 
+      <div className="hidden lg:flex lg:w-1/2 bg-cover bg-center bg-no-repeat rounded-r-3xl" 
            style={{backgroundImage: 'url(/public/assets/images/stamonica_bg.jpg)'}}>
       </div>
       
       {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 bg-[#556B2F] flex flex-col items-center justify-center p-4">
+      <div className="w-full lg:w-1/2 bg-[#ffffff] flex flex-col items-center justify-center p-4">
         
         {/* Login Card */}
-        <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+        <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl border-1 border-[#4B663B]" >
         {/* Login Title */}
-        <h2 className="text-2xl font-serif text-[#556B2F] mb-6 text-center font-bold">
+        <h2 className="text-2xl font-serif text-[#4B663B] mb-6 text-center font-bold">
           Login to MaTa
         </h2>
         
         {/* Login Form */}
         <form className="space-y-4">
-          {/* Barangay ID Field */}
+          {/* Email Field */}
           <div>
             <label className="block text-black font-bold mb-2">
-              Barangay ID
+              Email
             </label>
             <input
               type="text"
-              placeholder="Enter your Barangay ID"
+              placeholder="Enter your Email"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent"
             />
           </div>
@@ -45,7 +46,7 @@ function Login() {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
-                className="w-full px-3 py-2 border-2 border-[#556B2F] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent pr-10"
+                className="w-full px-3 py-2 border-1 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent pr-10"
               />
               <button
                 type="button"
@@ -98,14 +99,9 @@ function Login() {
         </button>
         
         {/* Sign Up Link */}
-        <div className="text-center mt-4">
-          <span className="text-black">Need an account? </span>
-          <Link to="/register" className="text-blue-600 hover:text-blue-800 font-semibold">
-            Sign up
-          </Link>
+        <SignUpLink />
         </div>
         </div>
-      </div>
     </div>
   )
 }

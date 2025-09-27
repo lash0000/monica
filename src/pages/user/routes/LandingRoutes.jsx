@@ -4,8 +4,9 @@ import Landing from '../pages/Landing';
 import Public_Layout from '../layouts/Public';
 import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
+import PersonalInfo from '../pages/PersonalInfo';
+import OTPVerification from '../pages/OTPVerification';
 import NewPage from '../pages/NewPage';
-import Practice from '../pages/Practice';
 
 
 const LandingRoutes = () => [
@@ -16,12 +17,17 @@ const LandingRoutes = () => [
   <Route path="/login" element={<Public_Layout />}>
     <Route index element={<Login />} />
   </Route>,
-  <Route path="/register" element={<SignUp />} />,
-  <Route path="/new-page" element={<NewPage />} />,
-  
-  <Route path="/practice" element={<Public_Layout />}>
-    <Route index element={<Practice />} />
+  <Route path="/register" element={<Public_Layout />}>
+    <Route index element={<SignUp />} />
   </Route>,
+  <Route path="/personal-info" element={<Public_Layout />}>
+    <Route index element={<PersonalInfo />} />
+  </Route>,
+  <Route path="/otp-verification" element={<Public_Layout />}>
+    <Route index element={<OTPVerification />} />
+  </Route>,
+  <Route path="/new-page" element={<NewPage />} />,
+
 
 ]
 

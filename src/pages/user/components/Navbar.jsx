@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 export function Navbar_Public() {
   return (
     <div id="nav-wrapper">
-      <nav className="bg-green-700 p-4">
+      <nav className="bg-[#4B663B] p-4">
         <div className="max-w-7xl mx-auto flex justify-end space-x-8">
           <Link to="/" className="text-white hover:text-gray-200">Dashboard</Link>
           <Link to="/new-page" className="text-white hover:text-gray-200">Map View</Link>
@@ -19,7 +19,7 @@ export function Navbar_Public() {
 
 export function Footer() {
   return (
-    <footer className="bg-green-700 text-white p-8">
+    <footer className="bg-[#4B663B] text-white p-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* About */}
         <div>

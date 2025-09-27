@@ -2,9 +2,9 @@ function Landing() {
   return (
     <div className="w-full min-h-screen bg-white overflow-x-hidden">
       {/* Header Section */}
-      <section className="bg-green-700 text-white py-16 px-4">
+      <section className="bg-[#4B663B] text-white py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-4">Incident Report</h1>
+          <h1 className="text-5xl font-bold mb-4">Barangay Santa Monica</h1>
           <p className="text-xl mb-2">Community Safety, Reimagined</p>
           <h2 className="text-3xl font-semibold mb-6">Connecting Your Barangay, One Report at a Time</h2>
           <p className="text-lg max-w-4xl mx-auto mb-8">
