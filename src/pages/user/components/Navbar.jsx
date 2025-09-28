@@ -9,9 +9,11 @@ export function Navbar_Public() {
     <div id="nav-wrapper">
       <nav className="p-4" style={{ backgroundColor: '#4B663B' }}>
         <div className="max-w-7xl mx-auto flex justify-end space-x-8">
-          <Link to="/dashboard" className="text-white hover:text-gray-200">Dashboard</Link>
+          <Link to="/" className="text-white hover:text-gray-200">Dashboard</Link>
           <Link to="/new-page" className="text-white hover:text-gray-200">Map View</Link>
           <Link to="/new-page" className="text-white hover:text-gray-200">Statistics</Link>
+          <Link to="/ticket" className="text-white hover:text-gray-200">Ticket</Link>
+
           <Link to="/login" className="text-white hover:text-gray-200"><FaUserCircle size={25} /></Link>
         </div>
       </nav>

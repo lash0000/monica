@@ -19,8 +19,8 @@ function Login() {
         {/* Login Card */}
         <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl border-1 border-[#4B663B]" >
         {/* Login Title */}
-        <h2 className="text-2xl font-serif text-[#4B663B] mb-6 text-center font-bold">
-          Login to MaTa
+        <h2 className="text-3xl font-serif text-[#4B663B] mb-6 text-center font-bold">
+          Login
         </h2>
         
         {/* Login Form */}
@@ -71,18 +71,23 @@ function Login() {
               />
               <span className="text-black">Remember Me</span>
             </label>
-            <Link to="/forgot-password" className="text-blue-600 hover:text-blue-800">
+            <Link to="/forgotpassword" className="text-blue-600 hover:text-blue-800">
               Forgot Password?
             </Link>
           </div>
           
           {/* Login Button */}
+          <Link 
+            to="/Dashboard" 
+            
+          >
           <button
-            type="submit"
+            type="button"
             className="w-full bg-[#556B2F] text-white py-2 rounded-lg font-semibold hover:bg-[#6B8E23] transition-colors duration-200"
           >
             Login
           </button>
+          </Link>
         </form>
         
         {/* OR Divider */}
