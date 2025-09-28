@@ -59,7 +59,6 @@ function Landing() {
       images: ["/assets/images/Flood.png", "/assets/images/Flood.png"]
     }
   ];
-
   const nextAnnouncement = () => {
     if (isAnimating) return;
     setIsAnimating(true);
