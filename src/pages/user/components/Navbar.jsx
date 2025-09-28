@@ -19,6 +19,9 @@ export function Navbar_Public() {
             <Link to="/dashboard" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Dashboard</Link>
             <Link to="/new-page" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Map View</Link>
             <Link to="/new-page" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Statistics</Link>
+            <Link to="/ticket" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Ticket</Link>
+
+
             <Link to="/login" className="text-white hover:text-gray-200 transition-colors">
               <FaUserCircle size={20} className="lg:w-6 lg:h-6 xl:w-7 xl:h-7 2xl:w-8 2xl:h-8" />
             </Link>

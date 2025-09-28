@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import LoginLink from "../components/LoginLink";
+import stamonicabg from "../components/stamonicabg";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -19,9 +20,7 @@ function SignUp() {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Background Image */}
-      <div className="hidden lg:flex lg:w-1/2 bg-cover bg-center bg-no-repeat rounded-r-3xl" 
-           style={{backgroundImage: 'url(/public/assets/images/stamonica_bg.jpg)'}}>
-      </div>
+      <stamonicabg />
       
       {/* Right Side - SignUp Form */}
       <div className="w-full lg:w-1/2 bg-[#ffffff] flex flex-col items-center justify-center p-4">
