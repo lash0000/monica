@@ -1,4 +1,6 @@
-function stamonicabg() {
+import React from 'react';
+
+function Stamonicabg() {
   return (
     <div 
       className="hidden lg:flex lg:w-1/2 bg-cover bg-center bg-no-repeat rounded-r-3xl" 
@@ -8,4 +10,4 @@ function stamonicabg() {
   );
 }
 
-export default stamonicabg;
+export default Stamonicabg;

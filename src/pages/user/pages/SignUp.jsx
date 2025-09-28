@@ -1,13 +1,18 @@
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LoginLink from "../components/LoginLink";
-import stamonicabg from "../components/stamonicabg";
+import Stamonicabg from "../components/stamonicabg";
 
 function SignUp() {
   const [formData, setFormData] = useState({
     email: ''
   });
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,7 +25,7 @@ function SignUp() {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Background Image */}
-      <stamonicabg />
+      <Stamonicabg />
       
       {/* Right Side - SignUp Form */}
       <div className="w-full lg:w-1/2 bg-[#ffffff] flex flex-col items-center justify-center p-4">

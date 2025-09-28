@@ -1,4 +1,4 @@
-// Ticket data for the ticket management system
+// Ticket data lng to para display sa ticket management system
 export const ticketsData = [
     {
         id: '#TC-121',

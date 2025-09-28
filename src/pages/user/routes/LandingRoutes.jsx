@@ -10,11 +10,12 @@ import NewPage from '../pages/NewPage';
 import ForgotPassword from '../pages/ForgotPassword';
 import Dashboard from '../pages/Dashboard';
 import Ticket from '../pages/Ticket';
+
+
 const LandingRoutes = () => [
   <Route path="/" element={<Public_Layout />}>
     <Route index element={<Landing />} />
   </Route>,
-
   <Route path="/login" element={<Public_Layout />}>
 
     <Route index element={<Login />} />
