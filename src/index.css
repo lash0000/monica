@@ -1,1 +1,41 @@
 @import "tailwindcss";
+
+/* Global styles for 1920x1080 optimization */
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Container optimizations for larger screens */
+.container-1920 {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Responsive breakpoints for 1920x1080 */
+@media (min-width: 1920px) {
+    .container-1920 {
+        padding: 0 4rem;
+    }
+}
+
+/* Optimize for 1920x1080 and larger screens */
+@media (min-width: 1920px) {
+    .text-responsive {
+        font-size: 1.125rem;
+    }
+
+    .heading-responsive {
+        font-size: 3rem;
+    }
+
+    .subheading-responsive {
+        font-size: 1.5rem;
+    }
+}
