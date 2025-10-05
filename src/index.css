@@ -3,12 +3,14 @@
 /* Global styles for 1920x1080 optimization */
 html {
     font-size: 16px;
+    scroll-behavior: smooth;
 }
 
 body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    line-height: 1.6;
 }
 
 /* Container optimizations for larger screens */
@@ -18,7 +20,13 @@ body {
     padding: 0 2rem;
 }
 
-/* Responsive breakpoints for 1920x1080 */
+/* Enhanced responsive breakpoints for 1920x1080 */
+@media (min-width: 1536px) {
+    .container-1920 {
+        padding: 0 3rem;
+    }
+}
+
 @media (min-width: 1920px) {
     .container-1920 {
         padding: 0 4rem;
@@ -37,5 +45,59 @@ body {
 
     .subheading-responsive {
         font-size: 1.5rem;
+    }
+}
+
+/* Enhanced shadow utilities for 1920x1080 */
+.shadow-3xl {
+    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+    transition: all 0.3s ease;
+}
+
+/* Enhanced hover effects for 1920x1080 */
+@media (min-width: 1920px) {
+    .hover-scale-105:hover {
+        transform: scale(1.05);
+    }
+
+    .hover-scale-110:hover {
+        transform: scale(1.10);
+    }
+}
+
+/* Custom scrollbar for 1920x1080 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4B663B;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3a5230;
+}
+
+/* Enhanced focus states for accessibility */
+*:focus {
+    outline: 2px solid #4B663B;
+    outline-offset: 2px;
+}
+
+/* Improved text rendering for 1920x1080 */
+@media (min-width: 1920px) {
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
     }
 }
