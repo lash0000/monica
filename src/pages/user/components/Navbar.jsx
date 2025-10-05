@@ -22,6 +22,7 @@ export function Navbar_Public() {
             <Link to="/" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Home</Link>
             <Link to="/about" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">About</Link>
             <Link to="/services" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Services</Link>
+            <Link to="/emergency-hotlines" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Emergency</Link>
             <Link to="/contact" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Contact</Link>
             <Link to="/login" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl mr-5 font-bold bg-white/20 px-4 py-2 rounded-md hover:bg-white/30">Login</Link>
 
@@ -167,12 +168,12 @@ export function Footer() {
               </button>
             </li>
             <li>
-              <button
-                onClick={() => scrollToSection('emergency-hotlines')}
-                className="text-white hover:text-gray-200 transition-colors text-left cursor-pointer"
+              <Link
+                to="/emergency-hotlines"
+                className="text-white hover:text-gray-200 transition-colors"
               >
                 Emergency Hotlines
-              </button>
+              </Link>
             </li>
           </ul>
         </div>
