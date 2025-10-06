@@ -1,4 +1,3 @@
-import { IoPin } from "react-icons/io5";
 import { MdOutlineFamilyRestroom } from "react-icons/md";
 import { FaMapLocation } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
