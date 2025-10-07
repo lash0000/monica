@@ -14,6 +14,11 @@ function Landing() {
   const [isEmergencyAnimating, setIsEmergencyAnimating] = useState(false);
   const [selectedNews, setSelectedNews] = useState(null);
   const [isNewsModalOpen, setIsNewsModalOpen] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const [mouseStart, setMouseStart] = useState(null);
+  const [mouseEnd, setMouseEnd] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     AOS.init({
@@ -176,6 +181,69 @@ function Landing() {
     }, 300);
   };
 
+  // Swipe functionality for news carousel
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && currentEmergencyImage < emergencyImages.length - 3) {
+      // Swipe left - go to next
+      goToEmergencyImage(currentEmergencyImage + 1);
+    }
+    if (isRightSwipe && currentEmergencyImage > 0) {
+      // Swipe right - go to previous
+      goToEmergencyImage(currentEmergencyImage - 1);
+    }
+  };
+
+  // Mouse drag functionality for desktop
+  const onMouseDown = (e) => {
+    setIsDragging(true);
+    setMouseEnd(null);
+    setMouseStart(e.clientX);
+  };
+
+  const onMouseMove = (e) => {
+    if (!isDragging) return;
+    setMouseEnd(e.clientX);
+  };
+
+  const onMouseUp = () => {
+    if (!isDragging || !mouseStart || !mouseEnd) {
+      setIsDragging(false);
+      return;
+    }
+    
+    const distance = mouseStart - mouseEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && currentEmergencyImage < emergencyImages.length - 3) {
+      // Drag left - go to next
+      goToEmergencyImage(currentEmergencyImage + 1);
+    }
+    if (isRightSwipe && currentEmergencyImage > 0) {
+      // Drag right - go to previous
+      goToEmergencyImage(currentEmergencyImage - 1);
+    }
+    
+    setIsDragging(false);
+  };
+
   // News modal functions
   const openNewsModal = (newsItem) => {
     setSelectedNews(newsItem);
@@ -265,11 +333,12 @@ function Landing() {
               key={index}
               onClick={() => goToImage(index)}
               disabled={isImageAnimating}
-              className={`w-3 h-3 xl:w-4 xl:h-4 rounded-full transition-all duration-300 hover:scale-125 ${
+              className={`w-3 h-3 xl:w-4 xl:h-4 rounded-full transition-all duration-300 hover:scale-125 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 ${
                 index === currentImage
-                  ? 'bg-white shadow-lg scale-110'
+                  ? 'bg-[#4B663B] shadow-lg scale-110 ring-2 ring-[#4B663B] ring-opacity-50'
                   : 'bg-white bg-opacity-50 hover:bg-opacity-75'
-              } ${isImageAnimating ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+              } ${isImageAnimating ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+              aria-label={`Go to image ${index + 1}`}
             />
           ))}
         </div>
@@ -294,7 +363,17 @@ function Landing() {
           {/* News & Events Images Carousel */}
           <div className="mb-8 xl:mb-12">
             {/* Carousel Container */}
-            <div className="relative overflow-hidden w-full max-w-5xl mx-auto">
+            <div 
+              className="relative overflow-hidden w-full max-w-5xl mx-auto select-none"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+              onMouseDown={onMouseDown}
+              onMouseMove={onMouseMove}
+              onMouseUp={onMouseUp}
+              onMouseLeave={onMouseUp}
+              style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+            >
               <div 
                 className="flex transition-transform duration-500 ease-in-out"
                 style={{ 
@@ -310,7 +389,11 @@ function Landing() {
                     >
                       <div 
                         className="rounded-lg overflow-hidden shadow-xl h-40 md:h-48 xl:h-56 relative group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-                        onClick={() => openNewsModal(image)}
+                        onClick={(e) => {
+                          if (!isDragging) {
+                            openNewsModal(image);
+                          }
+                        }}
                       >
                         <img
                           src={image.src}
@@ -344,7 +427,7 @@ function Landing() {
                   disabled={isEmergencyAnimating}
                   className={`w-3 h-3 xl:w-4 xl:h-4 rounded-full transition-all duration-300 hover:scale-125 ${
                     index === currentEmergencyImage
-                      ? 'bg-gray-800 shadow-lg scale-110'
+                      ? 'bg-[#4B663B] shadow-lg scale-110'
                       : 'bg-gray-400 hover:bg-gray-600'
                   } ${isEmergencyAnimating ? 'cursor-not-allowed' : 'cursor-pointer'}`}
                 />
@@ -456,68 +539,69 @@ function Landing() {
         <section id="community-gallery" className="relative py-8 xl:py-12 px-4 overflow-hidden" style={{ backgroundColor: '#f8f9fa' }} data-aos="fade-up">
           <div className="max-w-6xl xl:max-w-7xl mx-auto relative z-10">
             
-            {/* Community Gallery */}
-            <div className="relative mb-8 xl:mb-10" data-aos="fade-up" data-aos-delay="200">
-              <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-5 xl:p-6 shadow-lg border border-white/20">
+            {/* About Us Section */}
+            <div className="relative mb-6 xl:mb-8" data-aos="fade-up" data-aos-delay="200">
+              <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-4 xl:p-6 shadow-lg border border-white/20">
+                {/* Main Title */}
                 <div className="text-center mb-6">
-                  <h3 className="text-xl xl:text-2xl font-bold text-black bg-clip-text mb-2">Our Community in Action</h3>
-                  <p className="text-gray-600 text-sm">Capturing moments that define our vibrant barangay</p>
+                  <h2 className="text-2xl xl:text-3xl font-bold text-black mb-4">ABOUT US</h2>
                 </div>
-                
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 xl:gap-4">
-                  <div className="group relative rounded-xl overflow-hidden h-24 xl:h-32 shadow-lg hover:shadow-2xl transition-all duration-500" data-aos="zoom-in" data-aos-delay="100">
-                    <img
-                      src="/assets/images/Flood.png"
-                      alt="Barangay Hall"
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end">
-                      <p className="text-white font-semibold p-2 text-xs transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">Barangay Hall</p>
-                    </div>
-                    <div className="absolute top-2 right-2 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <FaEye className="text-white text-xs" />
-                    </div>
-                  </div>
 
-                  <div className="group relative rounded-xl overflow-hidden h-24 xl:h-32 shadow-lg hover:shadow-2xl transition-all duration-500" data-aos="zoom-in" data-aos-delay="200">
-                    <img
-                      src="/assets/images/Flood.png"
-                      alt="Community Events"
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end">
-                      <p className="text-white font-semibold p-2 text-xs transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">Community Events</p>
-                    </div>
-                    <div className="absolute top-2 right-2 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <FaEye className="text-white text-xs" />
-                    </div>
-                  </div>
+                {/* Santa Monica Heading */}
+                <div className="mb-4">
+                  <h3 className="text-xl xl:text-2xl font-bold text-[#4B663B] mb-3">Santa Monica</h3>
+                  <p className="text-gray-700 text-sm xl:text-base leading-relaxed">
+                    <strong>Sta. Monica</strong> is a progressive barangay in Quezon City, known for its balance of residential comfort and urban accessibility. 
+                    The area features established neighborhoods, schools, local shops, and community facilities. Its strategic location provides easy access 
+                    to key areas of Quezon City, making it a practical and thriving community for families, professionals, and students.
+                  </p>
+                </div>
 
-                  <div className="group relative rounded-xl overflow-hidden h-24 xl:h-32 shadow-lg hover:shadow-2xl transition-all duration-500" data-aos="zoom-in" data-aos-delay="300">
-                    <img
-                      src="/assets/images/Flood.png"
-                      alt="Public Services"
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end">
-                      <p className="text-white font-semibold p-2 text-xs transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">Public Services</p>
+                {/* Information Box */}
+                <div className="bg-[#E8F5E8] rounded-xl p-4 xl:p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:gap-6">
+                    {/* Left Column - Demographic/Geographical Details */}
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-black text-sm">Region:</span>
+                        <span className="text-black text-sm">National Capital Region (NCR)</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-black text-sm">District:</span>
+                        <span className="text-black text-sm">5th District</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-black text-sm">Postal code:</span>
+                        <span className="text-black text-sm">1127</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-black text-sm">Coordinates:</span>
+                        <span className="text-black text-sm">14.7062° N, 121.0596° E</span>
+                      </div>
+                      <div className="flex justify-between items-start">
+                        <span className="font-bold text-black text-sm">Barangay Hall:</span>
+                        <span className="text-black text-sm text-right">Moises Street, Jordan Plains Subdivision</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-black text-sm">Punong Barangay:</span>
+                        <span className="text-black text-sm">Charles D. J. Manalad</span>
+                      </div>
                     </div>
-                    <div className="absolute top-2 right-2 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <FaEye className="text-white text-xs" />
-                    </div>
-                  </div>
 
-                  <div className="group relative rounded-xl overflow-hidden h-24 xl:h-32 shadow-lg hover:shadow-2xl transition-all duration-500" data-aos="zoom-in" data-aos-delay="400">
-                    <img
-                      src="/assets/images/Flood.png"
-                      alt="Local Celebrations"
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end">
-                      <p className="text-white font-semibold p-2 text-xs transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">Local Celebrations</p>
-                    </div>
-                    <div className="absolute top-2 right-2 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <FaEye className="text-white text-xs" />
+                    {/* Right Column - Population Statistics */}
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-black text-sm">Population:</span>
+                        <span className="text-black text-sm">51,785 residents</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-black text-sm">Households:</span>
+                        <span className="text-black text-sm">~12,500</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-black text-sm">Average Household Size:</span>
+                        <span className="text-black text-sm">4.2</span>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaFilter, FaSearch, FaChevronDown, FaTimes } from 'react-icons/fa';
+import { FaFilter, FaSearch, FaChevronDown, FaTimes, FaChartBar, FaClock, FaCheck, FaTimes as FaX } from 'react-icons/fa';
 import { ticketsData } from '../stores/TicketData';
 
 function Ticket() {
@@ -109,10 +109,33 @@ function Ticket() {
     // Get filtered tickets for display
     const filteredTickets = getFilteredTickets();
     
-    // Calculate statistics from original dataset (never changes)
+    // Calculate comprehensive statistics from original dataset (never changes)
     const totalTickets = tickets.length;
     const resolvedTickets = tickets.filter(ticket => ticket.status === 'Resolved').length;
     const pendingTickets = tickets.filter(ticket => ticket.status === 'Pending').length;
+    const rejectedTickets = 0; // No rejected status in current data
+    
+    // Calculate urgency level statistics
+    const urgencyStats = {
+        'Low': { 'Resolved': 0, 'Pending': 0 },
+        'Medium': { 'Resolved': 0, 'Pending': 0 },
+        'High': { 'Resolved': 0, 'Pending': 0 },
+        'Critical': { 'Resolved': 0, 'Pending': 0 }
+    };
+    
+    tickets.forEach(ticket => {
+        const level = ticket.priorityLevel.charAt(0);
+        let urgencyCategory = 'Low';
+        
+        if (level === 'D') urgencyCategory = 'Low';
+        else if (level === 'C') urgencyCategory = 'Medium'; 
+        else if (level === 'B') urgencyCategory = 'High';
+        else if (level === 'A') urgencyCategory = 'Critical';
+        
+        if (urgencyStats[urgencyCategory]) {
+            urgencyStats[urgencyCategory][ticket.status] = (urgencyStats[urgencyCategory][ticket.status] || 0) + 1;
+        }
+    });
     
     // Get current filtered results count for UI display
     const currentResultsCount = filteredTickets.length;
@@ -235,10 +258,13 @@ function Ticket() {
     };
 
     return (
-        <div className="p-3 bg-gray-50 min-h-screen">
+        <div className="p-3 bg-gray-0 min-h-100vh max-h-100vh overflow-y-auto m-20 mt-5">
             {/* Header */}
-            <div className="mb-4">
+            <div className="mb-4 flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-gray-800">Ticket</h1>
+                <button className="bg-[#4B663B] text-white px-4 py-2 rounded-lg hover:bg-[#3a5230] transition-colors flex items-center space-x-2">
+                    <span>File Ticket</span>
+                </button>
             </div>
 
             {/* Search/Filter Results Info */}
@@ -255,19 +281,170 @@ function Ticket() {
                 </div>
             )}
 
-            {/* Statistics Cards */}
-            <div className="grid grid-cols-3 gap-3 mb-4">
-                <div className="bg-white p-3 rounded-lg shadow-sm border">
-                    <div className="text-xs text-gray-600 mb-1">TICKETS</div>
-                    <div className="text-2xl font-bold text-gray-800">{totalTickets}</div>
+            {/* Enhanced Statistics Cards */}
+            <div className="grid grid-cols-4 gap-4 mb-6">
+                {/* Total Reports */}
+                <div className="bg-white text-gray-800 p-4 rounded-lg shadow-sm border relative overflow-hidden">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-sm text-gray-600 font-bold mb-2">Total reports</div>
+                            <div className="text-3xl font-bold text-gray-800">{totalTickets}</div>
+                            <div className="text-xs text-gray-500 mt-1">All incidents you've submitted</div>
+                        </div>
+                        <div className="text-[#4B663B]">
+                            <FaChartBar className="w-8 h-8" />
+                        </div>
+                    </div>
                 </div>
-                <div className="bg-white p-3 rounded-lg shadow-sm border">
-                    <div className="text-xs text-gray-600 mb-1">RESOLVE</div>
-                    <div className="text-2xl font-bold text-gray-800">{resolvedTickets}</div>
+
+                {/* Pending Review */}
+                <div className="bg-white text-gray-800 p-4 rounded-lg shadow-sm border relative overflow-hidden">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-sm text-gray-600 font-bold mb-2">Pending Review</div>
+                            <div className="text-3xl font-bold text-gray-800">{pendingTickets}</div>
+                            <div className="text-xs text-gray-500 mt-1">Reports awaiting confirmation</div>
+                        </div>
+                        <div className="text-yellow-500">
+                            <FaClock className="w-8 h-8" />
+                        </div>
+                    </div>
                 </div>
-                <div className="bg-white p-3 rounded-lg shadow-sm border">
-                    <div className="text-xs text-gray-600 mb-1">PENDING</div>
-                    <div className="text-2xl font-bold text-gray-800">{pendingTickets}</div>
+
+                {/* Confirmed Reports */}
+                <div className="bg-white text-gray-800 p-4 rounded-lg shadow-sm border relative overflow-hidden">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-sm text-gray-600 font-bold mb-2 ">Confirmed Reports</div>
+                            <div className="text-3xl font-bold text-gray-800">{resolvedTickets}</div>
+                            <div className="text-xs text-gray-500 mt-1">Incidents validated by officials</div>
+                        </div>
+                        <div className="text-[#4B663B]">
+                            <FaCheck className="w-8 h-8" />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Rejected Reports */}
+                <div className="bg-white text-gray-800 p-4 rounded-lg shadow-sm border relative overflow-hidden">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-sm text-gray-600 font-bold mb-2">Rejected Reports</div>
+                            <div className="text-3xl font-bold text-gray-800">{rejectedTickets}</div>
+                            <div className="text-xs text-gray-500 mt-1">Reports marked as invalid</div>
+                        </div>
+                        <div className="text-red-500">
+                            <FaX className="w-8 h-8" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Charts Section */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+                {/* Urgency vs. Outcome Chart */}
+                <div className="bg-white p-4 rounded-lg shadow-sm border">
+                    <h3 className="text-base font-semibold text-gray-800 mb-3 text-center">Urgency vs. Outcome</h3>
+                    <div className="relative flex items-center">
+                        {/* Y-axis label - positioned completely outside */}
+                        <div className="flex items-center justify-center h-40 w-8">
+                            <span className="text-xs font-medium text-gray-600 transform -rotate-90 whitespace-nowrap">Outcome</span>
+                        </div>
+                        
+                        {/* Chart Container */}
+                        <div className="flex-1">
+                            <div className="flex items-end justify-between h-40 px-3 py-3 border border-gray-200 bg-gray-50 relative">
+                                {/* Y-axis grid lines and labels */}
+                                <div className="absolute left-0 top-0 h-full w-full">
+                                    {[0, 5, 10, 15, 20].map((value) => (
+                                        <div key={value} className="absolute w-full flex items-center" style={{ bottom: `${(value / 20) * 100}%` }}>
+                                            <span className="text-xs text-gray-500 w-6 text-right mr-1">{value}</span>
+                                            <div className="flex-1 border-t border-gray-300 opacity-50"></div>
+                                        </div>
+                                    ))}
+                                </div>
+                                
+                                {/* Bars */}
+                                {Object.entries(urgencyStats).map(([urgency, outcomes]) => {
+                                    const total = outcomes.Resolved + outcomes.Pending;
+                                    const maxValue = Math.max(...Object.values(urgencyStats).map(stat => stat.Resolved + stat.Pending), 20);
+                                    const barHeight = (total / 20) * 100;
+                                    
+                                    return (
+                                        <div key={urgency} className="flex flex-col items-center flex-1 mx-1 relative z-10">
+                                            {/* Bar */}
+                                            <div 
+                                                className="bg-[#4B663B] w-8 rounded-t-sm transition-all duration-700 ease-out shadow-sm"
+                                                style={{ height: `${barHeight}%`, minHeight: total > 0 ? '6px' : '0px' }}
+                                            ></div>
+                                            {/* Value label on top of bar */}
+                                            {total > 0 && (
+                                                <div className="absolute -top-5 text-xs font-medium text-gray-700">
+                                                    {total}
+                                                </div>
+                                            )}
+                                            {/* X-axis label */}
+                                            <div className="mt-1 text-xs font-medium text-gray-700 text-center">
+                                                {urgency}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            
+                            {/* X-axis label */}
+                            <div className="text-center mt-1">
+                                <span className="text-xs font-medium text-gray-600">Urgency</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Report by Status Pie Chart */}
+                <div className="bg-white p-4 rounded-lg shadow-sm border">
+                    <h3 className="text-base font-semibold text-gray-800 mb-3">Report By Status</h3>
+                    <div className="flex flex-col items-center">
+                        {/* CSS Pie Chart */}
+                        <div className="relative w-32 h-32 rounded-full mb-3" style={{
+                            background: `conic-gradient(
+                                #4B663B 0deg ${(resolvedTickets / totalTickets) * 360}deg,
+                                #F3A811FF ${(resolvedTickets / totalTickets) * 360}deg ${((resolvedTickets + pendingTickets) / totalTickets) * 360}deg,
+                                #dc2626 ${((resolvedTickets + pendingTickets) / totalTickets) * 360}deg 360deg
+                            )`
+                        }}>
+                            <div className="absolute inset-3 bg-white rounded-full flex items-center justify-center">
+                                <div className="text-center">
+                                    <div className="text-lg font-bold text-gray-800">{totalTickets}</div>
+                                    <div className="text-xs text-gray-600">Total</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Legend */}
+                        <div className="space-y-1 text-xs">
+                            <div className="flex items-center justify-between w-full">
+                                <div className="flex items-center">
+                                    <div className="w-2 h-2 bg-[#4B663B] rounded mr-2"></div>
+                                    <span>Confirmed</span>
+                                </div>
+                                <span className="font-semibold ml-3">{((resolvedTickets / totalTickets) * 100).toFixed(1)}%</span>
+                            </div>
+                            <div className="flex items-center justify-between w-full">
+                                <div className="flex items-center">
+                                    <div className="w-2 h-2 bg-[#F3A811FF] rounded mr-2"></div>
+                                    <span>Pending</span>
+                                </div>
+                                <span className="font-semibold">{((pendingTickets / totalTickets) * 100).toFixed(1)}%</span>
+                            </div>
+                            <div className="flex items-center justify-between w-full">
+                                <div className="flex items-center">
+                                    <div className="w-2 h-2 bg-red-600 rounded mr-2"></div>
+                                    <span>Rejected</span>
+                                </div>
+                                <span className="font-semibold">{((rejectedTickets / totalTickets) * 100).toFixed(1)}%</span>
+                            </div>
+                </div>
+                </div>
                 </div>
             </div>
 
@@ -521,6 +698,7 @@ function Ticket() {
                     </table>
                 </div>
             </div>
+
         </div>
     );
 }

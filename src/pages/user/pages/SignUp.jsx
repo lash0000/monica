@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import LoginLink from "../components/LoginLink";
-import Stamonicabg from "../components/stamonicabg";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -23,15 +22,12 @@ function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Background Image */}
-      <Stamonicabg />
-      
-      {/* Right Side - SignUp Form */}
-      <div className="w-full lg:w-1/2 bg-[#ffffff] flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#ffffff]">
+      {/* Centered SignUp Form */}
+      <div className="w-full max-w-md p-4">
         
         {/* SignUp Card */}
-        <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl border-1 border-[#4B663B]">
+        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-[#4B663B]">
         {/* SignUp Title */}
         <h2 className="text-2xl font-serif text-[#556B2F] mb-2 text-center font-bold">
           Create Account

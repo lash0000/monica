@@ -86,17 +86,12 @@ function OTPVerification() {
   }, [timer]);
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Background Image */}
-      <div className="hidden lg:flex lg:w-1/2 bg-cover bg-center bg-no-repeat rounded-r-3xl" 
-           style={{backgroundImage: 'url(/public/assets/images/stamonica_bg.jpg)'}}>
-      </div>
-      
-      {/* Right Side - OTP Verification Form */}
-      <div className="w-full lg:w-1/2 bg-[#ffffff] flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#ffffff]">
+      {/* Centered OTP Verification Form */}
+      <div className="w-full max-w-md p-4">
         
         {/* OTP Verification Card */}
-        <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl border-1 border-[#4B663B]">
+        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-[#4B663B]">
           
           {/* Header */}
           <h2 className="text-2xl font-serif text-[#4B663B] mb-2 text-center font-bold">

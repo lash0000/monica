@@ -14,19 +14,12 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
-      
-      {/* Password*/}
-      <div 
-        className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl"
-        style={{ borderColor: PRIMARY_COLOR, borderWidth: '1px' }}
-      >
+    <div className="min-h-screen flex items-center justify-center bg-[#ffffff]">
+      <div className="w-full max-w-md p-4">
+        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-[#4B663B]">
         
         {/* Header */}
-        <h2 
-          className="text-3xl font-serif mb-6 text-center font-bold"
-          style={{ color: PRIMARY_COLOR }}
-        >
+        <h2 className="text-3xl font-serif text-[#4B663B] mb-6 text-center font-bold">
           Change Password
         </h2>
         
@@ -85,7 +78,7 @@ const ChangePassword = () => {
             </button>
           </div>
         </form>
-        
+        </div>
       </div>
     </div>
   )

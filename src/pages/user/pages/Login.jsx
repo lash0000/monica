@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import SignUpLink from "../components/SignUpLink";
-import Stamonicabg from "../components/stamonicabg";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,15 +12,12 @@ function Login() {
   }, []);
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Background Image */}
-      <Stamonicabg />
-      
-      {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 bg-[#ffffff] flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#ffffff]">
+      {/* Centered Login Form */}
+      <div className="w-full max-w-md p-4">
         
         {/* Login Card */}
-        <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl border-1 border-[#4B663B]" >
+        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-[#4B663B]" >
         {/* Login Title */}
         <h2 className="text-3xl font-serif text-[#4B663B] mb-6 text-center font-bold">
           Login
@@ -75,14 +71,14 @@ function Login() {
               />
               <span className="text-black">Remember Me</span>
             </label>
-            <Link to="/forgotpassword" className="text-blue-600 hover:text-blue-800">
+            <Link to="/forgot-password" className="text-blue-600 hover:text-blue-800">
               Forgot Password?
             </Link>
           </div>
           
           {/* Login Button */}
           <Link 
-            to="/Dashboard" 
+            to="/ticket" 
             
           >
           <button

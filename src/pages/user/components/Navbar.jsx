@@ -22,8 +22,7 @@ export function Navbar_Public() {
             <Link to="/" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Home</Link>
             <Link to="/about" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">About</Link>
             <Link to="/services" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Services</Link>
-            <Link to="/emergency-hotlines" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Emergency</Link>
-            <Link to="/contact" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Contact</Link>
+            <Link to="/emergency-hotlines" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl">Contact</Link>
             <Link to="/login" className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl mr-5 font-bold bg-white/20 px-4 py-2 rounded-md hover:bg-white/30">Login</Link>
 
           </div>
@@ -61,35 +60,13 @@ export function Footer() {
   };
 
   return (
-    <footer className="text-white p-6 lg:p-8 xl:p-12 border-t-1 border-[#C4C4C4]" style={{ backgroundColor: '#4B663B' }}>
-      <div className="max-w-7xl lg:max-w-[1200px] xl:max-w-[1600px] 2xl:max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 lg:gap-8 xl:gap-12">
-        {/* Get Started */}
-        <div>
-          <h3 className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold mb-3 lg:mb-4">Get Started</h3>
-          <ul className="space-y-2 lg:space-y-3 text-xs lg:text-sm xl:text-base">
-            <li>
-              <Link 
-                to="/login" 
-                className="text-white hover:text-gray-200 transition-colors"
-              >
-                Login to Your Account
-              </Link>
-            </li>
-            <li>
-              <Link 
-                to="/SignUp" 
-                className="text-white hover:text-gray-200 transition-colors"
-              >
-                Create New Account
-              </Link>
-            </li>
-          </ul>
-        </div>
-
+    <footer className="text-white py-16 xl:py-20 px-6 xl:px-8 bg-[#4B663B]" >
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 xl:gap-16">
+       
         {/* Services */}
-        <div>
-          <h3 className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold mb-3 lg:mb-4">Services</h3>
-          <ul className="space-y-2 lg:space-y-3 text-xs lg:text-sm xl:text-base">
+        <div className=" ml-20">
+          <h3 className="text-xl xl:text-2xl font-bold mb-4 text-white ">Services</h3>
+          <ul className="space-y-3 text-sm xl:text-base">
             <li>
               <a href="#" className="text-white hover:text-gray-200 transition-colors">
                 Barangay Clearance
@@ -112,7 +89,7 @@ export function Footer() {
             </li>
             <li>
               <a href="#" className="text-white hover:text-gray-200 transition-colors">
-                Residency Certificate
+                Resident Certificate
               </a>
             </li>
             <li>
@@ -124,37 +101,37 @@ export function Footer() {
         </div>
 
         {/* Quick Links */}
-        <div>
-          <h3 className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold mb-3 lg:mb-4">Quick Links</h3>
-          <ul className="space-y-2 lg:space-y-3 text-xs lg:text-sm xl:text-base">
+        <div className="text-left ml-20">
+          <h3 className="text-xl xl:text-2xl font-bold mb-4 text-white">Quick Links</h3>
+          <ul className="space-y-3 text-sm xl:text-base">
             <li>
               <button
                 onClick={() => scrollToSection('incident-report')}
-                className="text-white hover:text-gray-200 transition-colors text-left cursor-pointer"
+                className="text-white hover:text-gray-200 transition-colors cursor-pointer"
               >
-                Report Incident
+                Dashboard
               </button>
             </li>
             <li>
               <button
                 onClick={() => scrollToSection('announcements')}
-                className="text-white hover:text-gray-200 transition-colors text-left cursor-pointer"
+                className="text-white hover:text-gray-200 transition-colors cursor-pointer"
               >
-                Announcements
+                Announcement
               </button>
             </li>
             <li>
               <button
                 onClick={() => scrollToSection('about-barangay')}
-                className="text-white hover:text-gray-200 transition-colors text-left cursor-pointer"
+                className="text-white hover:text-gray-200 transition-colors cursor-pointer"
               >
-                About Us
+                About us
               </button>
             </li>
             <li>
               <button
                 onClick={() => scrollToSection('barangay-officials')}
-                className="text-white hover:text-gray-200 transition-colors text-left cursor-pointer"
+                className="text-white hover:text-gray-200 transition-colors cursor-pointer"
               >
                 Officials
               </button>
@@ -162,9 +139,9 @@ export function Footer() {
             <li>
               <button
                 onClick={() => scrollToSection('contact-us')}
-                className="text-white hover:text-gray-200 transition-colors text-left cursor-pointer"
+                className="text-white hover:text-gray-200 transition-colors cursor-pointer"
               >
-                Contact Us
+                Contact us
               </button>
             </li>
             <li>
@@ -179,19 +156,19 @@ export function Footer() {
         </div>
 
         {/* Contacts */}
-        <div>
-          <h3 className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold mb-3 lg:mb-4">Contacts</h3>
-          <ul className="space-y-2 lg:space-y-3">
+        <div className="ml-10">
+          <h3 className="text-xl xl:text-2xl font-bold mb-4 text-white">Contacts</h3>
+          <ul className="space-y-3">
             <li>
-              <a href="mailto:stamonica@gmail.com" className="text-white hover:text-gray-200 text-xs lg:text-sm xl:text-base transition-colors flex items-center gap-2">
-                <MdEmail size={14} />
+              <a href="mailto:stamonica@gmail.com" className="text-white hover:text-gray-200 text-sm xl:text-base transition-colors flex items-center gap-2">
+                <MdEmail size={16} />
                 <span>stamonica@gmail.com</span>
               </a>
             </li>
             <li>
-              <a href="tel:+18267464596" className="text-white hover:text-gray-200 text-xs lg:text-sm xl:text-base transition-colors flex items-center gap-2">
-                <BiSolidContact size={14} />
-                <span>+1 8267464596</span>
+              <a href="tel:+16267464596" className="text-white hover:text-gray-200 text-sm xl:text-base transition-colors flex items-center gap-2">
+                <BiSolidContact size={16} />
+                <span>+1 6267464596</span>
               </a>
             </li>
           </ul>
@@ -199,8 +176,8 @@ export function Footer() {
       </div>
 
       {/* Copyright */}
-      <div className="max-w-7xl lg:max-w-[1200px] xl:max-w-[1600px] 2xl:max-w-[1800px] mx-auto border-t-2 border-white mt-6 lg:mt-8 pt-6 lg:pt-8 text-center">
-        <p className="text-sm lg:text-base xl:text-lg">© 2025 Barangay Santa Monica. All rights reserved.</p>
+      <div className="max-w-7xl mx-auto border-t border-white mt-12 xl:mt-16 pt-6 xl:pt-8 text-center">
+        <p className="text-sm xl:text-base text-white">© 2025 Incident Reporting System. All rights reserved.</p>
       </div>
     </footer>
   )

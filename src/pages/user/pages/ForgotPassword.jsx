@@ -1,13 +1,14 @@
 function ForgotPassword() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <form className="bg-[#4B663B] p-20 rounded-4xl shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-white">
-          Personal Information
+    <div className="min-h-screen flex items-center justify-center bg-[#ffffff]">
+      <div className="w-full max-w-md p-4">
+        <form className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-[#4B663B]">
+        <h2 className="text-2xl font-serif text-[#4B663B] mb-6 text-center font-bold">
+          Forgot Password
         </h2>
 
         <div className="mb-4">
-          <label className="font-bold block text-white mb-1">Fullname</label>
+          <label className="font-bold block text-black mb-2">Fullname</label>
           <input
             type="text"
             className="bg-white w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
@@ -16,7 +17,7 @@ function ForgotPassword() {
         </div>
 
         <div className="mb-4">
-          <label className="font-bold block text-white mb-1">ID Number</label>
+          <label className="font-bold block text-black mb-2">ID Number</label>
           <input
             type="text"
             className="bg-white w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
@@ -25,7 +26,7 @@ function ForgotPassword() {
         </div>
 
         <div className="mb-4">
-          <label className="font-bold block text-white mb-1">Mobile Number</label>
+          <label className="font-bold block text-black mb-2">Mobile Number</label>
           <input
             type="tel"
             className="bg-white w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
@@ -34,7 +35,7 @@ function ForgotPassword() {
         </div>
 
         <div className="mb-4">
-          <label className="font-bold block text-white mb-1">Verification Code</label>
+          <label className="font-bold block text-black mb-2">Verification Code</label>
           <div className="flex gap-2">
             <input
               type="text"
@@ -52,11 +53,12 @@ function ForgotPassword() {
 
         <button
           type="submit"
-          className="w-full py-2 bg-white text-[#4B663B] font-semibold rounded-md"
+          className="w-full py-2 bg-[#4B663B] text-white font-semibold rounded-lg hover:bg-[#3a5230] transition-colors"
         >
           Submit
         </button>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
