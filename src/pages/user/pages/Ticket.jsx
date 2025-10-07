@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { FaFilter, FaSearch, FaChevronDown, FaTimes, FaChartBar, FaClock, FaCheck, FaTimes as FaX } from 'react-icons/fa';
 import { ticketsData } from '../stores/TicketData';
 
@@ -258,14 +259,7 @@ function Ticket() {
     };
 
     return (
-        <div className="p-3 bg-gray-0 min-h-100vh max-h-100vh overflow-y-auto m-20 mt-5">
-            {/* Header */}
-            <div className="mb-4 flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-gray-800">Ticket</h1>
-                <button className="bg-[#4B663B] text-white px-4 py-2 rounded-lg hover:bg-[#3a5230] transition-colors flex items-center space-x-2">
-                    <span>File Ticket</span>
-                </button>
-            </div>
+        <div className="bg-gray min-h-screen overflow-y-auto mt-15 px-4 sm:px-6">
 
             {/* Search/Filter Results Info */}
             {(searchTerm || Object.values(filters).some(value => value !== 'All')) && (
@@ -282,7 +276,7 @@ function Ticket() {
             )}
 
             {/* Enhanced Statistics Cards */}
-            <div className="grid grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 {/* Total Reports */}
                 <div className="bg-white text-gray-800 p-4 rounded-lg shadow-sm border relative overflow-hidden">
                     <div className="flex items-center justify-between">
@@ -341,19 +335,19 @@ function Ticket() {
             </div>
 
             {/* Charts Section */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
                 {/* Urgency vs. Outcome Chart */}
                 <div className="bg-white p-4 rounded-lg shadow-sm border">
                     <h3 className="text-base font-semibold text-gray-800 mb-3 text-center">Urgency vs. Outcome</h3>
                     <div className="relative flex items-center">
                         {/* Y-axis label - positioned completely outside */}
-                        <div className="flex items-center justify-center h-40 w-8">
+                        <div className="flex items-center justify-center h-32 sm:h-40 w-6 sm:w-8">
                             <span className="text-xs font-medium text-gray-600 transform -rotate-90 whitespace-nowrap">Outcome</span>
                         </div>
                         
                         {/* Chart Container */}
                         <div className="flex-1">
-                            <div className="flex items-end justify-between h-40 px-3 py-3 border border-gray-200 bg-gray-50 relative">
+                            <div className="flex items-end justify-between h-32 sm:h-40 px-2 sm:px-3 py-3 border border-gray-200 bg-gray-50 relative">
                                 {/* Y-axis grid lines and labels */}
                                 <div className="absolute left-0 top-0 h-full w-full">
                                     {[0, 5, 10, 15, 20].map((value) => (
@@ -371,10 +365,10 @@ function Ticket() {
                                     const barHeight = (total / 20) * 100;
                                     
                                     return (
-                                        <div key={urgency} className="flex flex-col items-center flex-1 mx-1 relative z-10">
+                                        <div key={urgency} className="flex flex-col items-center flex-1 mx-0.5 sm:mx-1 relative z-10">
                                             {/* Bar */}
                                             <div 
-                                                className="bg-[#4B663B] w-8 rounded-t-sm transition-all duration-700 ease-out shadow-sm"
+                                                className="bg-[#4B663B] w-6 sm:w-8 rounded-t-sm transition-all duration-700 ease-out shadow-sm"
                                                 style={{ height: `${barHeight}%`, minHeight: total > 0 ? '6px' : '0px' }}
                                             ></div>
                                             {/* Value label on top of bar */}
@@ -405,16 +399,16 @@ function Ticket() {
                     <h3 className="text-base font-semibold text-gray-800 mb-3">Report By Status</h3>
                     <div className="flex flex-col items-center">
                         {/* CSS Pie Chart */}
-                        <div className="relative w-32 h-32 rounded-full mb-3" style={{
+                        <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full mb-3" style={{
                             background: `conic-gradient(
                                 #4B663B 0deg ${(resolvedTickets / totalTickets) * 360}deg,
                                 #F3A811FF ${(resolvedTickets / totalTickets) * 360}deg ${((resolvedTickets + pendingTickets) / totalTickets) * 360}deg,
                                 #dc2626 ${((resolvedTickets + pendingTickets) / totalTickets) * 360}deg 360deg
                             )`
                         }}>
-                            <div className="absolute inset-3 bg-white rounded-full flex items-center justify-center">
+                            <div className="absolute inset-2 sm:inset-3 bg-white rounded-full flex items-center justify-center">
                                 <div className="text-center">
-                                    <div className="text-lg font-bold text-gray-800">{totalTickets}</div>
+                                    <div className="text-sm sm:text-lg font-bold text-gray-800">{totalTickets}</div>
                                     <div className="text-xs text-gray-600">Total</div>
                                 </div>
                             </div>
@@ -450,7 +444,7 @@ function Ticket() {
 
             {/* Filter and Search */}
             <div className="bg-white rounded-lg shadow-sm border">
-                <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                <div className="p-4 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div className="flex items-center space-x-4">
                         <div className="relative" ref={filterDropdownRef}>
                             <button 
@@ -564,14 +558,14 @@ function Ticket() {
                             )}
                         </div>
                     </div>
-                    <div className="relative">
+                    <div className="relative w-full sm:w-auto">
                         <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                             <FaSearch className="text-gray-400" size={16} />
                         </div>
                         <input
                             type="text"
                             placeholder="Search incident, title, date, status, coordinates ..."
-                            className="pl-10 pr-10 py-2 w-80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="pl-10 pr-10 py-2 w-full sm:w-80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -587,7 +581,7 @@ function Ticket() {
                 </div>
 
                 {/* Table Header with Results Count */}
-                <div className="px-4 py-2 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+                <div className="px-4 py-2 bg-gray-50 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div className="text-sm text-gray-600">
                         Showing <span className="font-medium">{currentResultsCount}</span> of <span className="font-medium">{totalTickets}</span> tickets
                     </div>
@@ -627,11 +621,11 @@ function Ticket() {
                                 >
                                     Priority/Urgency {getSortIcon('priority')}
                                 </th>
-                                <th className="p-2 text-left font-medium text-gray-700 text-sm">Category</th>
-                                <th className="p-2 text-left font-medium text-gray-700 text-sm">Reported by</th>
+                                <th className="p-2 text-left font-medium text-gray-700 text-sm hidden md:table-cell">Category</th>
+                                <th className="p-2 text-left font-medium text-gray-700 text-sm hidden lg:table-cell">Reported by</th>
                                 <th className="p-2 text-left font-medium text-gray-700 text-sm">Status</th>
                                 <th 
-                                    className="p-2 text-left font-medium text-gray-700 text-sm cursor-pointer hover:bg-gray-100 select-none"
+                                    className="p-2 text-left font-medium text-gray-700 text-sm cursor-pointer hover:bg-gray-100 select-none hidden sm:table-cell"
                                     onClick={() => handleSort('requestDate')}
                                 >
                                     Request Date {getSortIcon('requestDate')}
@@ -683,14 +677,14 @@ function Ticket() {
                                             </span>
                                         </div>
                                     </td>
-                                    <td className="p-2 text-gray-700 text-sm">{ticket.category}</td>
-                                    <td className="p-2 text-gray-700 text-sm">{ticket.reportedBy}</td>
+                                    <td className="p-2 text-gray-700 text-sm hidden md:table-cell">{ticket.category}</td>
+                                    <td className="p-2 text-gray-700 text-sm hidden lg:table-cell">{ticket.reportedBy}</td>
                                     <td className="p-2">
                                         <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeColor(ticket.status)}`}>
                                             {ticket.status}
                                         </span>
                                     </td>
-                                    <td className="p-2 text-gray-700 text-xs">{ticket.requestDate}</td>
+                                    <td className="p-2 text-gray-700 text-xs hidden sm:table-cell">{ticket.requestDate}</td>
                                 </tr>
                                 ))
                             )}

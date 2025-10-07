@@ -2,6 +2,7 @@ import React from 'react'
 import { Route } from 'react-router-dom';
 import Landing from '../pages/Landing';
 import Public_Layout from '../layouts/Public';
+import Authenticated_Layout from '../layouts/Authenticated';
 import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
 import PersonalInfo from '../pages/PersonalInfo';
@@ -15,6 +16,7 @@ import EmergencyHotlines from '../pages/EmergencyHotlines';
 import FileTicket from '../pages/FileTicket';
 
 const LandingRoutes = () => [
+  // Public Routes
   <Route path="/" element={<Public_Layout />}>
     <Route index element={<Landingv2 />} />
     <Route path="/emergency-hotlines" element={<EmergencyHotlines />} />
@@ -23,10 +25,14 @@ const LandingRoutes = () => [
     <Route path="/forgot-password" element={<ForgotPassword />} />
     <Route path="/personal-info" element={<PersonalInfo/>} />
     <Route path="/otp-verification" element={<OTPVerification />} />
+  </Route>,
+  
+  // Authenticated Routes
+  <Route path="/" element={<Authenticated_Layout />}>
     <Route path="/dashboard" element={<Dashboard/>} />
     <Route path="/ticket" element={<Ticket />} />
-    <Route path="/new-page" element={<NewPage/>} />
     <Route path="/file-ticket" element={<FileTicket/>} />
+    <Route path="/e-application" element={<NewPage/>} />
   </Route>,
 ]
 
