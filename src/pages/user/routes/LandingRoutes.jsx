@@ -12,6 +12,7 @@ import Dashboard from '../pages/Dashboard';
 import Ticket from '../pages/Ticket';
 import Landingv2 from '../pages/LandingV2';
 import EmergencyHotlines from '../pages/EmergencyHotlines';
+import FileTicket from '../pages/FileTicket';
 
 const LandingRoutes = () => [
   <Route path="/" element={<Public_Layout />}>
@@ -25,6 +26,7 @@ const LandingRoutes = () => [
     <Route path="/dashboard" element={<Dashboard/>} />
     <Route path="/ticket" element={<Ticket />} />
     <Route path="/new-page" element={<NewPage/>} />
+    <Route path="/file-ticket" element={<FileTicket/>} />
   </Route>,
 ]
 
