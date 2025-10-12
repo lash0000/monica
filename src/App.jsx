@@ -4,14 +4,14 @@ import LandingRoutes from './pages/user/routes/LandingRoutes';
 import AdminRoutes from './pages/admin/routes/AdminRoutes';
 
 const pageTitles = {
-  "/": "Santa Monica | Umaagos ang Pag Asa",
+  "/": "Kasama mo sa Pag-unlad! - Barangay Santa Monica mula Quezon City",
 };
 
 function TitleUpdater() {
   const location = useLocation();
 
   useEffect(() => {
-    document.title = pageTitles[location.pathname] || "Barangay Santa Monica | Umaagos ang Pag Asa";
+    document.title = pageTitles[location.pathname] || "Kasama mo sa Pag-unlad! - Barangay Santa Monica mula Quezon Cit";
   }, [location.pathname]);
 
   return null;
