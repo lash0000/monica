@@ -24,7 +24,7 @@ const LandingRoutes = () => [
   // User Credentials
   <Route path="/login" element={<Login />} />,
   <Route path="/signup" element={<SignUp />} />,
-  <Route path="/forgot-password" element={<ForgotPassword />} />,
+  <Route path="/forgotpassword" element={<ForgotPassword />} />,
   <Route path="/personal-info" element={<PersonalInfo />} />,
   <Route path="/otp-verification" element={<OTPVerification />} />,
 
