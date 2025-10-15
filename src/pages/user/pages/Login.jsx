@@ -71,7 +71,7 @@ function Login() {
                 />
                 <span className="text-black">Remember Me</span>
               </label>
-              <Link to="/forgot-password" className="text-blue-600 hover:text-blue-800">
+              <Link to="/forgotpassword" className="text-blue-600 hover:text-blue-800">
                 Forgot Password?
               </Link>
             </div>

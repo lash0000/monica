@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import Stamonicabg from "../components/stamonicabg";
 
 function ForgotPassword() {
   // Scroll to top when component mounts
@@ -9,18 +8,15 @@ function ForgotPassword() {
   }, []);
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Background Image */}
-      <Stamonicabg />
-
-      {/* Right Side - Forgot Password Form */}
-      <div className="w-full lg:w-1/2 bg-[#ffffff] flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#ffffff]">
+      {/* Centered Forgot Password Form */}
+      <div className="w-full max-w-md p-4">
         
         {/* Forgot Password Card */}
-        <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl border-1 border-[#4B663B]">
+        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border hover:border-[#4B663B] transition-colors">
           
           {/* Title */}
-          <h2 className="text-3xl font-serif text-[#4B663B] mb-6 text-center font-bold">
+          <h2 className="text-3xl tracking-tighter text-[#4B663B] mb-6 text-center font-bold">
             Personal Information
           </h2>
 
@@ -92,15 +88,21 @@ function ForgotPassword() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-[#556B2F] text-white py-2 rounded-lg font-semibold 
-                         hover:bg-[#6B8E23] transition-colors duration-200"
+              className="w-full bg-[#556B2F] text-white py-2 rounded-lg font-semibold hover:bg-[#6B8E23] transition-colors duration-200"
             >
               Submit
             </button>
           </form>
 
+          {/* OR Divider */}
+          <div className="flex items-center my-4">
+            <div className="flex-1 border-t border-gray-300"></div>
+            <span className="px-4 text-gray-500">OR</span>
+            <div className="flex-1 border-t border-gray-300"></div>
+          </div>
+
           {/* Back to Login */}
-          <div className="mt-6 text-center">
+          <div className="text-center">
             <span className="text-gray-600">Remembered your password? </span>
             <Link to="/login" className="text-blue-600 hover:text-blue-800 font-semibold">
               Back to Login
