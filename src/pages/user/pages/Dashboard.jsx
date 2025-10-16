@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 function Dashboard() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [activeTooltip, setActiveTooltip] = useState(null);
     const [formData, setFormData] = useState({
         subject: '',
         category: 'Healthcare',
@@ -10,16 +11,16 @@ function Dashboard() {
     });
 
     const dashboardStats = [
-        { label: 'Resolved', count: 1 },
-        { label: 'Pending', count: 1 },
-        { label: 'Archived', count: 3 }
+        { label: 'Resolved', count: 1, info: 'Tickets that have been successfully resolved and closed' },
+        { label: 'Pending', count: 1, info: 'Tickets that are currently being reviewed and awaiting action' },
+        { label: 'Archived', count: 3, info: 'Tickets that have been archived for record keeping' }
     ];
 
     const blotterStats = [
-        { label: 'Resolved', count: 0 },
-        { label: 'Unresolved', count: 1 },
-        { label: 'Pending', count: 1 },
-        { label: 'Archived', count: 2 }
+        { label: 'Resolved', count: 0, info: 'Blotter reports that have been resolved' },
+        { label: 'Unresolved', count: 1, info: 'Blotter reports that are still pending resolution' },
+        { label: 'Pending', count: 1, info: 'Blotter reports currently under review' },
+        { label: 'Archived', count: 2, info: 'Blotter reports that have been archived' }
     ];
 
     const handleFileChange = (e) => {
@@ -44,6 +45,7 @@ function Dashboard() {
         }
         console.log('Form submitted:', formData);
         setIsPopupOpen(false);
+        // Reset form
         setFormData({
             subject: '',
             category: 'Healthcare',
@@ -71,7 +73,7 @@ function Dashboard() {
                             <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
                             <p className="text-gray-500">Status overview of your ticket activities</p>
                         </div>
-                        <button
+                        <button 
                             onClick={() => setIsPopupOpen(true)}
                             className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
                         >
@@ -88,9 +90,22 @@ function Dashboard() {
                             <div key={index} className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
                                 <div className="flex items-center justify-between mb-4">
                                     <span className="text-gray-700 font-medium">{stat.label}</span>
-                                    <button className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                                        <span className="text-gray-400 text-sm">?</span>
-                                    </button>
+                                    <div className="relative">
+                                        <button 
+                                            onClick={() => setActiveTooltip(activeTooltip === `dashboard-${index}` ? null : `dashboard-${index}`)}
+                                            onMouseEnter={() => setActiveTooltip(`dashboard-${index}`)}
+                                            onMouseLeave={() => setActiveTooltip(null)}
+                                            className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                                        >
+                                            <span className="text-gray-400 text-sm">?</span>
+                                        </button>
+                                        {activeTooltip === `dashboard-${index}` && (
+                                            <div className="absolute right-0 top-8 w-48 bg-gray-900 text-white text-xs rounded-lg p-2 shadow-lg z-10">
+                                                {stat.info}
+                                                <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="text-5xl font-bold text-gray-900">{stat.count}</div>
                             </div>
@@ -109,9 +124,22 @@ function Dashboard() {
                             <div key={index} className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
                                 <div className="flex items-center justify-between mb-4">
                                     <span className="text-gray-700 font-medium">{stat.label}</span>
-                                    <button className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                                        <span className="text-gray-400 text-sm">?</span>
-                                    </button>
+                                    <div className="relative">
+                                        <button 
+                                            onClick={() => setActiveTooltip(activeTooltip === `blotter-${index}` ? null : `blotter-${index}`)}
+                                            onMouseEnter={() => setActiveTooltip(`blotter-${index}`)}
+                                            onMouseLeave={() => setActiveTooltip(null)}
+                                            className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                                        >
+                                            <span className="text-gray-400 text-sm">?</span>
+                                        </button>
+                                        {activeTooltip === `blotter-${index}` && (
+                                            <div className="absolute right-0 top-8 w-48 bg-gray-900 text-white text-xs rounded-lg p-2 shadow-lg z-10">
+                                                {stat.info}
+                                                <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="text-5xl font-bold text-gray-900">{stat.count}</div>
                             </div>
@@ -122,8 +150,11 @@ function Dashboard() {
 
             {/* Popup Modal */}
             {isPopupOpen && (
-                <div className="fixed inset-0 backdrop-blur-sm bg-black/10 flex justify-center items-start z-50 p-4 pt-12 transition-all duration-300 ease-out">
-                    <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto animate-slideDown">
+                <div 
+                    className="fixed inset-0 bg-opacity-30 flex items-center justify-center z-50 p-4"
+                    style={{ backdropFilter: 'blur(5px)' }} // Apply blur directly here
+                >
+                    <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
                         {/* Header */}
                         <div className="bg-teal-600 text-white p-4 rounded-t-lg">
                             <h2 className="text-xl font-bold">Fill out required fields</h2>
@@ -140,7 +171,7 @@ function Dashboard() {
                                     type="text"
                                     placeholder="Subject"
                                     value={formData.subject}
-                                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                                    onChange={(e) => setFormData({...formData, subject: e.target.value})}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                                 />
                             </div>
@@ -152,7 +183,7 @@ function Dashboard() {
                                 </label>
                                 <select
                                     value={formData.category}
-                                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                    onChange={(e) => setFormData({...formData, category: e.target.value})}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                                 >
                                     <option value="Healthcare">Healthcare</option>
@@ -169,10 +200,10 @@ function Dashboard() {
                                     Concern Details <span className="text-red-500">*</span>
                                 </label>
                                 <textarea
-                                    placeholder="Enter your concern details here..."
+                                    placeholder="Retrieving and listing mga need active"
                                     rows="4"
                                     value={formData.concernDetails}
-                                    onChange={(e) => setFormData({ ...formData, concernDetails: e.target.value })}
+                                    onChange={(e) => setFormData({...formData, concernDetails: e.target.value})}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
                                 />
                             </div>
