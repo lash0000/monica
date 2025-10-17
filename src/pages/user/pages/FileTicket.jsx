@@ -216,17 +216,17 @@ function FileTicket() {
     {
       name: 'Sta. Monica Barangay Hall, Commonwealth, QC',
       subtitle: 'Local government office',
-      coordinates: '14.6760,121.0437'
+      coordinates: '14.7255,121.0434'
     },
     {
       name: 'Sta. Monica Church, Commonwealth, QC',
       subtitle: 'Parish church',
-      coordinates: '14.6755,121.0442'
+      coordinates: '14.7221,121.0414'
     },
     {
       name: 'Sta. Monica Elementary School, Commonwealth, QC',
       subtitle: 'Public school',
-      coordinates: '14.6758,121.0445'
+      coordinates: '14.7255,121.0434'
     },
     {
       name: 'Sta. Monica Covered Court, Commonwealth, QC',
