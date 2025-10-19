@@ -4,94 +4,6 @@ import { FaFileMedical } from 'react-icons/fa6';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-// Reusable style objects
-const styles = {
-  container: {
-    width: '100%',
-    minHeight: '100vh',
-    backgroundColor: '#f8fafc',
-    padding: '2rem 1rem'
-  },
-  formContainer: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    backgroundColor: 'white',
-    borderRadius: '12px',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-    overflow: 'hidden'
-  },
-  header: {
-    backgroundColor: '#4B663B',
-    padding: '2rem',
-    color: 'white'
-  },
-  headerTitle: {
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    margin: '0 0 0.5rem 0'
-  },
-  headerSubtitle: {
-    fontSize: '1rem',
-    margin: '0',
-    opacity: '0.9'
-  },
-  form: { padding: '2rem' },
-  fieldContainer: { marginBottom: '1.5rem' },
-  label: {
-    display: 'block',
-    fontSize: '0.875rem',
-    fontWeight: '600',
-    color: '#374151',
-    marginBottom: '0.5rem'
-  },
-  input: {
-    width: '100%',
-    padding: '0.75rem',
-    border: '1px solid #d1d5db',
-    borderRadius: '6px',
-    fontSize: '0.875rem',
-    outline: 'none',
-    boxSizing: 'border-box'
-  },
-  button: {
-    backgroundColor: '#4B663B',
-    color: 'white',
-    border: 'none',
-    borderRadius: '6px',
-    padding: '0.75rem 1.5rem',
-    fontSize: '0.875rem',
-    fontWeight: '600',
-    cursor: 'pointer',
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
-  },
-  iconButton: {
-    width: '48px',
-    height: '48px',
-    border: '2px solid #4B663B',
-    borderRadius: '6px',
-    backgroundColor: '#f0fdf4',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer'
-  },
-  modalOverlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1000,
-    padding: '1rem'
-  }
-};
 
 function FileTicket() {
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB per file
@@ -335,19 +247,19 @@ function FileTicket() {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.formContainer}>
+    <div className="w-full min-h-screen bg-slate-50 p-4">
+      <div className="container lg:mx-auto lg:max-w-2xl bg-white rounded-lg shadow-md overflow-hidden">
         {/* Header */}
-        <div style={styles.header}>
-          <h1 style={styles.headerTitle}>File Ticket</h1>
-          <p style={styles.headerSubtitle}>Submit an incident report</p>
+        <div className="bg-secondary p-4 text-white">
+          <h1 className="text-xl font-bold mb-1">File Ticket</h1>
+          <p className="text-sm opacity-90">Submit an incident report</p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={styles.form}>
+        <form onSubmit={handleSubmit} className="p-6">
           {/* Subject */}
-          <div style={styles.fieldContainer}>
-            <label style={styles.label}>Subject *</label>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Subject *</label>
             <input
               type="text"
               name="subject"
@@ -355,83 +267,76 @@ function FileTicket() {
               onChange={handleInputChange}
               placeholder="Subject"
               required
-              style={styles.input}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
             />
           </div>
 
           {/* Category */}
-          <div style={styles.fieldContainer}>
-            <label style={styles.label}>Category *</label>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Category *</label>
             <select
               name="category"
               value={formData.category}
               onChange={handleInputChange}
               required
-              style={{ ...styles.input, backgroundColor: 'white', color: formData.category ? '#111827' : '#9ca3af' }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-secondary focus:border-transparent bg-white"
             >
-              <option value="" disabled style={{ display: 'none' }}>Select</option>
-              <option value="Healthcare" style={{ color: '#111827' }}>Healthcare</option>
-              <option value="infrastructure" style={{ color: '#111827' }}>Infrastructure</option>
-              <option value="safety" style={{ color: '#111827' }}>Safety</option>
-              <option value="environmental" style={{ color: '#111827' }}>Environmental</option>
-              <option value="maintenance" style={{ color: '#111827' }}>Maintenance</option>
-              <option value="other" style={{ color: '#111827' }}>Other</option>
+              <option value="" disabled className="hidden">Select</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="infrastructure">Infrastructure</option>
+              <option value="safety">Safety</option>
+              <option value="environmental">Environmental</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="other">Other</option>
             </select>
           </div>
 
           {/* Concern Details */}
-          <div style={styles.fieldContainer}>
-            <label style={styles.label}>Concern Details *</label>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Concern Details *</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleInputChange}
               placeholder="Ipahayag ang lahat ng mga detalye"
               required
-              rows="4"
-              style={{ ...styles.input, resize: 'vertical' }}
+              rows="3"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-secondary focus:border-transparent resize-y"
             />
           </div>
 
           {/* Attachment */}
-          <div style={styles.fieldContainer}>
-            <label style={styles.label}>Attachment (Optional)</label>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Attachment (Optional)</label>
             {/* Drop/Upload box */}
-            <div style={{
-              border: '2px dashed #e5e7eb',
-              backgroundColor: '#f9fafb',
-              borderRadius: '8px',
-              padding: '1.5rem',
-              textAlign: 'center',
-              color: '#6b7280'
-            }}>
+            <div className="border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-4 text-center text-gray-500">
               <input
                 type="file"
                 id="file-upload"
                 accept="image/*"
                 multiple
                 onChange={handleFileChange}
-                style={{ display: 'none' }}
+                className="hidden"
               />
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div className="text-2xl mb-1 inline-flex items-center justify-center">
                 <FaFileMedical />
               </div>
-              <div style={{ fontWeight: 600 }}>Upload files</div>
-              <div style={{ fontSize: '0.875rem' }}>Drag and drop or click to browse</div>
-              <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '0.25rem' }}>Maximum of 10MB</div>
-              <label htmlFor="file-upload" style={{ display: 'inline-block', marginTop: '0.75rem', padding: '0.5rem 0.9rem', backgroundColor: '#4B663B', color: 'white', borderRadius: '6px', cursor: 'pointer', fontSize: '0.875rem', fontWeight: 600 }}>Browse files</label>
+              <div className="font-semibold text-sm">Upload files</div>
+              <div className="text-xs">Drag and drop or click to browse</div>
+              <div className="text-xs text-gray-400 mt-1">Maximum of 10MB</div>
+              <label htmlFor="file-upload" className="inline-block mt-2 px-3 py-1 bg-secondary text-white rounded-md cursor-pointer text-xs font-semibold hover:opacity-90 transition-opacity">Browse files</label>
             </div>
 
             {/* File list */}
             {selectedFiles.length > 0 && (
-              <div style={{ marginTop: '0.75rem' }}>
+              <div className="mt-2">
                 {selectedFiles.map((file, idx) => (
-                  <div key={`${file.name}-${idx}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 0.9rem', border: '1px solid #e5e7eb', borderRadius: '8px', marginBottom: '0.5rem', backgroundColor: 'white' }}>
-                    <div style={{ overflow: 'hidden' }}>
-                      <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#111827', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '480px' }}>{file.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>{(file.size / (1024 * 1024)).toFixed(2)} MB</div>
+                  <div key={`${file.name}-${idx}`} className="flex items-center justify-between p-2 border border-gray-200 rounded-md mb-1 bg-white">
+                    <div className="overflow-hidden">
+                      <div className="text-xs font-semibold text-gray-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-md">{file.name}</div>
+                      <div className="text-xs text-gray-500">{(file.size / (1024 * 1024)).toFixed(2)} MB</div>
                     </div>
-                    <button type="button" onClick={() => removeImage(imagePreviews[idx]?.id || Date.now())} style={{ border: 'none', background: 'transparent', color: '#111827', cursor: 'pointer', padding: 0 }}>×</button>
+                    <button type="button" onClick={() => removeImage(imagePreviews[idx]?.id || Date.now())} className="border-none bg-transparent text-gray-900 cursor-pointer p-0 text-sm hover:text-red-500">×</button>
                   </div>
                 ))}
               </div>
@@ -492,14 +397,8 @@ function FileTicket() {
           {/* Maintenance Needed - removed from UI as requested */}
 
           {/* Persons Involved */}
-          <div style={{ marginBottom: '2rem' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '0.875rem',
-              fontWeight: '600',
-              color: '#374151',
-              marginBottom: '0.5rem'
-            }}>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Persons Involved (Optional)
             </label>
             <input
@@ -508,36 +407,20 @@ function FileTicket() {
               value={formData.personsInvolved}
               onChange={handleInputChange}
               placeholder="List names if applicable.."
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '6px',
-                fontSize: '0.875rem',
-                outline: 'none',
-                boxSizing: 'border-box'
-              }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
             />
           </div>
 
           {/* Submit Button */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+          <div className="flex justify-end gap-2">
             <button
               type="button"
               onClick={clearAllImages}
-              style={{
-                backgroundColor: 'white',
-                color: '#111827',
-                border: '1px solid #e5e7eb',
-                borderRadius: '6px',
-                padding: '0.6rem 1rem',
-                fontWeight: 600,
-                cursor: 'pointer'
-              }}
+              className="bg-white text-gray-900 border border-gray-300 rounded-md px-3 py-2 text-sm font-semibold cursor-pointer hover:bg-gray-50 transition-colors"
             >
               Clear All
             </button>
-            <button type="submit" style={styles.button}>
+            <button type="submit" className="bg-secondary text-white border-none rounded-md px-4 py-2 text-sm font-semibold cursor-pointer inline-flex items-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
               <FaPaperPlane />
               Submit Ticket
             </button>
@@ -547,110 +430,51 @@ function FileTicket() {
 
       {/* Location Selection Modal */}
       {showLocationModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-          padding: '1rem'
-        }}>
-          <div style={{
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            width: '100%',
-            maxWidth: '1200px',
-            maxHeight: '95vh',
-            overflow: 'auto',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
-          }}>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-5xl max-h-[95vh] overflow-auto shadow-2xl">
             {/* Modal Header */}
-            <div style={{
-              backgroundColor: '#4B663B',
-              padding: '1.5rem',
-              color: 'white',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div className="bg-secondary p-6 text-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
                 <FaMapMarkerAlt />
-                <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 'bold' }}>
+                <h2 className="m-0 text-xl font-bold">
                   Select Location
                 </h2>
               </div>
               <button
                 onClick={() => setShowLocationModal(false)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'white',
-                  fontSize: '1.25rem',
-                  cursor: 'pointer',
-                  padding: '0.25rem'
-                }}
+                className="bg-none border-none text-white text-xl cursor-pointer p-1 hover:opacity-80"
               >
                 <FaTimes />
               </button>
             </div>
 
             {/* Search Bar */}
-            <div style={{ padding: '1.5rem', borderBottom: '1px solid #e5e7eb' }}>
-              <div style={{ position: 'relative', display: 'flex', gap: '0.5rem' }}>
+            <div className="p-6 border-b border-gray-200">
+              <div className="relative flex gap-2">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Search for a location (e.g., Times Square, New York)"
-                  style={{
-                    flex: 1,
-                    padding: '0.75rem',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '6px',
-                    fontSize: '0.875rem',
-                    outline: 'none'
-                  }}
+                  className="flex-1 px-3 py-3 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
                   onFocus={() => setShowSuggestions(true)}
                   onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
                 />
                 {showSuggestions && suggestions.length > 0 && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '3.25rem',
-                    left: 0,
-                    right: '8.5rem',
-                    backgroundColor: 'white',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '6px',
-                    boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)',
-                    zIndex: 20,
-                    maxHeight: '260px',
-                    overflowY: 'auto'
-                  }}>
+                  <div className="absolute top-13 left-0 right-34 bg-white border border-gray-200 rounded-md shadow-lg z-20 max-h-64 overflow-y-auto">
                     {suggestions.map((s, idx) => (
                       <div
                         key={idx}
                         onMouseDown={(e) => e.preventDefault()}
                         onClick={() => handleSuggestionClick(s)}
-                        style={{
-                          padding: '0.75rem',
-                          cursor: 'pointer',
-                          fontSize: '0.875rem',
-                          color: '#374151',
-                          borderBottom: '1px solid #f3f4f6'
-                        }}
+                        className="p-3 cursor-pointer text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50"
                       >
                         {s.label}
                       </div>
                     ))}
                     {isFetchingSuggestions && (
-                      <div style={{ padding: '0.75rem', fontSize: '0.875rem', color: '#6b7280' }}>
+                      <div className="p-3 text-sm text-gray-500">
                         Searching...
                       </div>
                     )}
@@ -659,19 +483,7 @@ function FileTicket() {
                 <button
                   type="button"
                   onClick={handleSearchLocation}
-                  style={{
-                    backgroundColor: '#4B663B',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '6px',
-                    padding: '0.75rem 1rem',
-                    fontSize: '0.875rem',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem'
-                  }}
+                  className="bg-secondary text-white border-none rounded-md px-4 py-3 text-sm font-semibold cursor-pointer flex items-center gap-2 hover:opacity-90 transition-opacity"
                 >
                   <FaSearch />
                   Search
@@ -680,24 +492,16 @@ function FileTicket() {
             </div>
 
             {/* Main Content */}
-            <div style={{ display: 'flex', height: '65vh' }}>
+            <div className="flex h-[65vh]">
               {/* Map Section */}
-              <div style={{ flex: 1, position: 'relative' }}>
-                <div style={{
-                  width: '100%',
-                  height: '100%',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}>
+              <div className="flex-1 relative">
+                <div className="w-full h-full relative overflow-hidden">
                   {/* Google Maps Embed */}
                   <iframe
                     src={`https://maps.google.com/maps?q=${encodeURIComponent(mapCenter)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                     width="100%"
                     height="100%"
-                    style={{
-                      border: 0,
-                      borderRadius: '0'
-                    }}
+                    className="border-0 rounded-none"
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
@@ -706,52 +510,22 @@ function FileTicket() {
                   ></iframe>
 
                   {/* View Larger Map Link */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '1rem',
-                    left: '1rem',
-                    backgroundColor: 'white',
-                    borderRadius: '6px',
-                    padding: '0.75rem 1rem',
-                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-                    zIndex: 10
-                  }}>
+                  <div className="absolute top-4 left-4 bg-white rounded-md p-3 shadow-sm z-10">
                     <a
                       href={`https://www.google.com/maps/search/${encodeURIComponent(mapCenter)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{
-                        color: '#059669',
-                        fontSize: '0.875rem',
-                        textDecoration: 'none',
-                        fontWeight: '500'
-                      }}
+                      className="text-emerald-600 text-sm no-underline font-medium hover:text-emerald-700"
                     >
                       View larger map
                     </a>
                   </div>
 
                   {/* Fullscreen Button */}
-                  <div style={{
-                    position: 'absolute',
-                    bottom: '1rem',
-                    right: '1rem',
-                    zIndex: 10
-                  }}>
+                  <div className="absolute bottom-4 right-4 z-10">
                     <button
                       onClick={() => window.open(`https://www.google.com/maps/search/${encodeURIComponent(mapCenter)}`, '_blank')}
-                      style={{
-                        width: '40px',
-                        height: '40px',
-                        backgroundColor: 'white',
-                        border: '1px solid #d1d5db',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-                      }}
+                      className="w-10 h-10 bg-white border border-gray-300 rounded-full flex items-center justify-center cursor-pointer shadow-md hover:shadow-lg transition-shadow"
                       title="Open in fullscreen"
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -763,69 +537,25 @@ function FileTicket() {
               </div>
 
               {/* Quick Select Locations */}
-              <div style={{
-                width: '350px',
-                borderLeft: '1px solid #e5e7eb',
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
-                <div style={{
-                  padding: '1rem',
-                  borderBottom: '1px solid #e5e7eb',
-                  backgroundColor: '#f9fafb'
-                }}>
-                  <h3 style={{
-                    margin: 0,
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    color: '#374151'
-                  }}>
+              <div className="w-80 border-l border-gray-200 flex flex-col">
+                <div className="p-4 border-b border-gray-200 bg-gray-50">
+                  <h3 className="m-0 text-base font-semibold text-gray-700">
                     Quick Select Locations
                   </h3>
                 </div>
-                <div style={{
-                  flex: 1,
-                  overflowY: 'auto',
-                  padding: '0.5rem'
-                }}>
+                <div className="flex-1 overflow-y-auto p-2">
                   {quickSelectLocations.map((location, index) => (
                     <div
                       key={index}
                       onClick={() => handleLocationSelect(location)}
-                      style={{
-                        padding: '0.75rem',
-                        marginBottom: '0.5rem',
-                        backgroundColor: 'white',
-                        borderRadius: '8px',
-                        border: '1px solid #e5e7eb',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.75rem'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = '#f0fdf4';
-                        e.target.style.borderColor = '#059669';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = 'white';
-                        e.target.style.borderColor = '#e5e7eb';
-                      }}
+                      className="p-3 mb-2 bg-white rounded-lg border border-gray-200 cursor-pointer transition-all duration-200 flex items-center gap-3 hover:bg-green-50 hover:border-emerald-500"
                     >
-                      <FaMapMarkerAlt style={{ color: '#059669', fontSize: '0.875rem' }} />
+                      <FaMapMarkerAlt className="text-emerald-600 text-sm" />
                       <div>
-                        <div style={{
-                          fontWeight: '600',
-                          color: '#374151',
-                          fontSize: '0.875rem'
-                        }}>
+                        <div className="font-semibold text-gray-700 text-sm">
                           {location.name}
                         </div>
-                        <div style={{
-                          color: '#6b7280',
-                          fontSize: '0.75rem'
-                        }}>
+                        <div className="text-gray-500 text-xs">
                           {location.coordinates}
                         </div>
                       </div>
@@ -840,87 +570,27 @@ function FileTicket() {
 
       {/* Image View Modal */}
       {showImageModal && selectedImageForModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 2000,
-          padding: '1rem'
-        }}>
-          <div style={{
-            position: 'relative',
-            maxWidth: '90vw',
-            maxHeight: '90vh',
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            overflow: 'hidden',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
-          }}>
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
+          <div className="relative max-w-[90vw] max-h-[90vh] bg-white rounded-xl overflow-hidden shadow-2xl">
             {/* Modal Header */}
-            <div style={{
-              backgroundColor: '#4B663B',
-              padding: '1rem 1.5rem',
-              color: 'white',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              <h3 style={{
-                margin: 0,
-                fontSize: '1.125rem',
-                fontWeight: '600'
-              }}>
+            <div className="bg-secondary p-4 px-6 text-white flex items-center justify-between">
+              <h3 className="m-0 text-lg font-semibold">
                 {selectedImageForModal.name}
               </h3>
               <button
                 onClick={closeImageModal}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'white',
-                  fontSize: '1.5rem',
-                  cursor: 'pointer',
-                  padding: '0.25rem',
-                  borderRadius: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'transparent';
-                }}
+                className="bg-none border-none text-white text-2xl cursor-pointer p-1 rounded hover:bg-white hover:bg-opacity-10 transition-colors flex items-center justify-center"
               >
                 <FaTimes />
               </button>
             </div>
 
             {/* Image Content */}
-            <div style={{
-              padding: '1rem',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              maxHeight: 'calc(90vh - 80px)',
-              overflow: 'auto'
-            }}>
+            <div className="p-4 flex justify-center items-center max-h-[calc(90vh-80px)] overflow-auto">
               <img
                 src={selectedImageForModal.url}
                 alt={selectedImageForModal.name}
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                  objectFit: 'contain',
-                  borderRadius: '8px'
-                }}
+                className="max-w-full max-h-full object-contain rounded-lg"
               />
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IoPin } from "react-icons/io5";
 import { MdOutlineFamilyRestroom, MdOutlineKeyboardArrowRight, MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { FaClock, FaFacebook, FaInstagramSquare, FaUsers, FaHome, FaUser, FaCertificate, FaBriefcase, FaFileContract, FaIdBadge, FaFileAlt, FaTools, FaEye, FaCalendarAlt, FaTimes, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
@@ -8,6 +9,7 @@ import 'aos/dist/aos.css'; // this is important
 
 
 function Landing() {
+  const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const [isImageAnimating, setIsImageAnimating] = useState(false);
   const [currentEmergencyImage, setCurrentEmergencyImage] = useState(0);
@@ -19,6 +21,8 @@ function Landing() {
   const [mouseStart, setMouseStart] = useState(null);
   const [mouseEnd, setMouseEnd] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState('');
 
   useEffect(() => {
     AOS.init({
@@ -286,6 +290,24 @@ function Landing() {
     };
   }, []);
 
+  // Handle service click - show login modal
+  const handleServiceClick = (serviceName) => {
+    setSelectedService(serviceName);
+    setIsLoginModalOpen(true);
+  };
+
+  // Close login modal
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+    setSelectedService('');
+  };
+
+  // Handle login redirect
+  const handleLoginRedirect = () => {
+    navigate('/login');
+    closeLoginModal();
+  };
+
   // Auto-advance news carousel
   useEffect(() => {
     const newsInterval = setInterval(() => {
@@ -455,7 +477,12 @@ function Landing() {
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-5">
             {/* Barangay Clearance */}
-            <div className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100" data-aos="fade-up" data-aos-delay="100">
+            <div 
+              className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100 cursor-pointer" 
+              data-aos="fade-up" 
+              data-aos-delay="100"
+              onClick={() => handleServiceClick('Barangay Clearance')}
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 xl:w-14 xl:h-14 bg-green-100 rounded-full flex items-center justify-center mb-3 xl:mb-4">
                   <FaCertificate className="text-lg xl:text-xl text-green-600" />
@@ -465,10 +492,15 @@ function Landing() {
                   Official clearance document for various purposes
                 </p>
               </div>
-                  </div>
+            </div>
 
             {/* Business Permit */}
-            <div className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100" data-aos="fade-up" data-aos-delay="200">
+            <div 
+              className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100 cursor-pointer" 
+              data-aos="fade-up" 
+              data-aos-delay="200"
+              onClick={() => handleServiceClick('Business Permit')}
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 xl:w-14 xl:h-14 bg-blue-100 rounded-full flex items-center justify-center mb-3 xl:mb-4">
                   <FaBriefcase className="text-lg xl:text-xl text-blue-600" />
@@ -478,23 +510,33 @@ function Landing() {
                   Authorization to operate businesses in the barangay
                 </p>
               </div>
-                </div>
+            </div>
 
             {/* Certificate of Indigency */}
-            <div className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100" data-aos="fade-up" data-aos-delay="300">
+            <div 
+              className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100 cursor-pointer" 
+              data-aos="fade-up" 
+              data-aos-delay="300"
+              onClick={() => handleServiceClick('Certificate of Indigency')}
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 xl:w-14 xl:h-14 bg-yellow-100 rounded-full flex items-center justify-center mb-3 xl:mb-4">
                   <FaFileContract className="text-lg xl:text-xl text-yellow-600" />
-                  </div>
+                </div>
                 <h3 className="text-base xl:text-lg font-bold text-gray-800 mb-1.5">Certificate of Indigency</h3>
                 <p className="text-xs xl:text-sm text-gray-600 leading-relaxed">
                   Document certifying financial status for assistance
                 </p>
               </div>
-                    </div>
+            </div>
 
             {/* Barangay ID */}
-            <div className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100" data-aos="fade-up" data-aos-delay="400">
+            <div 
+              className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100 cursor-pointer" 
+              data-aos="fade-up" 
+              data-aos-delay="400"
+              onClick={() => handleServiceClick('Barangay ID')}
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 xl:w-14 xl:h-14 bg-purple-100 rounded-full flex items-center justify-center mb-3 xl:mb-4">
                   <FaIdBadge className="text-lg xl:text-xl text-purple-600" />
@@ -507,7 +549,12 @@ function Landing() {
             </div>
 
             {/* Residency Certificate */}
-            <div className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100" data-aos="fade-up" data-aos-delay="500">
+            <div 
+              className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100 cursor-pointer" 
+              data-aos="fade-up" 
+              data-aos-delay="500"
+              onClick={() => handleServiceClick('Residency Certificate')}
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 xl:w-14 xl:h-14 bg-red-100 rounded-full flex items-center justify-center mb-3 xl:mb-4">
                   <FaFileAlt className="text-lg xl:text-xl text-red-600" />
@@ -517,10 +564,15 @@ function Landing() {
                   Proof of residency within the barangay
                 </p>
               </div>
-          </div>
+            </div>
 
             {/* Building Permit */}
-            <div className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100" data-aos="fade-up" data-aos-delay="600">
+            <div 
+              className="bg-white rounded-lg p-4 xl:p-5 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100 cursor-pointer" 
+              data-aos="fade-up" 
+              data-aos-delay="600"
+              onClick={() => handleServiceClick('Building Permit')}
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 xl:w-14 xl:h-14 bg-orange-100 rounded-full flex items-center justify-center mb-3 xl:mb-4">
                   <FaTools className="text-lg xl:text-xl text-orange-600" />
@@ -743,69 +795,96 @@ function Landing() {
       {/* News Modal */}
       {isNewsModalOpen && selectedNews && (
         <div 
-          className="fixed inset-0 bg-white/20 backdrop-blur-md flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
           onClick={handleModalBackdropClick}
         >
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-fade-in flex flex-col">
+          <div className="bg-white rounded-lg max-w-lg w-full max-h-[80vh] overflow-hidden shadow-lg border border-gray-200">
             {/* Modal Header */}
-            <div className="relative flex-shrink-0">
+            <div className="relative">
               <img
                 src={selectedNews.src}
                 alt={selectedNews.alt}
-                className="w-full h-48 md:h-64 object-cover rounded-t-xl"
+                className="w-full h-40 object-cover rounded-t-lg"
               />
               <button
                 onClick={closeNewsModal}
-                className="absolute top-4 right-4 bg-black bg-opacity-50 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-opacity-70 transition-all duration-200"
+                className="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors text-sm"
               >
                 <FaTimes />
               </button>
             </div>
 
             {/* Modal Content */}
-            <div className="p-6 overflow-y-auto flex-1 modal-scroll">
+            <div className="p-4 overflow-y-auto max-h-96">
               {/* Title */}
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
+              <h2 className="text-lg font-bold text-gray-900 mb-2">
                 {selectedNews.title}
               </h2>
 
-              {/* Date, Time & Author */}
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
-                <div className="flex items-center gap-2">
-                  <FaCalendarAlt className="text-blue-600" />
+              {/* Date & Time */}
+              <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
+                <div className="flex items-center gap-1">
+                  <FaCalendarAlt className="text-blue-500" />
                   <span>{selectedNews.date}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <FaClock className="text-green-600" />
+                <div className="flex items-center gap-1">
+                  <FaClock className="text-green-500" />
                   <span>{selectedNews.time}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <FaUser className="text-purple-600" />
-                  <span>{selectedNews.author}</span>
-                </div>
               </div>
 
-              {/* Short Description */}
-              <p className="text-gray-700 font-medium mb-4 text-base">
+              {/* Description */}
+              <p className="text-sm text-gray-600 leading-relaxed">
                 {selectedNews.shortDescription}
               </p>
+            </div>
 
-              {/* Full Content */}
-              <div className="prose prose-gray max-w-none">
-                <p className="text-gray-600 leading-relaxed">
-                  {selectedNews.fullContent}
-                </p>
-              </div>
+            {/* Action Button */}
+            <div className="p-4 border-t border-gray-100">
+              <button
+                onClick={closeNewsModal}
+                className="w-full bg-secondary text-white px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
-              {/* Action Button */}
-              <div className="mt-6 pt-4 border-t border-gray-200">
-                <button
-                  onClick={closeNewsModal}
-                  className="bg-foreground text-white px-6 py-2 rounded-lg font-semibold hover:bg-foreground/80 transition-colors duration-200 w-full md:w-auto"
-                >
-                  Close Details
-                </button>
-              </div>
+      {/* Login Required Modal */}
+      {isLoginModalOpen && (
+        <div 
+          className="fixed inset-0 flex bg-black/50 items-center justify-center z-50 p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              closeLoginModal();
+            }
+          }}
+        >
+          <div className="bg-white rounded-lg max-w-sm w-full p-4 shadow-lg border border-gray-200">
+            {/* Modal Header */}
+            <div className="text-center mb-4">
+              <h2 className="text-lg font-bold text-gray-900 mb-2">Login Required</h2>
+              <p className="text-sm text-gray-600">
+                Please login to access <span className="font-semibold text-secondary">{selectedService}</span>
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-2">
+              <button
+                onClick={closeLoginModal}
+                className="flex-1 px-3 py-2 text-sm border border-gray-300 text-gray-700 rounded-md font-medium hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLoginRedirect}
+                className="flex-1 px-3 py-2 text-sm bg-secondary text-white rounded-md font-medium hover:opacity-90 transition-opacity"
+              >
+                Login
+              </button>
             </div>
           </div>
         </div>

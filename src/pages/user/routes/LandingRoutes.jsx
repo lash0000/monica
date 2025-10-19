@@ -17,30 +17,25 @@ import ProfileUser from '../pages/ProfileUser';
 
 const LandingRoutes = () => [
   // Public Routes
-  <Route path="/" element={<Public_Layout />}>
+  <Route key="public" path="/" element={<Public_Layout />}>
     <Route index element={<Landingv2 />} />
-    <Route path="/emergency-hotlines" element={<EmergencyHotlines />} />
+    <Route path="emergency-hotlines" element={<EmergencyHotlines />} />
     
-    // User Credentials
-  <Route path="/login" element={<Login />} />,
-  <Route path="/signup" element={<SignUp />} />,
-  <Route path="/forgotpassword" element={<ForgotPassword />} />,
-  <Route path="/personal-info" element={<PersonalInfo />} />,
-  <Route path="/otp-verification" element={<OTPVerification />} />,
-  <Route path="/profileuser" element={<ProfileUser />} />,
 
-
+    <Route path="login" element={<Login />} />
+    <Route path="signup" element={<SignUp />} />
+    <Route path="forgot-password" element={<ForgotPassword />} />
+    <Route path="personal-info" element={<PersonalInfo />} />
+    <Route path="otp-verification" element={<OTPVerification />} />
+    <Route path="profileuser" element={<ProfileUser />} />
   </Route>,
 
-
-
-  // Reuse soon for admin side (This is wrong for user side)
-  <Route path="/" element={<Authenticated_Layout />}>
-    <Route path="/dashboard" element={<Dashboard />} />
-    <Route path="/ticket" element={<Ticket />} />
-    <Route path="/file-ticket" element={<FileTicket />} />
-    <Route path="/e-application" element={<NewPage />} />
-    
+  // Authenticated Routes
+  <Route key="authenticated" path="/" element={<Authenticated_Layout />}>
+    <Route path="dashboard" element={<Dashboard />} />
+    <Route path="ticket" element={<Ticket />} />
+    <Route path="file-ticket" element={<FileTicket />} />
+    <Route path="e-application" element={<NewPage />} />
   </Route>,
 ]
 
