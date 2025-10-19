@@ -76,10 +76,10 @@ function PersonalInfo() {
       <div className="w-full max-w-md">
         
         {/* Personal Info Card */}
-        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-[#4B663B]">
+        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-gray-300">
           
           {/* Header */}
-          <h2 className="text-2xl font-serif text-[#4B663B] mb-2 text-center font-bold">
+          <h2 className="text-2xl font-serif text-foreground mb-2 text-center font-bold">
             Create Account
           </h2>
           <p className="text-gray-600 text-sm text-center mb-6">
@@ -101,7 +101,7 @@ function PersonalInfo() {
                 value={formData.firstName}
                 onChange={handleInputChange}
                 placeholder="Enter your first name"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4B663B] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
                 required
               />
             </div>
@@ -117,7 +117,7 @@ function PersonalInfo() {
                 value={formData.lastName}
                 onChange={handleInputChange}
                 placeholder="Enter your last name"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4B663B] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
                 required
               />
             </div>
@@ -133,7 +133,7 @@ function PersonalInfo() {
                 value={formData.contactNumber}
                 onChange={handleInputChange}
                 placeholder="+63 9XXXXXXXXX"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4B663B] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
                 required
                 onKeyDown={(e) => {
                   // Prevent deletion of +63 prefix when it exists
@@ -156,7 +156,7 @@ function PersonalInfo() {
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Enter your password"
-                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4B663B] focus:border-transparent"
+                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
                   required
                 />
                 <button
@@ -208,7 +208,7 @@ function PersonalInfo() {
                 disabled={!passwordValidation.isValid}
                 className={`w-full py-2 rounded-lg font-semibold transition-colors duration-200 ${
                   passwordValidation.isValid 
-                    ? 'bg-[#4B663B] text-white hover:bg-[#6B8E23]' 
+                    ? 'bg-secondary text-white hover:bg-secondary-hover' 
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
               >

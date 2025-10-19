@@ -335,7 +335,7 @@ function Landing() {
               disabled={isImageAnimating}
               className={`w-3 h-3 xl:w-4 xl:h-4 rounded-full transition-all duration-300 hover:scale-125 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 ${
                 index === currentImage
-                  ? 'bg-[#4B663B] shadow-lg scale-110 ring-2 ring-[#4B663B] ring-opacity-50'
+                  ? 'bg-foreground shadow-lg scale-110 ring-2 ring-foreground ring-opacity-50'
                   : 'bg-white bg-opacity-50 hover:bg-opacity-75'
               } ${isImageAnimating ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
               aria-label={`Go to image ${index + 1}`}
@@ -427,7 +427,7 @@ function Landing() {
                   disabled={isEmergencyAnimating}
                   className={`w-3 h-3 xl:w-4 xl:h-4 rounded-full transition-all duration-300 hover:scale-125 ${
                     index === currentEmergencyImage
-                      ? 'bg-[#4B663B] shadow-lg scale-110'
+                      ? 'bg-foreground shadow-lg scale-110'
                       : 'bg-gray-400 hover:bg-gray-600'
                   } ${isEmergencyAnimating ? 'cursor-not-allowed' : 'cursor-pointer'}`}
                 />
@@ -536,12 +536,12 @@ function Landing() {
       </section>
 
         {/* Community Gallery Section */}
-        <section id="community-gallery" className="relative py-8 xl:py-12 px-4 overflow-hidden" style={{ backgroundColor: '#f8f9fa' }} data-aos="fade-up">
+        <section id="community-gallery" className="relative py-8 xl:py-12 px-4 overflow-hidden" bg-card data-aos="fade-up">
           <div className="max-w-6xl xl:max-w-7xl mx-auto relative z-10">
             
             {/* About Us Section */}
             <div className="relative mb-6 xl:mb-8" data-aos="fade-up" data-aos-delay="200">
-              <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-4 xl:p-6 shadow-lg border border-white/20">
+              <div className="relative bg-card/90 backdrop-blur-sm rounded-2xl p-4 xl:p-6 shadow-lg border border-white/20">
                 {/* Main Title */}
                 <div className="text-center mb-6">
                   <h2 className="text-2xl xl:text-3xl font-bold text-black mb-4">ABOUT US</h2>
@@ -549,7 +549,7 @@ function Landing() {
 
                 {/* Santa Monica Heading */}
                 <div className="mb-4">
-                  <h3 className="text-xl xl:text-2xl font-bold text-[#4B663B] mb-3">Santa Monica</h3>
+                  <h3 className="text-xl xl:text-2xl font-bold text-foreground mb-3">Santa Monica</h3>
                   <p className="text-gray-700 text-sm xl:text-base leading-relaxed">
                     <strong>Sta. Monica</strong> is a progressive barangay in Quezon City, known for its balance of residential comfort and urban accessibility. 
                     The area features established neighborhoods, schools, local shops, and community facilities. Its strategic location provides easy access 
@@ -558,7 +558,7 @@ function Landing() {
                 </div>
 
                 {/* Information Box */}
-                <div className="bg-[#E8F5E8] rounded-xl p-4 xl:p-6">
+                <div className="bg-card rounded-xl p-4 xl:p-6 border border-gray-200">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:gap-6">
                     {/* Left Column - Demographic/Geographical Details */}
                     <div className="space-y-3">
@@ -608,39 +608,11 @@ function Landing() {
               </div>
             </div>
 
-            {/* Mission Statement */}
-            <div className="relative" data-aos="fade-up" data-aos-delay="300">
-              <div className="absolute inset-0 rounded-2xl blur-xl opacity-20" style={{ background: 'linear-gradient(to right, #4B663B, #5B7B4B)' }}></div>
-              <div className="relative rounded-2xl p-6 xl:p-8 text-center shadow-2xl border border-white/10" style={{ background: 'linear-gradient(135deg, #4B663B 0%, #3A5A2A 50%, #4B663B 100%)' }}>
-                <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmMDUiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30 rounded-2xl"></div>
-                <div className="relative z-10">
-                  <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-4">
-                    <div className="w-2 h-2 rounded-full bg-white mr-2"></div>
-                    <span className="text-white font-semibold text-xs tracking-wider">OUR MISSION</span>
-                  </div>
-                  <h3 className="text-xl xl:text-2xl font-black text-white mb-4">Building Tomorrow, Together</h3>
-                  <p className="text-white/90 text-sm xl:text-base leading-relaxed max-w-4xl mx-auto font-light mb-4">
-                    To foster a safe, united, and progressive community where every resident feels valued and empowered. 
-                    Through innovative governance, quality services, and active citizen participation, we build a stronger Santa Monica for future generations.
-                  </p>
-                  <div className="flex flex-col items-center">
-                    <div className="w-12 h-0.5 bg-gradient-to-r from-green-400 to-blue-400 mb-3"></div>
-                    <p className="text-white text-base font-bold italic mb-1">
-                      "Mabilisang Aksyon, Agarang Solusyon"
-                    </p>
-                    <p className="text-white/70 text-xs tracking-wide">
-                      BARANGAY SANTA MONICA
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
          </div>
        </section>
 
        {/* Barangay Officials Section */}
-       <section id="barangay-officials" className="bg-[#ffffff] py-12 xl:py-16 px-4 pt-16" data-aos="fade-up">
+       <section id="barangay-officials" className="bg-card py-12 xl:py-16 px-4 pt-16" data-aos="fade-up">
          <div className="max-w-5xl xl:max-w-6xl mx-auto">
            <h2 className="text-3xl xl:text-4xl font-bold text-center text-black mb-8 xl:mb-10" data-aos="fade-down">Barangay Officials</h2>
 
@@ -677,7 +649,7 @@ function Landing() {
       </section>
 
       {/* Contact Us Section */}
-      <section id="contact-us" className="py-8 xl:py-12 px-4" style={{ backgroundColor: '#4B663B' }} data-aos="fade-up">
+      <section id="contact-us" className="py-8 xl:py-12 px-4 bg-foreground" data-aos="fade-up">
         <div className="max-w-4xl xl:max-w-5xl mx-auto">
           <h2 className="text-3xl xl:text-4xl font-bold text-center text-white mb-6 xl:mb-8">Contact Us</h2>
 
@@ -829,7 +801,7 @@ function Landing() {
               <div className="mt-6 pt-4 border-t border-gray-200">
                 <button
                   onClick={closeNewsModal}
-                  className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors duration-200 w-full md:w-auto"
+                  className="bg-foreground text-white px-6 py-2 rounded-lg font-semibold hover:bg-foreground/80 transition-colors duration-200 w-full md:w-auto"
                 >
                   Close Details
                 </button>

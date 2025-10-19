@@ -91,10 +91,10 @@ function OTPVerification() {
       <div className="w-full max-w-md p-4">
         
         {/* OTP Verification Card */}
-        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-[#4B663B]">
+        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-gray-300">
           
           {/* Header */}
-          <h2 className="text-2xl font-serif text-[#4B663B] mb-2 text-center font-bold">
+          <h2 className="text-2xl font-serif text-foreground mb-2 text-center font-bold">
             Verification Code
           </h2>
           <p className="text-gray-600 text-sm text-center mb-4">
@@ -106,7 +106,7 @@ function OTPVerification() {
             <p className="text-sm text-gray-600 text-center">
               Verification code will be sent to:
             </p>
-            <p className="text-1g font-semibold  text-[#4B663B] text-center mt-1">
+            <p className="text-1g font-semibold  text-foreground text-center mt-1">
               {email}
             </p>
           </div>
@@ -126,7 +126,7 @@ function OTPVerification() {
                   value={digit}
                   onChange={(e) => handleOtpChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="w-12 h-12 text-center text-xl font-bold border-2 border-[#4B663B] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4B663B] focus:border-transparent"
+                  className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
                   required
                 />
               ))}
@@ -135,7 +135,7 @@ function OTPVerification() {
             {/* Verify Button */}
             <button
               type="submit"
-              className="w-full bg-[#4B663B] text-white py-2 rounded-lg font-semibold hover:bg-[#6B8E23] transition-colors duration-200"
+              className="w-full bg-secondary text-white py-2 rounded-lg font-semibold hover:bg-secondary-hover transition-colors duration-200"
             >
               Verify
             </button>
@@ -150,7 +150,7 @@ function OTPVerification() {
             ) : (
               <button
                 onClick={handleResendOTP}
-                className="text-[#4B663B] text-sm font-semibold hover:text-[#6B8E23] transition-colors duration-200 underline"
+                className="text-secondary text-sm font-semibold hover:text-secondary-hover transition-colors duration-200 underline"
               >
                 Resend OTP
               </button>
@@ -160,7 +160,7 @@ function OTPVerification() {
           {/* Login Link */}
           <div className="text-center mt-6">
             <span className="text-black">Already have an account? </span>
-            <Link to="/login" className="text-blue-600 hover:text-blue-800 font-semibold">
+            <Link to="/login" className="text-secondary hover:text-secondary-hover font-semibold">
               Login
             </Link>
           </div>
@@ -178,7 +178,7 @@ function OTPVerification() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-[#4B663B] mb-2">Email Verified!</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Email Verified!</h3>
             </div>
             
             {/* Message Content */}
@@ -196,7 +196,7 @@ function OTPVerification() {
               <Link to="/personal-info">
                 <button
                   onClick={handleCloseModal}
-                  className="bg-[#4B663B] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#6B8E23] transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="bg-secondary text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-hover transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
                   Continue
                 </button>
@@ -214,7 +214,7 @@ function OTPVerification() {
             <p className="text-gray-600 text-sm mb-4">
               You've tried resending 3 times. Is your email address correct?
             </p>
-            <p className="text-1g font-bold  text-[#4B663B] mb-4 text-center">
+            <p className="text-1g font-bold  text-foreground mb-4 text-center">
               {email}
             </p>
             <div className="flex gap-3 justify-end">
@@ -226,7 +226,7 @@ function OTPVerification() {
               </button>
               <button
                 onClick={handleEmailCorrect}
-                className="bg-[#4B663B] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#6B8E23] transition-colors duration-200"
+                className="bg-secondary text-white px-4 py-2 rounded-lg font-semibold hover:bg-secondary-hover transition-colors duration-200"
               >
                 Yes, Resend
               </button>

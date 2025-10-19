@@ -17,9 +17,9 @@ function Login() {
       <div className="w-full max-w-md p-4">
 
         {/* Login Card */}
-        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border hover:border-[#4B663B] transition-colors" >
+        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border border-gray-300 transition-colors" >
           {/* Login Title */}
-          <h2 className="text-3xl tracking-tighter text-[#4B663B] mb-6 text-center font-bold">
+          <h2 className="text-3xl tracking-tighter text-foreground mb-6 text-center font-bold">
             Login
           </h2>
 
@@ -33,7 +33,7 @@ function Login() {
               <input
                 type="text"
                 placeholder="Enter your Email"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
               />
             </div>
 
@@ -46,7 +46,7 @@ function Login() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  className="w-full px-3 py-2 border-1 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent pr-10"
+                  className="w-full px-3 py-2 border-1 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent pr-10"
                 />
                 <button
                   type="button"
@@ -67,11 +67,11 @@ function Login() {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="mr-2 text-[#556B2F] focus:ring-[#556B2F]"
+                    className="mr-2 text-secondary focus:ring-secondary"
                 />
                 <span className="text-black">Remember Me</span>
               </label>
-              <Link to="/forgot-password" className="text-blue-600 hover:text-blue-800">
+              <Link to="/forgot-password" className="text-secondary hover:text-secondary-hover">
                 Forgot Password?
               </Link>
             </div>
@@ -82,7 +82,7 @@ function Login() {
             >
               <button
                 type="button"
-                className="w-full bg-[#556B2F] text-white py-2 rounded-lg font-semibold hover:bg-[#6B8E23] transition-colors duration-200"
+                className="w-full bg-secondary text-white py-2 rounded-lg font-semibold hover:bg-secondary-hover transition-colors duration-200"
               >
                 Login
               </button>
@@ -97,7 +97,7 @@ function Login() {
           </div>
 
           {/* Google Login Button */}
-          <button className="w-full bg-white border-2 border-gray-300 text-black py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center">
+          <button className="w-full bg-white border-2 border-gray-300 text-foreground py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center">
             <img src="/assets/images/google.png" alt="Google" className="w-8 h-8 mr-3" />
             Continue with Google
           </button>

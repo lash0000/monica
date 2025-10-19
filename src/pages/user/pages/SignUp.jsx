@@ -29,7 +29,7 @@ function SignUp() {
         {/* SignUp Card */}
         <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-[#4B663B]">
         {/* SignUp Title */}
-        <h2 className="text-2xl font-serif text-[#556B2F] mb-2 text-center font-bold">
+        <h2 className="text-2xl font-serif text-secondary mb-2 text-center font-bold">
           Create Account
         </h2>
         
@@ -51,7 +51,7 @@ function SignUp() {
               value={formData.email}
               onChange={handleInputChange}
               placeholder="Example@gmail.com"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
               required
             />
           </div>
@@ -65,7 +65,7 @@ function SignUp() {
           >
             <button
               type="button"
-              className="w-full bg-[#556B2F] text-white py-2 rounded-lg font-semibold hover:bg-[#6B8E23] transition-colors duration-200"
+              className="w-full bg-secondary text-white py-2 rounded-lg font-semibold hover:bg-secondary-hover transition-colors duration-200"
             >
               Next
             </button>
@@ -80,7 +80,7 @@ function SignUp() {
         </div>
         
         {/* Google Login Button */}
-        <button className="w-full bg-white border-2 border-gray-300 text-black py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center">
+        <button className="w-full bg-white border-2 border-gray-300 text-foreground py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center">
           <img src="/assets/images/google.png" alt="Google" className="w-8 h-8 mr-3" />
           Continue with Google
         </button>

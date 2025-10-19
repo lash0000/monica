@@ -285,7 +285,7 @@ function Ticket() {
                             <div className="text-3xl font-bold text-gray-800">{totalTickets}</div>
                             <div className="text-xs text-gray-500 mt-1">All incidents you've submitted</div>
                         </div>
-                        <div className="text-[#4B663B]">
+                        <div className="text-secondary">
                             <FaChartBar className="w-8 h-8" />
                         </div>
                     </div>
@@ -313,7 +313,7 @@ function Ticket() {
                             <div className="text-3xl font-bold text-gray-800">{resolvedTickets}</div>
                             <div className="text-xs text-gray-500 mt-1">Incidents validated by officials</div>
                         </div>
-                        <div className="text-[#4B663B]">
+                        <div className="text-green-600">
                             <FaCheck className="w-8 h-8" />
                         </div>
                     </div>
@@ -368,7 +368,7 @@ function Ticket() {
                                         <div key={urgency} className="flex flex-col items-center flex-1 mx-0.5 sm:mx-1 relative z-10">
                                             {/* Bar */}
                                             <div 
-                                                className="bg-[#4B663B] w-6 sm:w-8 rounded-t-sm transition-all duration-700 ease-out shadow-sm"
+                                                className="bg-secondary w-6 sm:w-8 rounded-t-sm transition-all duration-700 ease-out shadow-sm"
                                                 style={{ height: `${barHeight}%`, minHeight: total > 0 ? '6px' : '0px' }}
                                             ></div>
                                             {/* Value label on top of bar */}
@@ -401,9 +401,9 @@ function Ticket() {
                         {/* CSS Pie Chart */}
                         <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full mb-3" style={{
                             background: `conic-gradient(
-                                #4B663B 0deg ${(resolvedTickets / totalTickets) * 360}deg,
+                                var(--secondary) ${0}deg ${(resolvedTickets / totalTickets) * 360}deg,
                                 #F3A811FF ${(resolvedTickets / totalTickets) * 360}deg ${((resolvedTickets + pendingTickets) / totalTickets) * 360}deg,
-                                #dc2626 ${((resolvedTickets + pendingTickets) / totalTickets) * 360}deg 360deg
+                                var(--destructive) ${((resolvedTickets + pendingTickets) / totalTickets) * 360}deg 360deg
                             )`
                         }}>
                             <div className="absolute inset-2 sm:inset-3 bg-white rounded-full flex items-center justify-center">
@@ -418,7 +418,7 @@ function Ticket() {
                         <div className="space-y-1 text-xs">
                             <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center">
-                                    <div className="w-2 h-2 bg-[#4B663B] rounded mr-2"></div>
+                                    <div className="w-2 h-2 bg-secondary rounded mr-2"></div>
                                     <span>Confirmed</span>
                                 </div>
                                 <span className="font-semibold ml-3">{((resolvedTickets / totalTickets) * 100).toFixed(1)}%</span>

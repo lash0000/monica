@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaBell, FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaBell, FaUser, FaSignOutAlt, FaBars } from 'react-icons/fa';
 
-export function FloatingTopBar({ isSidebarCollapsed }) {
+export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const notificationRef = useRef(null);
@@ -32,9 +32,17 @@ export function FloatingTopBar({ isSidebarCollapsed }) {
   };
 
   return (
-    <div className={`fixed top-0 z-50 flex items-center justify-between bg-white shadow-lg p-3 border-b border-gray-200 transition-all duration-300 ${isSidebarCollapsed ? 'left-16 right-0' : 'left-64 right-0'}`}>
-      {/* Left side - Page title and action button */}
+    <div className={`fixed top-0 z-50 flex items-center justify-between bg-white shadow-lg p-3 border-b border-gray-200 transition-all duration-300 ${isSidebarCollapsed ? 'md:left-16' : 'md:left-64'} left-0 right-0`}>
+      {/* Left side - Burger menu (mobile) and Page title */}
       <div className="flex items-center space-x-4">
+        {/* Burger Menu - Only visible on mobile */}
+        <button
+          onClick={onMobileMenuToggle}
+          className="md:hidden p-2 text-gray-700 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+        >
+          <FaBars className="w-5 h-5" />
+        </button>
+        
         {location.pathname === '/ticket' && (
           <>
             <h1 className="text-3xl font-bold text-gray-800 ml-5">Dashboard</h1>

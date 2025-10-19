@@ -19,14 +19,18 @@ const LandingRoutes = () => [
   <Route path="/" element={<Public_Layout />}>
     <Route index element={<Landingv2 />} />
     <Route path="/emergency-hotlines" element={<EmergencyHotlines />} />
-  </Route>,
-
-  // User Credentials
+    
+    // User Credentials
   <Route path="/login" element={<Login />} />,
   <Route path="/signup" element={<SignUp />} />,
   <Route path="/forgot-password" element={<ForgotPassword />} />,
   <Route path="/personal-info" element={<PersonalInfo />} />,
   <Route path="/otp-verification" element={<OTPVerification />} />,
+
+
+  </Route>,
+
+
 
   // Reuse soon for admin side (This is wrong for user side)
   <Route path="/" element={<Authenticated_Layout />}>

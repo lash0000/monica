@@ -8,7 +8,7 @@ import { useState, useRef, useEffect } from 'react';
 export function Navbar_Public() {
   return (
     <div id="nav-wrapper" className="sticky top-0 z-50 w-full">
-      <nav className="p-3 lg:p-4 shadow-2xs w-full" style={{ backgroundColor: '#4B663B' }}>
+      <nav className="p-3 lg:p-4 shadow-2xs w-full bg-foreground">
         <div className="max-w-7xl lg:max-w-[1200px] xl:max-w-[1600px] 2xl:max-w-[1800px] mx-auto flex justify-between items-center">
           {/* Logo/Brand */}
           <div className="flex items-center">
@@ -70,7 +70,7 @@ export function Navbar_Authenticated() {
 
   return (
     <div id="nav-wrapper" className="sticky top-0 z-50 w-full">
-      <nav className="p-3 lg:p-4 shadow-2xs w-full" style={{ backgroundColor: '#4B663B' }}>
+      <nav className="p-3 lg:p-4 shadow-2xs w-full bg-foreground">
         <div className="max-w-7xl lg:max-w-[1200px] xl:max-w-[1600px] 2xl:max-w-[1800px] mx-auto flex justify-between items-center">
           {/* Left Side - Logo and Burger Menu */}
           <div className="flex items-center space-x-4">
@@ -153,7 +153,7 @@ export function Navbar_Authenticated() {
                     </div>
                   </div>
                   <div className="px-4 py-3 border-t border-gray-100">
-                    <Link to="/notifications" className="text-sm text-[#4B663B] hover:text-[#3a5230] font-medium">
+                    <Link to="/notifications" className="text-sm text-foreground hover:text-foreground/80 font-medium">
                       View all notifications
                     </Link>
                   </div>
@@ -227,7 +227,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="text-white py-16 xl:py-20 px-6 xl:px-8 bg-[#4B663B]" >
+    <footer className="text-white py-16 xl:py-20 px-6 xl:px-8 bg-foreground border-t border-gray-300" >
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 xl:gap-16">
        
         {/* Services */}

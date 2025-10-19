@@ -13,7 +13,7 @@ function SuccessModal({ isOpen, onClose, title, message, subMessage, actionText,
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 className="text-2xl font-bold text-[#4B663B] mb-2">{title}</h3>
+          <h3 className="text-2xl font-bold text-foreground mb-2">{title}</h3>
         </div>
         
         {/* Message Content */}
@@ -24,7 +24,7 @@ function SuccessModal({ isOpen, onClose, title, message, subMessage, actionText,
           <p className="text-gray-600 text-sm mb-2">
             {subMessage}
           </p>
-          <p className="text-[#4B663B] font-semibold text-1g">
+          <p className="text-foreground font-semibold text-1g">
             Welcome to our platform!
           </p>
         </div>
@@ -34,7 +34,7 @@ function SuccessModal({ isOpen, onClose, title, message, subMessage, actionText,
           <Link to={actionLink}>
             <button
               onClick={onClose}
-              className="bg-[#4B663B] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#6B8E23] transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="bg-secondary text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-hover transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               {actionText}
             </button>
