@@ -13,6 +13,7 @@ import Ticket from '../pages/Ticket';
 import Landingv2 from '../pages/LandingV2';
 import EmergencyHotlines from '../pages/EmergencyHotlines';
 import FileTicket from '../pages/FileTicket';
+import ProfileUser from '../pages/ProfileUser';
 
 const LandingRoutes = () => [
   // Public Routes
@@ -23,9 +24,10 @@ const LandingRoutes = () => [
     // User Credentials
   <Route path="/login" element={<Login />} />,
   <Route path="/signup" element={<SignUp />} />,
-  <Route path="/forgot-password" element={<ForgotPassword />} />,
+  <Route path="/forgotpassword" element={<ForgotPassword />} />,
   <Route path="/personal-info" element={<PersonalInfo />} />,
   <Route path="/otp-verification" element={<OTPVerification />} />,
+  <Route path="/profileuser" element={<ProfileUser />} />,
 
 
   </Route>,
@@ -38,6 +40,7 @@ const LandingRoutes = () => [
     <Route path="/ticket" element={<Ticket />} />
     <Route path="/file-ticket" element={<FileTicket />} />
     <Route path="/e-application" element={<NewPage />} />
+    
   </Route>,
 ]
 

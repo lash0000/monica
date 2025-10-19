@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { FaUpload, FaMapMarkerAlt, FaPaperPlane, FaTimes, FaSearch } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPaperPlane, FaTimes, FaSearch } from 'react-icons/fa';
+import { FaFileMedical } from 'react-icons/fa6';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -93,6 +94,7 @@ const styles = {
 };
 
 function FileTicket() {
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB per file
   const [formData, setFormData] = useState({
     subject: '',
     category: '',
@@ -141,8 +143,13 @@ function FileTicket() {
   const handleFileChange = useCallback((e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
+    const validFiles = files.filter(f => f.size <= MAX_FILE_SIZE);
+    const rejected = files.filter(f => f.size > MAX_FILE_SIZE);
+    if (rejected.length > 0) {
+      alert(`Some files exceed 10 MB and were skipped:\n${rejected.map(r => r.name).join('\n')}`);
+    }
 
-    const newFiles = [...selectedFiles, ...files];
+    const newFiles = [...selectedFiles, ...validFiles];
     setSelectedFiles(newFiles);
 
     // Update form data with file names
@@ -150,7 +157,7 @@ function FileTicket() {
     setFormData(prev => ({ ...prev, attachment: fileNames }));
 
     // Create preview URLs for new files - batch processing
-    const previewPromises = files.map(file =>
+    const previewPromises = validFiles.map(file =>
       new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => resolve({
@@ -216,17 +223,17 @@ function FileTicket() {
     {
       name: 'Sta. Monica Barangay Hall, Commonwealth, QC',
       subtitle: 'Local government office',
-      coordinates: '14.6760,121.0437'
+      coordinates: '14.7255,121.0434'
     },
     {
       name: 'Sta. Monica Church, Commonwealth, QC',
       subtitle: 'Parish church',
-      coordinates: '14.6755,121.0442'
+      coordinates: '14.7221,121.0414'
     },
     {
       name: 'Sta. Monica Elementary School, Commonwealth, QC',
       subtitle: 'Public school',
-      coordinates: '14.6758,121.0445'
+      coordinates: '14.7255,121.0434'
     },
     {
       name: 'Sta. Monica Covered Court, Commonwealth, QC',
@@ -346,7 +353,7 @@ function FileTicket() {
               name="subject"
               value={formData.subject}
               onChange={handleInputChange}
-              placeholder="e.g. Streetlight Outage in (prefix-street)"
+              placeholder="Subject"
               required
               style={styles.input}
             />
@@ -360,25 +367,26 @@ function FileTicket() {
               value={formData.category}
               onChange={handleInputChange}
               required
-              style={{ ...styles.input, backgroundColor: 'white' }}
+              style={{ ...styles.input, backgroundColor: 'white', color: formData.category ? '#111827' : '#9ca3af' }}
             >
-              <option value="">Select a category</option>
-              <option value="infrastructure">Infrastructure</option>
-              <option value="safety">Safety</option>
-              <option value="environmental">Environmental</option>
-              <option value="maintenance">Maintenance</option>
-              <option value="other">Other</option>
+              <option value="" disabled style={{ display: 'none' }}>Select</option>
+              <option value="Healthcare" style={{ color: '#111827' }}>Healthcare</option>
+              <option value="infrastructure" style={{ color: '#111827' }}>Infrastructure</option>
+              <option value="safety" style={{ color: '#111827' }}>Safety</option>
+              <option value="environmental" style={{ color: '#111827' }}>Environmental</option>
+              <option value="maintenance" style={{ color: '#111827' }}>Maintenance</option>
+              <option value="other" style={{ color: '#111827' }}>Other</option>
             </select>
           </div>
 
-          {/* Detailed Description */}
+          {/* Concern Details */}
           <div style={styles.fieldContainer}>
-            <label style={styles.label}>Detailed Description *</label>
+            <label style={styles.label}>Concern Details *</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              placeholder="Provide a full description of your concern..."
+              placeholder="Ipahayag ang lahat ng mga detalye"
               required
               rows="4"
               style={{ ...styles.input, resize: 'vertical' }}
@@ -388,21 +396,15 @@ function FileTicket() {
           {/* Attachment */}
           <div style={styles.fieldContainer}>
             <label style={styles.label}>Attachment (Optional)</label>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <input
-                type="text"
-                name="attachment"
-                value={formData.attachment}
-                readOnly
-                placeholder="Upload files using the button →"
-                style={{
-                  ...styles.input,
-                  flex: '1',
-                  backgroundColor: '#f9fafb',
-                  cursor: 'not-allowed',
-                  color: '#6b7280'
-                }}
-              />
+            {/* Drop/Upload box */}
+            <div style={{
+              border: '2px dashed #e5e7eb',
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              padding: '1.5rem',
+              textAlign: 'center',
+              color: '#6b7280'
+            }}>
               <input
                 type="file"
                 id="file-upload"
@@ -411,198 +413,83 @@ function FileTicket() {
                 onChange={handleFileChange}
                 style={{ display: 'none' }}
               />
-              <label htmlFor="file-upload" style={styles.iconButton}>
-                <FaUpload style={{ color: '#4B663B' }} />
-              </label>
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                <FaFileMedical />
+              </div>
+              <div style={{ fontWeight: 600 }}>Upload files</div>
+              <div style={{ fontSize: '0.875rem' }}>Drag and drop or click to browse</div>
+              <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '0.25rem' }}>Maximum of 10MB</div>
+              <label htmlFor="file-upload" style={{ display: 'inline-block', marginTop: '0.75rem', padding: '0.5rem 0.9rem', backgroundColor: '#4B663B', color: 'white', borderRadius: '6px', cursor: 'pointer', fontSize: '0.875rem', fontWeight: 600 }}>Browse files</label>
             </div>
 
-            {/* Image Previews */}
-            {imagePreviews.length > 0 && (
-              <div style={{ marginTop: '1rem' }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '0.5rem'
-                }}>
-                  <span style={{
-                    fontSize: '0.875rem',
-                    fontWeight: '600',
-                    color: '#374151'
-                  }}>
-                    Preview ({imagePreviews.length} image{imagePreviews.length > 1 ? 's' : ''}):
-                  </span>
-                  <button
-                    type="button"
-                    onClick={clearAllImages}
-                    style={{
-                      backgroundColor: '#ef4444',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      padding: '0.25rem 0.5rem',
-                      fontSize: '0.75rem',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    Clear All
-                  </button>
-                </div>
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-                  gap: '0.75rem'
-                }}>
-                  {imagePreviews.map((preview) => (
-                    <div key={preview.id} style={{ position: 'relative' }}>
-                      <img
-                        src={preview.url}
-                        alt="Preview"
-                        onClick={() => openImageModal(preview)}
-                        style={{
-                          width: '100%',
-                          height: '120px',
-                          borderRadius: '6px',
-                          border: '1px solid #d1d5db',
-                          objectFit: 'cover',
-                          cursor: 'pointer',
-                          transition: 'transform 0.2s'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.transform = 'scale(1.02)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.transform = 'scale(1)';
-                        }}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(preview.id)}
-                        style={{
-                          position: 'absolute',
-                          top: '4px',
-                          right: '4px',
-                          backgroundColor: '#ef4444',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '50%',
-                          width: '20px',
-                          height: '20px',
-                          fontSize: '12px',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                        title="Remove image"
-                      >
-                        ×
-                      </button>
-                      <div style={{
-                        fontSize: '0.75rem',
-                        color: '#6b7280',
-                        marginTop: '0.25rem',
-                        textAlign: 'center',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                      }}>
-                        {preview.name}
-                      </div>
+            {/* File list */}
+            {selectedFiles.length > 0 && (
+              <div style={{ marginTop: '0.75rem' }}>
+                {selectedFiles.map((file, idx) => (
+                  <div key={`${file.name}-${idx}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 0.9rem', border: '1px solid #e5e7eb', borderRadius: '8px', marginBottom: '0.5rem', backgroundColor: 'white' }}>
+                    <div style={{ overflow: 'hidden' }}>
+                      <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#111827', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '480px' }}>{file.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>{(file.size / (1024 * 1024)).toFixed(2)} MB</div>
                     </div>
-                  ))}
-                </div>
+                    <button type="button" onClick={() => removeImage(imagePreviews[idx]?.id || Date.now())} style={{ border: 'none', background: 'transparent', color: '#111827', cursor: 'pointer', padding: 0 }}>×</button>
+                  </div>
+                ))}
               </div>
             )}
           </div>
 
-          {/* Location */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '0.875rem',
-              fontWeight: '600',
-              color: '#374151',
-              marginBottom: '0.5rem'
-            }}>
-              Location *
-            </label>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <input
-                type="text"
-                name="location"
-                value={formData.location}
-                onChange={handleInputChange}
-                placeholder="Event location"
-                required
-                style={{
-                  flex: '1',
-                  padding: '0.75rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '6px',
-                  fontSize: '0.875rem',
-                  outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              />
-              <button
-                type="button"
-                onClick={() => setShowLocationModal(true)}
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  border: '2px solid #4B663B',
-                  borderRadius: '6px',
-                  backgroundColor: '#f0fdf4',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer'
-                }}
-              >
-                <FaMapMarkerAlt style={{ color: '#4B663B' }} />
-              </button>
-            </div>
-          </div>
-
-          {/* Maintenance Needed */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '0.875rem',
-              fontWeight: '600',
-              color: '#374151',
-              marginBottom: '0.5rem'
-            }}>
-              Maintenance Needed *
-            </label>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '0.75rem'
-            }}>
-              {maintenanceTypes.map((type) => (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={() => handleMaintenanceSelect(type)}
+          {/* Location (commented out to hide from UI) */}
+          {false && (
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '0.875rem',
+                fontWeight: '600',
+                color: '#374151',
+                marginBottom: '0.5rem'
+              }}>
+                Location *
+              </label>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  placeholder="Event location"
+                  required
                   style={{
+                    flex: '1',
                     padding: '0.75rem',
-                    border: selectedMaintenance === type ? '2px solid #059669' : '1px solid #d1d5db',
+                    border: '1px solid #d1d5db',
                     borderRadius: '6px',
-                    backgroundColor: selectedMaintenance === type ? '#f0fdf4' : 'white',
-                    color: selectedMaintenance === type ? '#059669' : '#374151',
                     fontSize: '0.875rem',
-                    fontWeight: selectedMaintenance === type ? '600' : '400',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s'
+                    outline: 'none',
+                    boxSizing: 'border-box'
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowLocationModal(true)}
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    border: '2px solid #4B663B',
+                    borderRadius: '6px',
+                    backgroundColor: '#f0fdf4',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer'
                   }}
                 >
-                  {type}
+                  <FaMapMarkerAlt style={{ color: '#4B663B' }} />
                 </button>
-              ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Maintenance Needed - removed from UI as requested */}
 
           {/* Persons Involved */}
           <div style={{ marginBottom: '2rem' }}>
@@ -634,7 +521,22 @@ function FileTicket() {
           </div>
 
           {/* Submit Button */}
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+            <button
+              type="button"
+              onClick={clearAllImages}
+              style={{
+                backgroundColor: 'white',
+                color: '#111827',
+                border: '1px solid #e5e7eb',
+                borderRadius: '6px',
+                padding: '0.6rem 1rem',
+                fontWeight: 600,
+                cursor: 'pointer'
+              }}
+            >
+              Clear All
+            </button>
             <button type="submit" style={styles.button}>
               <FaPaperPlane />
               Submit Ticket
