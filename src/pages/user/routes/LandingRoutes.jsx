@@ -13,6 +13,7 @@ import Ticket from '../pages/Ticket';
 import Landingv2 from '../pages/LandingV2';
 import EmergencyHotlines from '../pages/EmergencyHotlines';
 import FileTicket from '../pages/FileTicket';
+import ProfileUser from '../pages/ProfileUser';
 
 const LandingRoutes = () => [
   // Public Routes
@@ -27,6 +28,7 @@ const LandingRoutes = () => [
   <Route path="/forgotpassword" element={<ForgotPassword />} />,
   <Route path="/personal-info" element={<PersonalInfo />} />,
   <Route path="/otp-verification" element={<OTPVerification />} />,
+  <Route path="/profileuser" element={<ProfileUser />} />,
 
   // Reuse soon for admin side (This is wrong for user side)
   <Route path="/" element={<Authenticated_Layout />}>
@@ -34,6 +36,7 @@ const LandingRoutes = () => [
     <Route path="/ticket" element={<Ticket />} />
     <Route path="/file-ticket" element={<FileTicket />} />
     <Route path="/e-application" element={<NewPage />} />
+    
   </Route>,
 ]
 
