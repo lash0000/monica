@@ -75,7 +75,7 @@ function Dashboard() {
                     {/* Feature Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
                         {/* Purple Card - Traffic Category (Added hover effects) */}
-                        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg min-h-[280px] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
+                        <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg min-h-[280px] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
                             <span className="inline-block bg-opacity-30 text-white text-xs px-3 py-1 rounded-full mb-4 self-start border border-white border-opacity-40 font-medium">
                                 Traffic Advisory
                             </span>
@@ -102,7 +102,7 @@ function Dashboard() {
                         </div>
 
                         {/* Pink Card - Crime Category (Added hover effects) */}
-                        <div className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg min-h-[280px] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
+                        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg min-h-[280px] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
                             <span className="inline-block bg-opacity-30 text-white text-xs px-3 py-1 rounded-full mb-4 self-start border border-white border-opacity-40 font-medium">
                                 Prevention
                             </span>
@@ -127,7 +127,7 @@ function Dashboard() {
                         <button 
                             onClick={() => setIsPopupOpen(true)}
                             // Added hover:scale-105 and duration-200
-                            className="bg-teal-700 hover:bg-teal-800 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200 text-sm font-medium hover:scale-105"
+                            className="bg-indigo-600 hover:indigo-800 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200 text-sm font-medium hover:scale-105"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -210,7 +210,7 @@ function Dashboard() {
 
             {/* Popup Modal (No blur/dimming was requested, keeping original) */}
             {isPopupOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
                         {/* Header */}
                         <div className="bg-teal-600 text-white p-4 rounded-t-lg">
