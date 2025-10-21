@@ -49,100 +49,47 @@ function Landing() {
 
   // Stamonica images for carousel
   const stamonicaImages = [
-    {
-      src: "/assets/images/Introduction/stamonica.png",
-      alt: "Barangay Santa Monica"
-    },
-    {
-      src: "/assets/images/Introduction/stamonica1.png",
-      alt: "Santa Monica Community"
-    },
-    {
-      src: "/assets/images/Introduction/stamonica2.jpg",
-      alt: "Santa Monica Events"
-    },
-    {
-      src: "/assets/images/Introduction/stamonica3.png",
-      alt: "Santa Monica Facilities"
-    },
-    {
-      src: "/assets/images/Introduction/stamonica4.png",
-      alt: "Santa Monica Activities"
-    },
-    {
-      src: "/assets/images/Introduction/stamonica5.png",
-      alt: "Santa Monica Officials"
-    }
+    { src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9SKekMFa6yVRKHcg29ijZBfrsW1qYATFJEwdG4", alt: "Barangay Santa Monica" },
+    { src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9SkFuTOKMjR9Sum2irp60Ffowqc8EhXZTDyQPB", alt: "Santa Monica Community" },
+    { src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9S3jdkG8HFqW15xQ07Tp3SLu9gblVknyem2AMB", alt: "Santa Monica Events" },
+    { src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9SBC4WZKz7AcQv5CEP0wS83WnVOmgMrzK2GJLI", alt: "Santa Monica Facilities" },
+    { src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9SEmNNJK4XFf6uphiTmYtD8vUajRlgIHQ4Zn1o", alt: "Santa Monica Activities" },
+    { src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9S9Y24Q8yOr5v8aLJlxY7BX9sNGkoWV3Cm2O4t", alt: "Santa Monica Officials" },
   ];
+
 
   // News & Events data for carousel
   const emergencyImages = [
     {
       id: 1,
-      src: "/assets/images/news/ceremony.jpg",
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9S43ZecMWXepnisxGfYvdhZCamA9gBL6EN73R8",
       alt: "Community Ceremony",
       title: "Annual Community Recognition Ceremony",
-      shortDescription: "Barangay Santa Monica honored outstanding community members and volunteers who have made significant contributions to our neighborhood's development and safety.",
       date: "December 15, 2024",
       time: "2:00 PM",
-      author: "Barangay Santa Monica",
-      fullContent: "The Annual Community Recognition Ceremony brought together residents, officials, and volunteers to celebrate the achievements of our outstanding community members. Awards were given to individuals who showed exceptional dedication in community service, youth development, and neighborhood safety initiatives. The event highlighted the spirit of unity and cooperation that makes Barangay Santa Monica a model community."
+      shortDescription:
+        "Barangay Santa Monica honored outstanding community members and volunteers who have made significant contributions.",
     },
     {
       id: 2,
-      src: "/assets/images/news/strong_families_program.jpg",
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9SxDc4UmRWcfU9ngx4iY5PjwC3Bk0K8mF6lIZb",
       alt: "Strong Families Program",
       title: "Strong Families Program Launch",
-      shortDescription: "A comprehensive family development program was launched to strengthen family bonds and provide support services to households in our barangay.",
       date: "November 28, 2024",
       time: "9:00 AM",
-      author: "Social Services Office",
-      fullContent: "The Strong Families Program is a new initiative aimed at providing comprehensive support to families in Barangay Santa Monica. The program includes parenting workshops, family counseling services, educational assistance, and livelihood training opportunities. This community-driven approach ensures that every family has access to resources that promote stability, growth, and overall well-being."
+      shortDescription:
+        "A comprehensive family development program launched to strengthen family bonds and support households in our barangay.",
     },
     {
       id: 3,
-      src: "/assets/images/news/general_assembly.jpg",
-      alt: "General Assembly Meeting",
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9S3ekbqIHFqW15xQ07Tp3SLu9gblVknyem2AMB",
+      alt: "General Assembly",
       title: "Quarterly General Assembly Meeting",
-      shortDescription: "Residents gathered for the quarterly assembly to discuss community projects, budget allocations, and upcoming initiatives for the next quarter.",
       date: "October 20, 2024",
       time: "7:00 PM",
-      author: "Barangay Council",
-      fullContent: "The Quarterly General Assembly brought together over 200 residents to discuss important community matters. Key topics included the completion of new infrastructure projects, budget transparency reports, upcoming development plans, and resident feedback on various barangay services. The meeting emphasized the importance of community participation in local governance and decision-making processes."
+      shortDescription:
+        "Residents gathered for the quarterly assembly to discuss community projects and budget allocations.",
     },
-    {
-      id: 4,
-      src: "/assets/images/news/fiesta.jpg",
-      alt: "Barangay Fiesta Celebration",
-      title: "Barangay Santa Monica Annual Fiesta",
-      shortDescription: "The community came together to celebrate our annual fiesta with cultural performances, local food, games, and activities for the whole family.",
-      date: "September 8, 2024",
-      time: "All Day",
-      author: "Fiesta Committee",
-      fullContent: "The Annual Barangay Fiesta was a spectacular celebration of our community's rich culture and traditions. The three-day event featured local artists, traditional dances, music performances, food festivals, and various competitions. Families enjoyed carnival rides, games, and special activities designed for all ages. The fiesta strengthened community bonds and showcased the vibrant spirit of Barangay Santa Monica."
-    },
-    {
-      id: 5,
-      src: "/assets/images/news/brgy_meeting.jpg",
-      alt: "Barangay Meeting",
-      title: "Emergency Preparedness Planning Meeting",
-      shortDescription: "Local officials and emergency response teams met to review and update disaster preparedness protocols and community safety measures.",
-      date: "August 15, 2024",
-      time: "10:00 AM",
-      author: "Emergency Response Team",
-      fullContent: "The Emergency Preparedness Planning Meeting focused on enhancing our community's resilience against natural disasters and emergencies. Officials reviewed evacuation procedures, updated emergency contact lists, and discussed new safety equipment acquisitions. The meeting also addressed resident training programs for disaster response and the establishment of neighborhood emergency coordinators to ensure effective communication during crisis situations."
-    },
-    {
-      id: 6,
-      src: "/assets/images/news/kap_award.jpg",
-      alt: "Kapitan Award Ceremony",
-      title: "Outstanding Leadership Award Ceremony",
-      shortDescription: "Barangay Captain Charles D.J. Manalad received recognition for exceptional leadership and community development achievements.",
-      date: "July 4, 2024",
-      time: "4:00 PM",
-      author: "City Government",
-      fullContent: "Barangay Captain Charles D.J. Manalad was honored with the Outstanding Leadership Award in recognition of his exceptional service and innovative approaches to community development. Under his leadership, Barangay Santa Monica has implemented numerous successful programs including digital governance initiatives, youth development projects, and environmental sustainability measures. The award ceremony highlighted the significant positive impact of dedicated public service on community growth."
-    }
   ];
 
   // Image carousel navigation functions
