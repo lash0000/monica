@@ -276,7 +276,7 @@ function Landing() {
       {/* Header Section with Background Carousel */}
       <section
         id="incident-report"
-        className="relative text-white py-16 xl:py-24 px-4 min-h-[70vh] xl:min-h-[90vh] flex items-center justify-center transition-all duration-1000 ease-in-out"
+        className="relative text-white py-16 xl:py-24 px-4 min-h-[70vh] xl:min-h-[90vh] flex items-center justify-center transition-all duration-1000 ease-in-out hidden"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${stamonicaImages[currentImage].src}')`,
           backgroundSize: 'cover',

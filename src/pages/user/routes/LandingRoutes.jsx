@@ -13,6 +13,7 @@ import EmergencyHotlines from '../pages/EmergencyHotlines';
 import FileTicket from '../pages/FileTicket';
 import ProfileUser from '../pages/ProfileUser';
 import CheckRegisterAuth from '../../../lib/CheckRegisterAuth';
+import CheckAuth from '../../../lib/CheckAuth';
 
 const LandingRoutes = () => [
   // Public Routes
