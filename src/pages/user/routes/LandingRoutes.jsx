@@ -13,6 +13,7 @@ import EmergencyHotlines from '../pages/EmergencyHotlines';
 import FileTicket from '../pages/FileTicket';
 import ProfileUser from '../pages/ProfileUser';
 import E_app_Apply from '../pages/E-app_Apply';
+import E_app_Bonafied from '../pages/E-app_Bonafied';
 import CheckRegisterAuth from '../../../lib/CheckRegisterAuth';
 import CheckAuth from '../../../lib/CheckAuth';
 
@@ -28,6 +29,7 @@ const LandingRoutes = () => [
     <Route path="otp-verification" element={<CheckRegisterAuth><OTPVerification /></CheckRegisterAuth>} />
     <Route path="profileuser" element={<ProfileUser />} />
     <Route path="e-application" element={<CheckAuth><E_app_Apply /></CheckAuth>} />
+    <Route path="bonafied-application" element={<CheckAuth><E_app_Bonafied /></CheckAuth>} />
   </Route>,
 ]
 
