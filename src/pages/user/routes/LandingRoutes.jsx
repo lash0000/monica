@@ -28,8 +28,6 @@ const LandingRoutes = () => [
     <Route path="personal-info" element={<PersonalInfo />} />
     <Route path="otp-verification" element={<CheckRegisterAuth><OTPVerification /></CheckRegisterAuth>} />
     <Route path="profileuser" element={<ProfileUser />} />
-    <Route path="e-application" element={<CheckAuth><E_app_Apply /></CheckAuth>} />
-    <Route path="bonafied-application" element={<CheckAuth><E_app_Bonafied /></CheckAuth>} />
   </Route>,
 ]
 
