@@ -1,84 +1,103 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useRegisterAuth } from "../stores/register-store";
+import { useNavigate } from "react-router-dom";
 
 function OTPVerification() {
-  const location = useLocation();
-  const email = location.state?.email || 'user@example.com';
-  const [otp, setOtp] = useState(['', '', '', '', '']);
+  const { generateOtp, verifyOtp, clear } = useRegisterAuth();
+  const navigate = useNavigate();
+  const email = sessionStorage.getItem("register_email") || "user@example.com";
+
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]); // 6 digits
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [timer, setTimer] = useState(5);
   const [canResend, setCanResend] = useState(false);
   const [resendCount, setResendCount] = useState(0);
   const [showEmailCheckModal, setShowEmailCheckModal] = useState(false);
 
+  const [verifying, setVerifying] = useState(false);
+  const [resending, setResending] = useState(false);
+
   const handleOtpChange = (index, value) => {
-    if (value.length > 1) return; // Only allow single digit
-    
+    if (value.length > 1) return;
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
 
-    // Auto-focus next input
-    if (value && index < 4) {
+    if (value && index < 5) {
       const nextInput = document.getElementById(`otp-${index + 1}`);
       if (nextInput) nextInput.focus();
     }
   };
 
   const handleKeyDown = (index, e) => {
-    // Handle backspace
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       const prevInput = document.getElementById(`otp-${index - 1}`);
       if (prevInput) prevInput.focus();
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const otpString = otp.join('');
-    if (otpString.length === 5) {
-      console.log('OTP submitted:', otpString);
+    const otpString = otp.join("");
+
+    if (otpString.length !== 6) {
+      alert("Please enter the full 6-digit OTP code.");
+      return;
+    }
+
+    setVerifying(true);
+    try {
+      console.log("🔍 Verifying OTP for:", email);
+      console.log("➡️ OTP entered:", otpString);
+      console.log("🔐 otp_token:", sessionStorage.getItem("otp_token"));
+
+      const response = await verifyOtp(otpString);
+
+      console.log("✅ OTP Verification Response:", response);
+
       setShowSuccessModal(true);
+    } catch (err) {
+      console.error("❌ OTP Verification Error:", err);
+
+      // Show error modal instead of immediate alert
+      setErrorMessage(err.message || "Invalid OTP or token expired.");
+      setShowErrorModal(true);
+    } finally {
+      setVerifying(false);
     }
   };
 
-  const handleCloseModal = () => {
-    setShowSuccessModal(false);
-  };
+  const handleResendOTP = async () => {
+    if (!email) return alert("Missing email session.");
 
-  const handleResendOTP = () => {
-    console.log('Resending OTP to:', email);
-    setTimer(5);
-    setCanResend(false);
-    setResendCount(prev => prev + 1);
-    
-    // Check if resend count reaches 3
-    if (resendCount >= 2) { // 0-indexed, so 2 means 3rd attempt
-      setShowEmailCheckModal(true);
+    setResending(true);
+    try {
+      console.log("📨 Requesting new OTP for:", email);
+      const response = await generateOtp();
+      console.log("✅ OTP Generation Response:", response);
+
+      alert(`OTP re-sent to ${email}`);
+
+      setTimer(5);
+      setCanResend(false);
+      setResendCount((prev) => prev + 1);
+      if (resendCount >= 2) setShowEmailCheckModal(true);
+    } catch (err) {
+      console.error("❌ OTP Generation Error:", err);
+      alert(err.message || "Failed to resend OTP.");
+    } finally {
+      setResending(false);
     }
-    // Here you would typically call your API to resend the OTP
   };
 
-  const handleEmailCorrect = () => {
-    setShowEmailCheckModal(false);
-    setResendCount(0);
-    setTimer(5);
-    setCanResend(false);
-  };
-
-  const handleEmailIncorrect = () => {
-    setShowEmailCheckModal(false);
-    // Navigate back to email verification
-    window.location.href = '/email-verification';
-  };
-
-  // Timer effect
   useEffect(() => {
     let interval;
     if (timer > 0) {
-      interval = setInterval(() => {
-        setTimer(timer - 1);
-      }, 1000);
+      interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
     } else {
       setCanResend(true);
     }
@@ -87,33 +106,26 @@ function OTPVerification() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#ffffff]">
-      {/* Centered OTP Verification Form */}
       <div className="w-full max-w-md p-4">
-        
-        {/* OTP Verification Card */}
-        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border-1 border-gray-300">
-          
-          {/* Header */}
+        <div className="bg-white rounded-2xl p-6 w-full shadow-2xl border border-gray-300">
           <h2 className="text-2xl font-serif text-foreground mb-2 text-center font-bold">
             Verification Code
           </h2>
           <p className="text-gray-600 text-sm text-center mb-4">
-            Enter the 5-digit code sent to your email.
+            Enter the 6-digit code sent to your email.
           </p>
-          
-          {/* Display Email */}
+
           <div className="bg-gray-50 rounded-lg p-3 mb-6">
             <p className="text-sm text-gray-600 text-center">
-              Verification code will be sent to:
+              Verification code sent to:
             </p>
-            <p className="text-1g font-semibold  text-foreground text-center mt-1">
+            <p className="text-base font-semibold text-foreground text-center mt-1">
               {email}
             </p>
           </div>
-          
-          {/* Form */}
+
+          {/* OTP Input Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* OTP Input Fields */}
             <div className="flex justify-center gap-3">
               {otp.map((digit, index) => (
                 <input
@@ -121,26 +133,27 @@ function OTPVerification() {
                   id={`otp-${index}`}
                   type="text"
                   inputMode="numeric"
-                  pattern="[0-9]"
                   maxLength="1"
                   value={digit}
                   onChange={(e) => handleOtpChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
-                  required
+                  className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent"
                 />
               ))}
             </div>
-            
-            {/* Verify Button */}
+
             <button
               type="submit"
-              className="w-full bg-secondary text-white py-2 rounded-lg font-semibold hover:bg-secondary-hover transition-colors duration-200"
+              disabled={verifying}
+              className={`w-full bg-secondary text-white py-2 rounded-lg font-semibold transition-colors duration-200 ${verifying
+                ? "opacity-70 cursor-not-allowed"
+                : "hover:bg-secondary-hover"
+                }`}
             >
-              Verify
+              {verifying ? "Verifying..." : "Verify"}
             </button>
           </form>
-          
+
           {/* Resend OTP Section */}
           <div className="mt-6 text-center">
             {!canResend ? (
@@ -150,93 +163,111 @@ function OTPVerification() {
             ) : (
               <button
                 onClick={handleResendOTP}
-                className="text-secondary text-sm font-semibold hover:text-secondary-hover transition-colors duration-200 underline"
+                disabled={resending}
+                className={`text-secondary text-sm font-semibold underline ${resending
+                  ? "opacity-70 cursor-not-allowed"
+                  : "hover:text-secondary-hover"
+                  }`}
               >
-                Resend OTP
+                {resending ? "Sending..." : "Resend OTP"}
               </button>
             )}
           </div>
-          
-          {/* Login Link */}
+
           <div className="text-center mt-6">
             <span className="text-black">Already have an account? </span>
-            <Link to="/login" className="text-secondary hover:text-secondary-hover font-semibold">
+            <Link
+              to="/login"
+              className="text-secondary hover:text-secondary-hover font-semibold"
+            >
               Login
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Success Modal */}
+      {/* ✅ Success Modal */}
       {showSuccessModal && (
-        <div className="fixed inset-0 backdrop-blur-sm bg-transparent flex items-center justify-center z-50">
-          <div className="bg-white bg-opacity-95 backdrop-blur-md rounded-xl p-8 max-w-md mx-4 shadow-2xl border border-white border-opacity-20">
-            {/* Success Icon */}
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-8 max-w-md mx-4 shadow-2xl border border-green-200">
             <div className="text-center mb-6">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-8 h-8 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">Email Verified!</h3>
-            </div>
-            
-            {/* Message Content */}
-            <div className="text-center mb-8">
-              <p className="text-gray-700 text-base leading-relaxed mb-4">
-                Your email has been successfully verified.
-              </p>
+              <h3 className="text-2xl font-bold text-green-700 mb-2">
+                Email Verified!
+              </h3>
               <p className="text-gray-600 text-sm">
-                You can now continue with your registration process.
+                Your email <span className="font-semibold">{email}</span> has been verified.
               </p>
             </div>
-            
-            {/* Action Button */}
+
             <div className="flex justify-center">
-              <Link to="/personal-info">
-                <button
-                  onClick={handleCloseModal}
-                  className="bg-secondary text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-hover transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                >
-                  Continue
-                </button>
-              </Link>
+              <button
+                onClick={() => {
+                  clear();
+                  navigate("/login");
+                }}
+                className="bg-secondary text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-hover transition"
+              >
+                Continue
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Email Check Modal */}
-      {showEmailCheckModal && (
-        <div className="fixed inset-0 backdrop-blur-sm bg-transparent flex items-center justify-center z-50">
-          <div className="bg-white bg-opacity-95 backdrop-blur-md rounded-lg p-6 max-w-sm mx-4 shadow-2xl border border-white border-opacity-20">
-            <h3 className="text-lg font-bold text-black mb-2">Email Verification</h3>
-            <p className="text-gray-600 text-sm mb-4">
-              You've tried resending 3 times. Is your email address correct?
-            </p>
-            <p className="text-1g font-bold  text-foreground mb-4 text-center">
-              {email}
-            </p>
-            <div className="flex gap-3 justify-end">
+
+      {/* Error Modal */}
+      {showErrorModal && (
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-8 max-w-md mx-4 shadow-2xl border border-red-200">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg
+                  className="w-8 h-8 text-red-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-red-700 mb-2">
+                Verification Failed
+              </h3>
+              <p className="text-gray-700 text-sm mb-4">{errorMessage}</p>
+            </div>
+            <div className="flex justify-center">
               <button
-                onClick={handleEmailIncorrect}
-                className="bg-gray-400 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-500 transition-colors duration-200"
+                onClick={() => setShowErrorModal(false)}
+                className="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition"
               >
-                No, Change Email
-              </button>
-              <button
-                onClick={handleEmailCorrect}
-                className="bg-secondary text-white px-4 py-2 rounded-lg font-semibold hover:bg-secondary-hover transition-colors duration-200"
-              >
-                Yes, Resend
+                Try Again
               </button>
             </div>
           </div>
         </div>
       )}
-     
-      </div>
-    )
-  }
+    </div>
+  );
+}
 
 export default OTPVerification;

@@ -5,8 +5,8 @@ import { FloatingTopBar } from "../components/FloatingTopBar";
 import { Footer } from "../components/Navbar";
 
 function Authenticated_Layout() {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // Start collapsed for auto-expand
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Mobile menu state
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
   // Hide footer on ticket and file-ticket pages
@@ -19,14 +19,14 @@ function Authenticated_Layout() {
 
   return (
     <div id="authenticated-wrapper" className="min-h-screen bg-gray-100 flex">
-      <Sidebar 
-        onToggle={setIsSidebarCollapsed} 
+      <Sidebar
+        onToggle={setIsSidebarCollapsed}
         isMobileMenuOpen={isMobileMenuOpen}
         onMobileMenuClose={() => setIsMobileMenuOpen(false)}
       />
       <div className={`flex-1 flex flex-col relative transition-all duration-300 ${isSidebarCollapsed ? 'md:ml-16' : 'md:ml-64'} ml-0`}>
-        <FloatingTopBar 
-          isSidebarCollapsed={isSidebarCollapsed} 
+        <FloatingTopBar
+          isSidebarCollapsed={isSidebarCollapsed}
           onMobileMenuToggle={handleMobileMenuToggle}
         />
         <main id="authenticated-main" className="flex-1 p-6 pt-16 overflow-y-auto">
