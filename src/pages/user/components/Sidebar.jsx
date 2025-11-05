@@ -21,8 +21,8 @@ export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
   };
 
   const menuItems = [
-    { path: "/ticket", icon: FaHome, label: "Home" },
-    { path: "/file-ticket", icon: FaTicketAlt, label: "Ticket" },
+    { path: "/dashboard", icon: FaHome, label: "Home" },
+    { path: "/ticket", icon: FaTicketAlt, label: "Ticket" },
     { path: "/e-application", icon: FaFileAlt, label: "E-Application" },
   ];
 

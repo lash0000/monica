@@ -55,16 +55,16 @@ export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
           <FaBars className="w-5 h-5" />
         </button>
 
-        {location.pathname === '/ticket' && (
+        {location.pathname === '/Dashboard' && (
           <>
-            <h1 className="text-3xl font-bold text-gray-800 ml-5">Dashboard</h1>
+            <h1 className="text-3xl font-bold text-gray-800 ml-5">Home</h1>
 
           </>
         )}
-        {location.pathname === '/file-ticket' && (
-          <h1 className="text-xl font-bold text-gray-800">File Ticket</h1>
+        {location.pathname === '/Ticket' && (
+          <h1 className="text-xl font-bold text-gray-800">Ticket</h1>
         )}
-        {location.pathname === '/e-application' && (
+        {location.pathname === '/E-Application' && (
           <h1 className="text-xl font-bold text-gray-800">E-Application</h1>
         )}
       </div>
