@@ -11,8 +11,10 @@ import Ticket from '../pages/Ticket';
 import Landingv2 from '../pages/LandingV2';
 import EmergencyHotlines from '../pages/EmergencyHotlines';
 import FileTicket from '../pages/FileTicket';
-import ProfileUser from '../pages/ProfileUser';
+import E_app_Apply from '../pages/E-app_Apply';   
+import E_app_Bonafied from '../pages/E-app_Bonafied';
 import CheckRegisterAuth from '../../../lib/CheckRegisterAuth';
+import CheckAuth from '../../../lib/CheckAuth';
 
 const LandingRoutes = () => [
   // Public Routes
@@ -24,7 +26,6 @@ const LandingRoutes = () => [
     <Route path="forgot-password" element={<ForgotPassword />} />
     <Route path="personal-info" element={<PersonalInfo />} />
     <Route path="otp-verification" element={<CheckRegisterAuth><OTPVerification /></CheckRegisterAuth>} />
-    <Route path="profileuser" element={<ProfileUser />} />
   </Route>,
 ]
 
