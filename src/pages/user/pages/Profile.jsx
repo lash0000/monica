@@ -2,7 +2,6 @@ import React from "react";
 
 export default function Profile() {
   return (
-    <div className="min-h-screen bg-gray-50">
       <main className="max-w-2xl mx-auto px-3 sm:px-4 lg:px-6 py-8">
         <div className="bg-white rounded-2xl shadow border overflow-hidden">
           {/* Banner */}
@@ -104,6 +103,5 @@ export default function Profile() {
           </div>
         </div>
       </main>
-    </div>
   );
 }
