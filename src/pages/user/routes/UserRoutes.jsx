@@ -1,7 +1,6 @@
 import { Route } from 'react-router-dom';
 import Authenticated_Layout from '../layouts/Authenticated';
 import Dashboard from '../pages/Dashboard';
-import Traffic from '../pages/Traffic';
 import CheckAuth from '../../../lib/CheckAuth';
 import TrafficAdvisory from '../pages/Traffic';
 import E_app_Apply from '../pages/E-app_Apply';
@@ -11,6 +10,7 @@ import MedicalAppointment from '../pages/MedicalAppointment';
 import Profile from '../pages/Profile';
 import UserTicket from '../pages/UserTicket';
 import Ticket from '../pages/Ticket';
+import TicketDashboard from '../pages/TicketDashboard';
 import PredictiveTickets from '../pages/PredictiveTickets';
 import TicketView from '../pages/TicketView';
 
@@ -26,7 +26,7 @@ const UserRoutes = () => [
     <Route path="/profile" element={<CheckAuth><Profile /></CheckAuth>} />
     <Route path="/ticket" element={<CheckAuth><Ticket /></CheckAuth>} />
     <Route path="/my-tickets" element={<CheckAuth><UserTicket /></CheckAuth>} />
-    <Route path="/traffic" element={<CheckAuth><Traffic /></CheckAuth>} />
+    <Route path="/ticket-dashboard" element={<CheckAuth><TicketDashboard /></CheckAuth>} />
     <Route path="/predictive-tickets" element={<CheckAuth><PredictiveTickets /></CheckAuth>} />
     <Route path="/ticket/1" element={<CheckAuth><TicketView /></CheckAuth>} />
   </Route>,

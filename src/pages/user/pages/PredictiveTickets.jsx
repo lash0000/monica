@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function CrimePrevention() {
+function PredictiveTickets() {
     const [selectedYear, setSelectedYear] = useState('2024');
 
     // Icon components
@@ -215,4 +215,4 @@ function CrimePrevention() {
     );
 }
 
-export default CrimePrevention;
+export default PredictiveTickets;

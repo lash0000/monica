@@ -688,7 +688,7 @@ function TicketDashboard() {
                                 </tr>
                                 ))
                             )}
-                        </tbody>
+                        </tbody>    
                     </table>
                 </div>
             </div>
@@ -697,4 +697,4 @@ function TicketDashboard() {
     );
 }
 
-export default Ticket;
+export default TicketDashboard;

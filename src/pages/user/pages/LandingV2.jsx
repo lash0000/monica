@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { IoPin } from "react-icons/io5";
 import { MdOutlineFamilyRestroom, MdOutlineKeyboardArrowRight, MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { FaClock, FaFacebook, FaInstagramSquare, FaUsers, FaHome, FaUser, FaCertificate, FaBriefcase, FaFileContract, FaIdBadge, FaFileAlt, FaTools, FaEye, FaCalendarAlt, FaTimes, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
@@ -8,6 +8,7 @@ import AOS from 'aos';
 
 function Landing() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [currentImage, setCurrentImage] = useState(0);
   const [isImageAnimating, setIsImageAnimating] = useState(false);
   const [currentEmergencyImage, setCurrentEmergencyImage] = useState(0);
@@ -29,10 +30,77 @@ function Landing() {
     });
   }, []);
 
-  // Scroll to top when component mounts
+  // Function to scroll to a section by ID
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      // For services section, use a smaller offset to position title right below navbar
+      // For contact-us section, use 70px offset (10px higher than standard)
+      // For barangay-officials section, use 45px offset (15px higher than 60px, 35px higher than standard)
+      // For community-news section, use 65px offset
+      // For community-gallery section, use 50px offset (15px higher than 65px)
+      // For other sections, use standard offset
+      const offset = sectionId === 'services' ? 60 : 
+                     sectionId === 'contact-us' ? 70 : 
+                     sectionId === 'barangay-officials' ? 45 : 
+                     sectionId === 'community-news' ? 65 : 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: Math.max(0, offsetPosition), // Ensure we don't scroll to negative position
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Scroll to top when component mounts (unless there's a hash or stored section)
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Check for stored section from navigation
+    const storedSection = sessionStorage.getItem('scrollToSection');
+    if (storedSection) {
+      sessionStorage.removeItem('scrollToSection');
+      // Handle home/top case
+      if (storedSection === 'home' || storedSection === 'top') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.history.pushState(null, '', '/');
+        return;
+      }
+      // Wait for page to render, then scroll
+      setTimeout(() => {
+        scrollToSection(storedSection);
+        // Update URL hash
+        window.history.pushState(null, '', `#${storedSection}`);
+      }, 300);
+      return;
+    }
+
+    // Check if there's a hash in the URL
+    const hash = window.location.hash.replace('#', '');
+    if (hash && hash !== 'home' && hash !== 'top') {
+      // Wait a bit for the page to render, then scroll to the section
+      setTimeout(() => {
+        scrollToSection(hash);
+      }, 100);
+    } else {
+      // No hash or home, scroll to top
+      window.scrollTo(0, 0);
+    }
   }, []);
+
+  // Handle hash changes when navigating within the same page
+  useEffect(() => {
+    const hash = location.hash.replace('#', '');
+    if (hash && hash !== 'home' && hash !== 'top') {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        scrollToSection(hash);
+      }, 100);
+    } else if (hash === 'home' || hash === 'top') {
+      // Scroll to top for home
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [location.hash]);
 
   // Auto-advance image carousel
   useEffect(() => {
@@ -276,7 +344,7 @@ function Landing() {
       {/* Header Section with Background Carousel */}
       <section
         id="incident-report"
-        className="relative text-white py-16 xl:py-24 px-4 min-h-[70vh] xl:min-h-[90vh] flex items-center justify-center transition-all duration-1000 ease-in-out hidden"
+        className="relative text-white py-16 xl:py-24 px-4 min-h-[70vh] xl:min-h-[90vh] flex items-center justify-center transition-all duration-1000 ease-in-out"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${stamonicaImages[currentImage].src}')`,
           backgroundSize: 'cover',
@@ -285,6 +353,24 @@ function Landing() {
         }}
       >
 
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevImage}
+          disabled={isImageAnimating}
+          className="absolute left-4 xl:left-8 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white p-2 xl:p-3 rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+          aria-label="Previous image"
+        >
+          <MdOutlineKeyboardArrowLeft className="text-2xl xl:text-3xl" />
+        </button>
+        <button
+          onClick={nextImage}
+          disabled={isImageAnimating}
+          className="absolute right-4 xl:right-8 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white p-2 xl:p-3 rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+          aria-label="Next image"
+        >
+          <MdOutlineKeyboardArrowRight className="text-2xl xl:text-3xl" />
+        </button>
 
         {/* Content */}
         <div className="absolute left-8 xl:left-16 top-1/2 transform -translate-y-1/2 z-10 max-w-md xl:max-w-lg">
@@ -411,11 +497,12 @@ function Landing() {
       </section >
 
       {/* Our Services Section */}
-      < div className="py-4 xl:py-6 px-4 pt-8" >
-        <h1 className="text-2xl xl:text-3xl font-bold text-center text-black">Barangay Santa Monica Services</h1>
-      </div >
-      <section id="services" className="pt-2 pb-6 xl:pt-3 xl:pb-8 px-4 min-h-[28rem]" style={{ backgroundColor: '#FFFFFF' }}>
-        <div className="max-w-4xl xl:max-w-5xl mx-auto">
+      <section id="services" className="bg-white">
+        <div className="py-4 xl:py-6 px-4 pt-8">
+          <h1 className="text-2xl xl:text-3xl font-bold text-center text-black mt-5">Barangay Santa Monica Services</h1>
+        </div>
+        <div className="pt-2 pb-6 xl:pt-3 xl:pb-8 px-4 min-h-[28rem]">
+          <div className="max-w-4xl xl:max-w-5xl mx-auto">
 
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-5">
@@ -514,6 +601,7 @@ function Landing() {
                 </p>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </section>
