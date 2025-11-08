@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaTicketAlt, FaUsers, FaCog } from "react-icons/fa";
+import { FaHome, FaTicketAlt, FaUsers, FaCog, FaHandHoldingHeart, FaNewspaper } from "react-icons/fa";
 
 export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -23,6 +23,8 @@ export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
   const menuItems = [
     { path: "/admin", icon: FaHome, label: "Dashboard" },
     { path: "/admin/tickets", icon: FaTicketAlt, label: "Tickets" },
+    { path: "/admin/ayuda", icon: FaHandHoldingHeart, label: "Program" },
+    { path: "/admin/landing", icon: FaNewspaper, label: "Landing" },
     { path: "/admin/users", icon: FaUsers, label: "Users" },
     { path: "/admin/settings", icon: FaCog, label: "Settings" },
   ];

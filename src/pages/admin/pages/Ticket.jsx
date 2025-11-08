@@ -13,7 +13,7 @@ const TAGS = [
 
 const TICKETS = [
   { id: 1, tag: "Social Services", title: "AICS pati TUPAD assistance", body: "Hindi pa po ako nakakatanggap ng tulong pinansyal, baka pwede po magpa-follow up.", updatedAt: "Sep 19, 2025" },
-  { id: 2, tag: "Healthcare", title: "medisina kailangan ko po", body: "May stock pa po ba ng mga ganito sa ating barangay health center?", updatedAt: "Sep 19, 2025" },
+  { id: 2, tag: "Complaint", title: "Titulo mismo sa lupa", body: "Priority Level: Medium (Status: Endorsement to LUPON Tagapamayapa)", updatedAt: "Sep 19, 2025" },
   { id: 3, tag: "Healthcare", title: "Vaccination", body: "Hello po need po ba magpa-reschedule kung absent ako noong nakaraang bakuna?", updatedAt: "Sep 19, 2025" },
   { id: 4, tag: "Ayuda", title: "Verification Requirements Reminder", body: "All beneficiaries are required to update their information every 6 months to maintain their enrollment status...", updatedAt: "Sep 19, 2025" },
   { id: 5, tag: "Maintenance", title: "Streetlight not working", body: "May poste sa kanto ng Phase 3 na hindi umiilaw simula pa kagabi.", updatedAt: "Sep 18, 2025" },

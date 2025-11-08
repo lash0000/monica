@@ -14,16 +14,36 @@ function Login() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [verifyLoading, setVerifyLoading] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
+
+  // Load saved email if remember me was previously checked
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("remembered_email");
+    const rememberMeChecked = localStorage.getItem("remember_me") === "true";
+    
+    if (savedEmail && rememberMeChecked) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError("")
     setLoading(true)
 
-    const result = await login(email, password)
+    const result = await login(email, password, rememberMe)
     setLoading(false)
 
     if (result.success) {
+      // Save email if remember me is checked
+      if (rememberMe) {
+        localStorage.setItem("remembered_email", email);
+        localStorage.setItem("remember_me", "true");
+      } else {
+        localStorage.removeItem("remembered_email");
+        localStorage.removeItem("remember_me");
+      }
       navigate("/dashboard")
     } else {
       setError(result.message || "Invalid credentials")
@@ -95,10 +115,12 @@ function Login() {
 
             {/* Remember Me and Forgot Password */}
             <div className="flex items-center justify-between">
-              <label className="flex items-center">
+              <label className="flex items-center cursor-pointer">
                 <input
                   type="checkbox"
-                  className="mr-2 text-secondary focus:ring-secondary"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="mr-2 text-secondary focus:ring-secondary cursor-pointer"
                 />
                 <span className="text-black">Remember Me</span>
               </label>

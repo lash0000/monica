@@ -208,40 +208,49 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Popup Modal (No blur/dimming was requested, keeping original) */}
+      {/* Popup Modal */}
       {isPopupOpen && (
-        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setIsPopupOpen(false)}>
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             {/* Header */}
-            <div className="bg-teal-600 text-white p-4 rounded-t-lg">
-              <h2 className="text-xl font-bold">Fill out required fields</h2>
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
+              <h2 className="text-2xl font-semibold text-gray-900">File a Ticket</h2>
+              <button
+                onClick={() => setIsPopupOpen(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100"
+                aria-label="Close"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
 
             {/* Form Content */}
-            <div className="p-6 space-y-4">
+            <div className="p-6 space-y-6">
               {/* Subject */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Subject <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="Subject"
+                  placeholder="Enter subject"
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                 />
               </div>
 
               {/* Category */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Category <span className="text-red-500">*</span>
                 </label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white transition-all"
                 >
                   <option value="Healthcare">Healthcare</option>
                   <option value="Infrastructure">Infrastructure</option>
@@ -253,24 +262,24 @@ function Dashboard() {
 
               {/* Concern Details */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Concern Details <span className="text-red-500">*</span>
                 </label>
                 <textarea
-                  placeholder="Retrieving and listing mga need active"
-                  rows="4"
+                  placeholder="Describe your concern in detail..."
+                  rows="5"
                   value={formData.concernDetails}
                   onChange={(e) => setFormData({ ...formData, concernDetails: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none transition-all"
                 />
               </div>
 
               {/* Attachment */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Attachment
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Attachment <span className="text-gray-500 font-normal">(Optional)</span>
                 </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center">
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-indigo-400 transition-colors bg-gray-50">
                   <input
                     type="file"
                     multiple
@@ -278,21 +287,21 @@ function Dashboard() {
                     className="hidden"
                     id="file-upload"
                   />
-                  <label htmlFor="file-upload" className="cursor-pointer">
-                    <svg className="mx-auto h-12 w-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <label htmlFor="file-upload" className="cursor-pointer block">
+                    <svg className="mx-auto h-10 w-10 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
-                    <p className="text-sm font-medium text-gray-600">Upload files</p>
-                    <p className="text-xs text-gray-500 mt-1">Max size 25MB</p>
+                    <p className="text-sm font-medium text-gray-700 mb-1">Click to upload or drag and drop</p>
+                    <p className="text-xs text-gray-500">Max size: 25MB per file</p>
                   </label>
                 </div>
 
                 {/* File List */}
                 {formData.attachments.length > 0 && (
-                  <div className="mt-3 space-y-2">
+                  <div className="mt-4 space-y-2">
                     {formData.attachments.map((file, index) => (
-                      <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded border border-gray-200">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <div key={index} className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg border border-gray-200">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
                           <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
@@ -301,9 +310,9 @@ function Dashboard() {
                         <button
                           type="button"
                           onClick={() => removeAttachment(index)}
-                          className="text-gray-400 hover:text-red-500 ml-2"
+                          className="text-gray-400 hover:text-red-500 transition-colors p-1"
                         >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
@@ -314,29 +323,27 @@ function Dashboard() {
               </div>
 
               {/* Buttons */}
-              <div className="flex justify-end gap-2 pt-4">
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
                 <button
                   type="button"
                   onClick={clearAll}
-                  className="px-4 py-2 text-red-600 hover:text-red-700 font-medium transition-colors"
+                  className="px-5 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-colors"
                 >
                   Clear All
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsPopupOpen(false)}
-                  // Added hover:scale-[0.98]
-                  className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 font-medium transition-all duration-200 hover:scale-[0.98]"
+                  className="px-5 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  // Added hover:scale-[1.02]
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md font-medium transition-all duration-200 hover:scale-[1.02]"
+                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
                 >
-                  Submit
+                  Submit Ticket
                 </button>
               </div>
             </div>

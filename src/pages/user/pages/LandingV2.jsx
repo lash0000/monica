@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { IoPin } from "react-icons/io5";
 import { MdOutlineFamilyRestroom, MdOutlineKeyboardArrowRight, MdOutlineKeyboardArrowLeft } from "react-icons/md";
-import { FaClock, FaFacebook, FaInstagramSquare, FaUsers, FaHome, FaUser, FaCertificate, FaBriefcase, FaFileContract, FaIdBadge, FaFileAlt, FaTools, FaEye, FaCalendarAlt, FaTimes, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
+import { FaClock, FaFacebook, FaInstagramSquare, FaUsers, FaHome, FaUser, FaCertificate, FaBriefcase, FaFileContract, FaIdBadge, FaFileAlt, FaTools, FaEye, FaCalendarAlt, FaTimes, FaPhoneAlt, FaEnvelope, FaArrowUp } from "react-icons/fa";
 import { FaSquareXTwitter, FaMapLocation, FaLocationDot } from "react-icons/fa6";
 import AOS from 'aos';
+import { useAuth } from '../stores/store';
 
 function Landing() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth();
   const [currentImage, setCurrentImage] = useState(0);
   const [isImageAnimating, setIsImageAnimating] = useState(false);
   const [currentEmergencyImage, setCurrentEmergencyImage] = useState(0);
@@ -22,6 +24,7 @@ function Landing() {
   const [isDragging, setIsDragging] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState('');
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     AOS.init({
@@ -38,12 +41,14 @@ function Landing() {
       // For contact-us section, use 70px offset (10px higher than standard)
       // For barangay-officials section, use 45px offset (15px higher than 60px, 35px higher than standard)
       // For community-news section, use 65px offset
-      // For community-gallery section, use 50px offset (15px higher than 65px)
+      // For about section, use 50px offset (15px higher than 65px)
       // For other sections, use standard offset
       const offset = sectionId === 'services' ? 60 : 
                      sectionId === 'contact-us' ? 70 : 
                      sectionId === 'barangay-officials' ? 45 : 
-                     sectionId === 'community-news' ? 65 : 80;
+                     sectionId === 'community-news' ? 65 : 
+                     sectionId === 'about' ? 50 :
+                     sectionId === 'ayuda' ? 60 : 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -157,6 +162,87 @@ function Landing() {
       time: "7:00 PM",
       shortDescription:
         "Residents gathered for the quarterly assembly to discuss community projects and budget allocations.",
+    },
+    {
+      id: 4,
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9S43ZecMWXepnisxGfYvdhZCamA9gBL6EN73R8",
+      alt: "Health Fair",
+      title: "Community Health Fair 2024",
+      date: "September 10, 2024",
+      time: "8:00 AM - 4:00 PM",
+      shortDescription:
+        "Free health check-ups, vaccinations, and health education for all residents.",
+    },
+    {
+      id: 5,
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9SxDc4UmRWcfU9ngx4iY5PjwC3Bk0K8mF6lIZb",
+      alt: "Clean-up Drive",
+      title: "Barangay Clean-up Drive",
+      date: "August 25, 2024",
+      time: "6:00 AM - 10:00 AM",
+      shortDescription:
+        "Community-wide clean-up initiative to maintain cleanliness and environmental awareness.",
+    },
+    {
+      id: 6,
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9S3ekbqIHFqW15xQ07Tp3SLu9gblVknyem2AMB",
+      alt: "Youth Sports Tournament",
+      title: "Inter-Barangay Youth Sports Tournament",
+      date: "July 15-17, 2024",
+      time: "8:00 AM - 6:00 PM",
+      shortDescription:
+        "Three-day sports tournament featuring basketball, volleyball, and badminton competitions.",
+    },
+    {
+      id: 7,
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9S43ZecMWXepnisxGfYvdhZCamA9gBL6EN73R8",
+      alt: "Senior Citizens Day",
+      title: "Senior Citizens Appreciation Day",
+      date: "June 20, 2024",
+      time: "2:00 PM - 5:00 PM",
+      shortDescription:
+        "Special celebration honoring our senior citizens with entertainment, gifts, and recognition.",
+    },
+    {
+      id: 8,
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9SxDc4UmRWcfU9ngx4iY5PjwC3Bk0K8mF6lIZb",
+      alt: "Skills Training",
+      title: "Livelihood Skills Training Program",
+      date: "May 5-12, 2024",
+      time: "9:00 AM - 4:00 PM",
+      shortDescription:
+        "Week-long training program on various livelihood skills including cooking, handicrafts, and basic computer skills.",
+    },
+    {
+      id: 9,
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9S3ekbqIHFqW15xQ07Tp3SLu9gblVknyem2AMB",
+      alt: "Fiesta Celebration",
+      title: "Barangay Fiesta Celebration",
+      date: "April 20, 2024",
+      time: "All Day",
+      shortDescription:
+        "Annual fiesta celebration with food stalls, games, cultural shows, and community gathering.",
+    },
+    {
+      id: 10,
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9S43ZecMWXepnisxGfYvdhZCamA9gBL6EN73R8",
+      alt: "Disaster Preparedness",
+      title: "Disaster Preparedness Seminar",
+      date: "March 18, 2024",
+      time: "9:00 AM - 12:00 PM",
+      shortDescription:
+        "Educational seminar on disaster preparedness, emergency response, and safety protocols.",
+    },
+    {
+      id: 11,
+      src: "https://qby900ozue.ufs.sh/f/k3CYx7aMjR9SxDc4UmRWcfU9ngx4iY5PjwC3Bk0K8mF6lIZb",
+      alt: "Ayuda Distribution",
+      title: "Ayuda Distribution Program",
+      date: "Ongoing",
+      time: "All Day",
+      shortDescription:
+        "Government assistance programs available for qualified residents. Apply now for financial, employment, and crisis assistance.",
+      isAyuda: true,
     },
   ];
 
@@ -303,10 +389,16 @@ function Landing() {
     };
   }, []);
 
-  // Handle service click - show login modal
+  // Handle service click - check if logged in, navigate to e-application or show login modal
   const handleServiceClick = (serviceName) => {
-    setSelectedService(serviceName);
-    setIsLoginModalOpen(true);
+    if (user) {
+      // User is logged in, navigate to e-application
+      navigate('/e-application');
+    } else {
+      // User is not logged in, show login modal
+      setSelectedService(serviceName);
+      setIsLoginModalOpen(true);
+    }
   };
 
   // Close login modal
@@ -338,6 +430,25 @@ function Landing() {
 
     return () => clearInterval(newsInterval);
   }, [isEmergencyAnimating, emergencyImages.length]);
+
+  // Show/hide scroll to top button based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      setShowScrollTop(scrollTop > 300); // Show button after scrolling 300px
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <div className="w-full min-h-screen bg-white overflow-y-hidden">
@@ -397,87 +508,118 @@ function Landing() {
       </section>
 
       {/* Community News & Events Section */}
-      <section id="community-news" className="pt-6 pb-12 xl:pt-8 xl:pb-16 px-4 bg-gray-50">
+      <section id="community-news" className="pt-4 pb-6 xl:pt-6 xl:pb-8 px-4 bg-gray-50">
         <div className="max-w-6xl xl:max-w-7xl mx-auto">
           {/* Title */}
-          <div className="text-center mb-4 xl:mb-6">
-            <h2 className="text-3xl xl:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-3 xl:mb-4">
+            <h2 className="text-2xl xl:text-3xl font-bold text-gray-900 mb-2">
               LATEST NEWS & EVENTS
             </h2>
-            <p className="text-base xl:text-lg text-gray-600 mb-2">
+            <p className="text-sm xl:text-base text-gray-600 mb-1">
               Stay updated with the latest happenings in our barangay community.
             </p>
-            <p className="text-base xl:text-lg text-gray-600" data-aos="fade-up">
+            <p className="text-sm xl:text-base text-gray-600 mb-10" data-aos="fade-up">
               From celebrations to important meetings, see what's happening in Barangay Santa Monica.
             </p>
           </div>
 
           {/* News & Events Images Carousel */}
-          <div className="mb-8 xl:mb-12">
-            {/* Carousel Container */}
-            <div
-              className="relative overflow-hidden w-full max-w-5xl mx-auto select-none"
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-              onMouseDown={onMouseDown}
-              onMouseMove={onMouseMove}
-              onMouseUp={onMouseUp}
-              onMouseLeave={onMouseUp}
-              style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-            >
-              <div
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{
-                  transform: `translateX(-${currentEmergencyImage * (100 / 3)}%)`,
-                }}
+          <div className="mb-4 xl:mb-6">
+            {/* Carousel Container with Arrows */}
+            <div className="flex items-center gap-2 xl:gap-4 max-w-5xl mx-auto">
+              {/* Left Arrow Button */}
+              {currentEmergencyImage > 0 && (
+                <button
+                  onClick={() => goToEmergencyImage(currentEmergencyImage - 1)}
+                  disabled={isEmergencyAnimating}
+                  className="flex-shrink-0 bg-white/90 hover:bg-white rounded-full p-2 xl:p-3 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed z-10"
+                  aria-label="Previous news"
+                >
+                  <MdOutlineKeyboardArrowLeft className="text-2xl xl:text-3xl text-gray-800" />
+                </button>
+              )}
+
+              {/* Carousel Container */}
+              <div className="flex-1 relative overflow-hidden select-none"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+                onMouseDown={onMouseDown}
+                onMouseMove={onMouseMove}
+                onMouseUp={onMouseUp}
+                onMouseLeave={onMouseUp}
+                style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
               >
-                {emergencyImages.map((image, index) => (
-                  <div
-                    key={index}
-                    className="w-1/3 flex-shrink-0 px-1 xl:px-2"
-                    data-aos="fade-up"
-                    data-aos-delay={`${300 + (index * 100)}`}
-                  >
+                <div
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{
+                    transform: `translateX(-${currentEmergencyImage * (100 / 3)}%)`,
+                  }}
+                >
+                  {emergencyImages.map((image, index) => (
                     <div
-                      className="rounded-lg overflow-hidden shadow-xl h-40 md:h-48 xl:h-56 relative group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-                      onClick={(e) => {
-                        if (!isDragging) {
-                          openNewsModal(image);
-                        }
-                      }}
+                      key={index}
+                      className="w-1/3 flex-shrink-0 px-1 xl:px-2"
+                      data-aos="fade-up"
+                      data-aos-delay={`${300 + (index * 100)}`}
                     >
-                      <img
-                        src={image.src}
-                        alt={image.alt}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                      {/* Image Title Overlay */}
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 xl:p-3">
-                        <h3 className="text-white font-semibold text-xs md:text-sm xl:text-base line-clamp-2">
-                          {image.title}
-                        </h3>
-                      </div>
-                      {/* Click indicator */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center">
-                        <div className="opacity-0 group-hover:opacity-100 bg-white/20 rounded-full p-2 transition-opacity duration-300">
-                          <FaEye className="text-white text-lg" />
+                      <div
+                        className="rounded-lg overflow-hidden shadow-xl h-32 md:h-36 xl:h-40 relative group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                        onClick={(e) => {
+                          if (!isDragging) {
+                            if (image.isAyuda) {
+                              // Navigate to Ayuda Programs page
+                              navigate('/ayuda-programs');
+                            } else {
+                            openNewsModal(image);
+                            }
+                          }
+                        }}
+                      >
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                        {/* Image Title Overlay */}
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-1.5 xl:p-2">
+                          <h3 className="text-white font-semibold text-xs xl:text-sm line-clamp-2">
+                            {image.title}
+                          </h3>
+                        </div>
+                        {/* Click indicator */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center">
+                          <div className="opacity-0 group-hover:opacity-100 bg-white/20 rounded-full p-2 transition-opacity duration-300">
+                            <FaEye className="text-white text-lg" />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
+
+              {/* Right Arrow Button */}
+              {currentEmergencyImage < emergencyImages.length - 3 && (
+                <button
+                  onClick={() => goToEmergencyImage(currentEmergencyImage + 1)}
+                  disabled={isEmergencyAnimating}
+                  className="flex-shrink-0 bg-white/90 hover:bg-white rounded-full p-2 xl:p-3 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed z-10"
+                  aria-label="Next news"
+                >
+                  <MdOutlineKeyboardArrowRight className="text-2xl xl:text-3xl text-gray-800" />
+                </button>
+              )}
             </div>
 
             {/* Dots Indicator */}
-            <div className="flex justify-center mt-6 xl:mt-8 space-x-2 xl:space-x-3">
+            <div className="flex justify-center mt-3 xl:mt-4 space-x-2">
               {Array.from({ length: Math.max(1, emergencyImages.length - 2) }, (_, index) => (
                 <button
                   key={index}
                   onClick={() => goToEmergencyImage(index)}
                   disabled={isEmergencyAnimating}
-                  className={`w-3 h-3 xl:w-4 xl:h-4 rounded-full transition-all duration-300 hover:scale-125 ${index === currentEmergencyImage
+                  className={`w-2.5 h-2.5 xl:w-3 xl:h-3 rounded-full transition-all duration-300 hover:scale-125 ${index === currentEmergencyImage
                     ? 'bg-foreground shadow-lg scale-110'
                     : 'bg-gray-400 hover:bg-gray-600'
                     } ${isEmergencyAnimating ? 'cursor-not-allowed' : 'cursor-pointer'}`}
@@ -488,10 +630,17 @@ function Landing() {
 
           {/* Community Information */}
           <div className="text-center">
-            <p className="text-lg xl:text-xl font-semibold text-gray-800 leading-relaxed">
+            <p className="text-sm xl:text-base font-semibold text-gray-800 leading-relaxed mb-3 xl:mb-4">
               Join us in celebrating our community milestones and participate in the activities that make
               Barangay Santa Monica a vibrant and united community for all residents.
             </p>
+            <button
+              onClick={() => navigate('/events')}
+              className="px-5 xl:px-6 py-2 xl:py-2.5 bg-foreground text-white rounded-lg font-semibold hover:bg-foreground/90 transition-colors text-sm xl:text-base shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              data-aos="fade-up"
+            >
+              View More Events →
+            </button>
           </div>
         </div>
       </section >
@@ -606,8 +755,8 @@ function Landing() {
         </div>
       </section>
 
-      {/* Community Gallery Section */}
-      <section id="community-gallery" className="relative py-8 xl:py-12 px-4 overflow-hidden" bg-card data-aos="fade-up">
+      {/* About Section */}
+      <section id="about" className="relative py-8 xl:py-12 px-4 overflow-hidden" bg-card data-aos="fade-up">
         <div className="max-w-6xl xl:max-w-7xl mx-auto relative z-10">
 
           {/* About Us Section */}
@@ -912,6 +1061,18 @@ function Landing() {
           </div>
         )
       }
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 bg-secondary hover:bg-secondary/90 text-white p-3 xl:p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50"
+          aria-label="Scroll to top"
+        >
+          <FaArrowUp className="text-lg xl:text-xl" />
+        </button>
+      )}
+
     </div >
   )
 }

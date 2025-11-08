@@ -10,6 +10,8 @@ import Dashboard from '../pages/Dashboard';
 import Ticket from '../pages/Ticket';
 import Landingv2 from '../pages/LandingV2';
 import EmergencyHotlines from '../pages/EmergencyHotlines';
+import Events from '../pages/Events';
+import AyudaPrograms from '../pages/AyudaPrograms';
 import FileTicket from '../pages/FileTicket';
 import E_app_Apply from '../pages/E-app_Apply';   
 import E_app_Bonafied from '../pages/E-app_Bonafied';
@@ -21,6 +23,8 @@ const LandingRoutes = () => [
   <Route key="public" path="/" element={<Public_Layout />}>
     <Route index element={<Landingv2 />} />
     <Route path="emergency-hotlines" element={<EmergencyHotlines />} />
+    <Route path="events" element={<Events />} />
+    <Route path="ayuda-programs" element={<AyudaPrograms />} />
     <Route path="login" element={<Login />} />
     <Route path="signup" element={<SignUp />} />
     <Route path="forgot-password" element={<ForgotPassword />} />

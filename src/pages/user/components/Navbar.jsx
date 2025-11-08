@@ -37,13 +37,14 @@ export function Navbar_Public() {
         // For contact-us section, use 70px offset (10px higher than standard)
         // For barangay-officials section, use 45px offset (15px higher than 60px, 35px higher than standard)
         // For community-news section, use 65px offset
-        // For community-gallery section, use 50px offset (15px higher than 65px)
+        // For about section, use 50px offset (15px higher than 65px)
         // For other sections, use standard offset
         const offset = sectionId === 'services' ? 60 : 
                        sectionId === 'contact-us' ? 70 : 
                        sectionId === 'barangay-officials' ? 45 : 
                        sectionId === 'community-news' ? 65 : 
-                       sectionId === 'community-gallery' ? 50 : 80;
+                       sectionId === 'about' ? 50 :
+                       sectionId === 'ayuda' ? 60 : 80;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -90,7 +91,7 @@ export function Navbar_Public() {
               Home
             </button>
             <button 
-              onClick={(e) => handleNavClick(e, 'community-gallery')} 
+              onClick={(e) => handleNavClick(e, 'about')} 
               className="text-white hover:text-gray-200 transition-colors text-base cursor-pointer bg-transparent border-none outline-none p-0 font-normal"
             >
               About
@@ -101,6 +102,7 @@ export function Navbar_Public() {
             >
               Services
             </button>
+           
             <button 
               onClick={(e) => handleNavClick(e, 'contact-us')} 
               className="text-white hover:text-gray-200 transition-colors text-sm lg:text-base xl:text-lg 2xl:text-xl cursor-pointer bg-transparent border-none outline-none p-0 font-normal"
@@ -151,13 +153,13 @@ export function Footer() {
         // For contact-us section, use 70px offset (10px higher than standard)
         // For barangay-officials section, use 45px offset (15px higher than 60px, 35px higher than standard)
         // For community-news section, use 65px offset
-        // For community-gallery section, use 50px offset (15px higher than 65px)
+        // For about section, use 50px offset (15px higher than 65px)
         // For other sections, use standard offset
         const offset = sectionId === 'services' ? 60 : 
                        sectionId === 'contact-us' ? 70 : 
                        sectionId === 'barangay-officials' ? 45 : 
                        sectionId === 'community-news' ? 65 : 
-                       sectionId === 'community-gallery' ? 50 : 80;
+                       sectionId === 'about' ? 50 : 80;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -246,24 +248,24 @@ export function Footer() {
           <h3 className="text-xl xl:text-2xl font-bold mb-4 text-white">Quick Links</h3>
           <ul className="space-y-3 text-sm xl:text-base">
             <li>
-              <Link
-                to="/dashboard"
-                className="text-white hover:text-gray-200 transition-colors"
-              >
-                Dashboard
-              </Link>
-            </li>
-            <li>
               <button
-                onClick={(e) => handleFooterClick(e, 'community-news')}
+                onClick={(e) => handleFooterClick(e, 'home')}
                 className="text-white hover:text-gray-200 transition-colors cursor-pointer bg-transparent border-none outline-none p-0 text-left"
               >
-                Announcement
+                Home
               </button>
             </li>
             <li>
+                <button
+                onClick={(e) => handleFooterClick(e, 'community-news')}
+                className="text-white hover:text-gray-200 transition-colors cursor-pointer bg-transparent border-none outline-none p-0 text-left"
+              >
+                Latest News & Events
+                </button>
+            </li>
+            <li>
               <button
-                onClick={(e) => handleFooterClick(e, 'community-gallery')}
+                onClick={(e) => handleFooterClick(e, 'about')}
                 className="text-white hover:text-gray-200 transition-colors cursor-pointer bg-transparent border-none outline-none p-0 text-left"
               >
                 About us
@@ -274,9 +276,10 @@ export function Footer() {
                 onClick={(e) => handleFooterClick(e, 'barangay-officials')}
                 className="text-white hover:text-gray-200 transition-colors cursor-pointer bg-transparent border-none outline-none p-0 text-left"
               >
-                Officials
+                Barangay Officials
               </button>
             </li>
+          
             <li>
               <button
                 onClick={(e) => handleFooterClick(e, 'contact-us')}

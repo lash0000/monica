@@ -10,11 +10,19 @@ export function AuthProvider({ children }) {
 
   const MONICA_URL = import.meta.env.VITE_MONICA_URL;
 
-  // Load from localStorage on startup
+  // Load from localStorage or sessionStorage on startup
   useEffect(() => {
-    const savedUser = localStorage.getItem("auth_user");
-    const savedAccess = localStorage.getItem("auth_token");
-    const savedSession = localStorage.getItem("auth_session");
+    // Check localStorage first (remember me enabled)
+    let savedUser = localStorage.getItem("auth_user");
+    let savedAccess = localStorage.getItem("auth_token");
+    let savedSession = localStorage.getItem("auth_session");
+
+    // If not in localStorage, check sessionStorage (temporary session)
+    if (!savedUser || !savedAccess || !savedSession) {
+      savedUser = sessionStorage.getItem("auth_user");
+      savedAccess = sessionStorage.getItem("auth_token");
+      savedSession = sessionStorage.getItem("auth_session");
+    }
 
     if (savedUser && savedAccess && savedSession) {
       setUser(JSON.parse(savedUser));
@@ -27,7 +35,7 @@ export function AuthProvider({ children }) {
   // ---------------------------
   // LOGIN
   // ---------------------------
-  const login = async (email, password) => {
+  const login = async (email, password, rememberMe = false) => {
     try {
       const res = await fetch(`${MONICA_URL}/api/v1/data/user-creds/login`, {
         method: "POST",
@@ -46,9 +54,21 @@ export function AuthProvider({ children }) {
       setAccessToken(data.accessToken);
       setSessionId(data.sessionId);
 
-      localStorage.setItem("auth_user", JSON.stringify(data.user));
-      localStorage.setItem("auth_token", data.accessToken);
-      localStorage.setItem("auth_session", data.sessionId);
+      // Save to localStorage if remember me is checked, otherwise use sessionStorage
+      if (rememberMe) {
+        localStorage.setItem("auth_user", JSON.stringify(data.user));
+        localStorage.setItem("auth_token", data.accessToken);
+        localStorage.setItem("auth_session", data.sessionId);
+      } else {
+        // Use sessionStorage for temporary session (cleared when browser closes)
+        sessionStorage.setItem("auth_user", JSON.stringify(data.user));
+        sessionStorage.setItem("auth_token", data.accessToken);
+        sessionStorage.setItem("auth_session", data.sessionId);
+        // Clear localStorage auth data if remember me is not checked
+        localStorage.removeItem("auth_user");
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("auth_session");
+      }
 
       return { success: true };
     } catch (err) {
@@ -77,7 +97,15 @@ export function AuthProvider({ children }) {
       }
 
       setAccessToken(data.accessToken);
-      localStorage.setItem("auth_token", data.accessToken);
+      
+      // Save to the same storage type that was used for login
+      const rememberMe = localStorage.getItem("remember_me") === "true";
+      if (rememberMe) {
+        localStorage.setItem("auth_token", data.accessToken);
+      } else {
+        sessionStorage.setItem("auth_token", data.accessToken);
+      }
+      
       console.info("✅ Access token refreshed successfully");
       return true;
     } catch (err) {
@@ -106,12 +134,13 @@ export function AuthProvider({ children }) {
         const refreshed = await refreshAccessToken();
 
         if (refreshed) {
-          // Retry the request with the new token
+          // Retry the request with the new token (check both storage types)
+          const newToken = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
           const retryRes = await fetch(url, {
             ...options,
             headers: {
               ...(options.headers || {}),
-              Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+              Authorization: `Bearer ${newToken}`,
               Accept: "application/json",
             },
           });
@@ -133,7 +162,8 @@ export function AuthProvider({ children }) {
   // ---------------------------
   const logout = async () => {
     try {
-      const storedSessionId = sessionId || localStorage.getItem("auth_session");
+      // Check both localStorage and sessionStorage for session ID
+      const storedSessionId = sessionId || localStorage.getItem("auth_session") || sessionStorage.getItem("auth_session");
 
       if (!storedSessionId) {
         console.warn("No session ID found — skipping logout request");
@@ -162,9 +192,13 @@ export function AuthProvider({ children }) {
       setUser(null);
       setAccessToken(null);
       setSessionId(null);
+      // Clear both localStorage and sessionStorage
       localStorage.removeItem("auth_user");
       localStorage.removeItem("auth_token");
       localStorage.removeItem("auth_session");
+      sessionStorage.removeItem("auth_user");
+      sessionStorage.removeItem("auth_token");
+      sessionStorage.removeItem("auth_session");
     }
   };
 
