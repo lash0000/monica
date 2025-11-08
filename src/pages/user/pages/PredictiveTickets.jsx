@@ -31,7 +31,7 @@ function CrimePrevention() {
 
     return (
         <div className="min-h-screen bg-gray-100 p-8">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-[1600px] mx-auto">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-start justify-between mb-2">
@@ -40,11 +40,11 @@ function CrimePrevention() {
                                 Ito ang ulat kontra kriminalidad at paghahanda sa bawat sakuna
                             </h1>
                             <span className="inline-block bg-indigo-600 text-white text-xs px-3 py-1 rounded-full font-medium">
-                                🤖 Automated
+                                Automated
                             </span>
                         </div>
                         <button className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-                            See insights
+                            Refresh
                         </button>
                     </div>
                     <p className="text-gray-600 text-sm mt-3 leading-relaxed">
@@ -53,7 +53,7 @@ function CrimePrevention() {
                 </div>
 
                 {/* Chart Card */}
-                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 transition-all duration-200 hover:shadow-xl hover:scale-[1.01]">
                     <div className="flex items-center justify-between mb-6">
                         <div>
                             <h2 className="text-lg font-bold text-gray-900">Next Hour - Most Frequent Threats</h2>
@@ -145,8 +145,8 @@ function CrimePrevention() {
                 </div>
 
                 {/* Last 3 Months Section */}
-                <div className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-lg mb-6">
-                    <span className="inline-block bg-white bg-opacity-20 text-white text-xs px-3 py-1 rounded-full mb-4 font-medium">
+                <div className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-lg mb-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] cursor-pointer">
+                    <span className="inline-block bg-white bg-opacity-20 text-indigo-700 text-xs px-3 py-1 rounded-full mb-4 font-medium">
                         Advocacy
                     </span>
                     <h2 className="text-3xl font-bold mb-4">Last 3 months</h2>
@@ -161,8 +161,8 @@ function CrimePrevention() {
                 {/* Two Column Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Left Column - Prediction */}
-                    <div className="bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl p-8 text-white shadow-lg">
-                        <span className="inline-block bg-white bg-opacity-20 text-white text-xs px-3 py-1 rounded-full mb-4 font-medium">
+                    <div className="bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl p-8 text-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] cursor-pointer">
+                        <span className="inline-block bg-white bg-opacity-20 text-indigo-700 text-xs px-3 py-1 rounded-full mb-4 font-medium">
                             Prediction
                         </span>
                         <h3 className="text-2xl font-bold mb-4">
@@ -182,7 +182,7 @@ function CrimePrevention() {
                     </div>
 
                     {/* Right Column - Measures */}
-                    <div className="bg-white rounded-2xl p-8 shadow-lg">
+                    <div className="bg-white rounded-2xl p-8 shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.01] cursor-pointer">
                         <span className="inline-block bg-indigo-100 text-indigo-700 text-xs px-3 py-1 rounded-full mb-4 font-medium">
                             Measures
                         </span>
