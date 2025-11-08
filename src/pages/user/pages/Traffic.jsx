@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 
 function TrafficAdvisory() {
   const [currentSlide, setCurrentSlide] = useState(0);
