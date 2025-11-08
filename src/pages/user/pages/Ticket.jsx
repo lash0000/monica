@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FaMagnifyingGlass, FaRotateRight, FaUsers, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 const TAGS = [
@@ -48,7 +48,7 @@ function Tag({ label, active, onClick }) {
 
 function Card({ ticket }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-4 hover:shadow-md transition-shadow">
+    <Link to={`/ticket/1`} className="bg-white rounded-xl shadow-sm border p-4 hover:shadow-md transition-shadow">
       <div className="mb-3">
         <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">{ticket.tag}</span>
       </div>
@@ -61,7 +61,7 @@ function Card({ ticket }) {
         </div>
         <FaUsers className="w-3.5 h-3.5" />
       </div>
-    </div>
+    </Link>
   );
 }
 

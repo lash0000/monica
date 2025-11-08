@@ -12,6 +12,7 @@ import Profile from '../pages/Profile';
 import UserTicket from '../pages/UserTicket';
 import Ticket from '../pages/Ticket';
 import PredictiveTickets from '../pages/PredictiveTickets';
+import TicketView from '../pages/TicketView';
 
 const UserRoutes = () => [
   // Authenticated Routes
@@ -27,6 +28,7 @@ const UserRoutes = () => [
     <Route path="/my-tickets" element={<CheckAuth><UserTicket /></CheckAuth>} />
     <Route path="/traffic" element={<CheckAuth><Traffic /></CheckAuth>} />
     <Route path="/predictive-tickets" element={<CheckAuth><PredictiveTickets /></CheckAuth>} />
+    <Route path="/ticket/1" element={<CheckAuth><TicketView /></CheckAuth>} />
   </Route>,
 ]
 
