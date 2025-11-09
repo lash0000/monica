@@ -150,7 +150,7 @@ function TrafficAdvisory() {
 
                 {/* Prediction Section */}
                 <div className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-6 text-white shadow-lg mb-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] cursor-pointer">
-                    <span className="inline-block bg-white bg-opacity-20 text-white text-xs px-3 py-1 rounded-full mb-4 font-medium">
+                    <span className="inline-block bg-white bg-opacity-20 text-indigo-700 text-xs px-3 py-1 rounded-full mb-4 font-medium">
                         Prediction
                     </span>
                     <h2 className="text-3xl font-bold mb-4">Asahan ang maluwag na trapiko!</h2>

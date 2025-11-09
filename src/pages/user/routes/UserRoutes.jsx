@@ -12,6 +12,8 @@ import UserTicket from '../pages/UserTicket';
 import Ticket from '../pages/Ticket';
 import TicketDashboard from '../pages/TicketDashboard';
 import PredictiveTickets from '../pages/PredictiveTickets';
+import IncidentReportThread from '../pages/BlotterTicketPage1';
+import ForumThread from '../pages/NormalTicketPage';
 import TicketView from '../pages/TicketView';
 
 const UserRoutes = () => [
@@ -29,7 +31,9 @@ const UserRoutes = () => [
     <Route path="/ticket-dashboard" element={<CheckAuth><TicketDashboard /></CheckAuth>} />
     <Route path="/predictive-tickets" element={<CheckAuth><PredictiveTickets /></CheckAuth>} />
     <Route path="/ticket/1" element={<CheckAuth><TicketView /></CheckAuth>} />
-    <Route path="/traffic" element={<CheckAuth><Traffic /></CheckAuth>} />
+    <Route path="/traffic" element={<CheckAuth><TrafficAdvisory /></CheckAuth>} />
+    <Route path="/incidentreportthread" element={<CheckAuth><IncidentReportThread /></CheckAuth>} />
+    <Route path="/normalticketpage" element={<CheckAuth><ForumThread /></CheckAuth>} />
   </Route>,
 ]
 
