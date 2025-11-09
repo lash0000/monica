@@ -15,22 +15,25 @@ import PredictiveTickets from '../pages/PredictiveTickets';
 import TicketView from '../pages/TicketView';
 
 const UserRoutes = () => [
-  // Authenticated Routes
-  <Route path="/" element={<CheckAuth><Authenticated_Layout /></CheckAuth>}>
-    <Route path="/dashboard" element={<CheckAuth><Dashboard /></CheckAuth>} />
-    <Route path="/ulat-trapiko" element={<CheckAuth><TrafficAdvisory /></CheckAuth>} />
-    <Route path="/e-application" element={<CheckAuth><E_app_Apply /></CheckAuth>} />
-    <Route path="/e-application/barangay-clearance" element={<CheckAuth><BarangayClearance /></CheckAuth>} />
-    <Route path="/e-health" element={<CheckAuth><E_Health /></CheckAuth>} />
-    <Route path="/e-health/:type" element={<CheckAuth><MedicalAppointment /></CheckAuth>} />
-    <Route path="/profile" element={<CheckAuth><Profile /></CheckAuth>} />
-    <Route path="/ticket" element={<CheckAuth><Ticket /></CheckAuth>} />
-    <Route path="/my-tickets" element={<CheckAuth><UserTicket /></CheckAuth>} />
-    <Route path="/ticket-dashboard" element={<CheckAuth><TicketDashboard /></CheckAuth>} />
-    <Route path="/predictive-tickets" element={<CheckAuth><PredictiveTickets /></CheckAuth>} />
-    <Route path="/ticket/1" element={<CheckAuth><TicketView /></CheckAuth>} />
-    <Route path="/traffic" element={<CheckAuth><Traffic /></CheckAuth>} />
-  </Route>,
+  // Pathless layout route - children are relative and match from root
+  <Route
+    key="authenticated"
+    element={<CheckAuth><Authenticated_Layout /></CheckAuth>}
+  >
+    <Route path="dashboard" element={<Dashboard />} />
+    <Route path="ulat-trapiko" element={<TrafficAdvisory />} />
+    <Route path="e-application" element={<E_app_Apply />} />
+    <Route path="e-application/barangay-clearance" element={<BarangayClearance />} />
+    <Route path="e-health" element={<E_Health />} />
+    <Route path="e-health/:type" element={<MedicalAppointment />} />
+    <Route path="profile" element={<Profile />} />
+    <Route path="ticket" element={<Ticket />} />
+    <Route path="my-tickets" element={<UserTicket />} />
+    <Route path="ticket-dashboard" element={<TicketDashboard />} />
+    <Route path="predictive-tickets" element={<PredictiveTickets />} />
+    <Route path="ticket/1" element={<TicketView />} />
+    <Route path="traffic" element={<TrafficAdvisory />} />
+  </Route>
 ]
 
 export default UserRoutes;
