@@ -29,6 +29,7 @@ const UserRoutes = () => [
     <Route path="/ticket-dashboard" element={<CheckAuth><TicketDashboard /></CheckAuth>} />
     <Route path="/predictive-tickets" element={<CheckAuth><PredictiveTickets /></CheckAuth>} />
     <Route path="/ticket/1" element={<CheckAuth><TicketView /></CheckAuth>} />
+    <Route path="/traffic" element={<CheckAuth><Traffic /></CheckAuth>} />
   </Route>,
 ]
 
