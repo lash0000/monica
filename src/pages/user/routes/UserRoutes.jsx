@@ -12,6 +12,7 @@ import UserTicket from '../pages/UserTicket';
 import Ticket from '../pages/Ticket';
 import TicketDashboard from '../pages/TicketDashboard';
 import PredictiveTickets from '../pages/PredictiveTickets';
+import CrimePreventionReport from '../pages/2ndPredictiveTickets';
 import IncidentReportThread from '../pages/BlotterTicketPage1';
 import ForumThread from '../pages/NormalTicketPage';
 import TicketView from '../pages/TicketView';
@@ -35,6 +36,9 @@ const UserRoutes = () => [
     <Route path="my-tickets" element={<UserTicket />} />
     <Route path="ticket-dashboard" element={<TicketDashboard />} />
     <Route path="predictive-tickets" element={<PredictiveTickets />} />
+    <Route path="2nd-predictive-tickets" element={<CrimePreventionReport />} />
+    <Route path="blotter-ticket-page-1" element={<IncidentReportThread />} />
+    <Route path="normal-ticket-page" element={<ForumThread />} />
     <Route path="ticket/1" element={<TicketView />} />
     <Route path="traffic" element={<TrafficAdvisory />} />
   </Route>
