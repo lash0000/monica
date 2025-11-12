@@ -12,9 +12,11 @@ import UserTicket from '../pages/UserTicket';
 import Ticket from '../pages/Ticket';
 import TicketDashboard from '../pages/TicketDashboard';
 import PredictiveTickets from '../pages/PredictiveTickets';
+import CrimePreventionReport from '../pages/2ndPredictiveTickets';
 import IncidentReportThread from '../pages/BlotterTicketPage1';
 import ForumThread from '../pages/NormalTicketPage';
 import TicketView from '../pages/TicketView';
+import MyApplications from '../pages/MyApplications';
 
 const UserRoutes = () => [
   // Pathless layout route - children are relative and match from root
@@ -26,6 +28,7 @@ const UserRoutes = () => [
     <Route path="ulat-trapiko" element={<TrafficAdvisory />} />
     <Route path="e-application" element={<E_app_Apply />} />
     <Route path="e-application/barangay-clearance" element={<BarangayClearance />} />
+    <Route path="my-applications" element={<MyApplications />} />
     <Route path="e-health" element={<E_Health />} />
     <Route path="e-health/:type" element={<MedicalAppointment />} />
     <Route path="profile" element={<Profile />} />
@@ -33,7 +36,10 @@ const UserRoutes = () => [
     <Route path="my-tickets" element={<UserTicket />} />
     <Route path="ticket-dashboard" element={<TicketDashboard />} />
     <Route path="predictive-tickets" element={<PredictiveTickets />} />
-    <Route path="ticket/:id" element={<TicketView />} />
+    <Route path="2nd-predictive-tickets" element={<CrimePreventionReport />} />
+    <Route path="blotter-ticket-page-1" element={<IncidentReportThread />} />
+    <Route path="normal-ticket-page" element={<ForumThread />} />
+    <Route path="ticket/1" element={<TicketView />} />
     <Route path="traffic" element={<TrafficAdvisory />} />
   </Route>
 ]
