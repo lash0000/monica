@@ -74,7 +74,6 @@ export default function UserTicket() {
   }, [page, totalPages]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
       <main className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-6 py-6">
         {/* Header + Search */}
         <div className="mb-4 flex items-center justify-between gap-4">
@@ -134,7 +133,7 @@ export default function UserTicket() {
           </button>
         </div>
       </main>
-    </div>
+    
   );
 }
 

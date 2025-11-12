@@ -3,6 +3,7 @@ import { useState } from 'react';
 function Dashboard() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState(null);
+  const [activeModal, setActiveModal] = useState(null); // 'traffic' or 'prevention'
   const [formData, setFormData] = useState({
     subject: '',
     category: 'Healthcare',
@@ -64,62 +65,43 @@ function Dashboard() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 p-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
-            <p className="text-gray-500">Status overview of your ticket activities</p>
-          </div>
-
+        <div className="max-w-7xl mx-auto mt-10">
+    
           {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            {/* Purple Card - Traffic Category (Added hover effects) */}
-            <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg min-h-[280px] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
-              <span className="inline-block bg-opacity-30 text-white text-xs px-3 py-1 rounded-full mb-4 self-start border border-white border-opacity-40 font-medium">
-                Traffic Advisory
-              </span>
-              <h3 className="text-2xl font-bold mb-3 leading-tight">
-                Narito ang ulat-trapiko para sa ating barangay
-              </h3>
-              <p className="text-purple-100 text-sm mb-6">
-                Mula sa prediskyon ng Artificial Intelligence.
-              </p>
-              <button className="bg-white text-purple-600 px-5 py-2 rounded-lg text-sm font-semibold hover:bg-purple-50 transition-colors inline-flex items-center gap-2 self-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+            {/* Purple Card - Traffic Category */}
+            <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl p-6 text-white relative overflow-hidden shadow-lg min-h-[220px] pb-16 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
+              <div className="mb-2">
+                <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">Traffic Advisory</span>
+              </div>
+              <h3 className="text-xl font-bold mb-2">Narito ang ulat-trapiko para sa ating barangay</h3>
+              <p className="text-sm text-purple-100 mb-4">Mula sa prediksyon ng Artificial Intelligence</p>
+              <button 
+                onClick={() => setActiveModal('traffic')}
+                className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors inline-flex items-center gap-2 absolute left-6 bottom-6"
+              >
                 <span>→</span> Explore
               </button>
-              <div className="absolute bottom-0 right-0 w-48 h-48 opacity-30">
-                <svg className="w-full h-full" viewBox="0 0 200 200" fill="none">
-                  <g>
-                    <path d="M80 60L100 80L80 100L60 80Z" fill="white" opacity="0.5" />
-                    <path d="M120 40L140 60L120 80L100 60Z" fill="white" opacity="0.6" />
-                    <path d="M120 80L140 100L120 120L100 100Z" fill="white" opacity="0.4" />
-                    <path d="M80 100L100 120L80 140L60 120Z" fill="white" opacity="0.5" />
-                    <path d="M40 80L60 100L40 120L20 100Z" fill="white" opacity="0.3" />
-                  </g>
-                </svg>
-              </div>
             </div>
 
-            {/* Pink Card - Crime Category (Added hover effects) */}
-            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg min-h-[280px] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
-              <span className="inline-block bg-opacity-30 text-white text-xs px-3 py-1 rounded-full mb-4 self-start border border-white border-opacity-40 font-medium">
-                Prevention
-              </span>
-              <h3 className="text-2xl font-bold mb-3 leading-tight">
-                Narito ang ulat kontra kriminalidad at paghahanda sa bawat sakuna.
-              </h3>
-              <p className="text-pink-100 text-sm mb-6">
-                Ito ay base sa mga nakukuhang data mula sa mga naka filed na reklamo at maging sa mga incident reports para sa ating barangay.
-              </p>
-              <button className="bg-white text-pink-600 px-5 py-2 rounded-lg text-sm font-semibold hover:bg-pink-50 transition-colors inline-flex items-center gap-2 self-start">
+            {/* Pink Card - Crime Category */}
+            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white relative overflow-hidden shadow-lg min-h-[220px] pb-16 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
+              <div className="mb-2">
+                <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">Prevention</span>
+              </div>
+              <h3 className="text-xl font-bold mb-2">Narito ang ulat kontra kriminalidad at paghahanda sa bawat sakuna.</h3>
+              <p className="text-sm text-pink-100 mb-4">Ito ay batay sa mga nakukuhang data mula sa mga insident reports para sa ating barangay</p>
+              <button 
+                onClick={() => setActiveModal('prevention')}
+                className="bg-white text-pink-600 px-4 py-2 rounded-lg font-semibold hover:bg-pink-50 transition-colors inline-flex items-center gap-2 absolute left-6 bottom-6"
+              >
                 <span>→</span> Explore
               </button>
             </div>
           </div>
 
           {/* My Tickets Section */}
-          <div className="flex justify-between items-start mb-6">
+          <div className="flex justify-between items-start mb-4">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">My Tickets</h2>
               <p className="text-gray-500 text-sm">Status overview of your ticket activities</p>
@@ -137,12 +119,11 @@ function Dashboard() {
           </div>
 
           {/* Dashboard Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+          <div className="flex flex-wrap gap-4 mb-12">
             {dashboardStats.map((stat, index) => (
               <div
                 key={index}
-                // Added hover:scale-[1.03], hover:shadow-md and transition-all duration-200
-                className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 cursor-pointer transition-all duration-200 hover:scale-[1.03] hover:shadow-lg"
+                className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer relative min-h-[140px] w-[280px] flex-shrink-0"
               >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-gray-700 font-medium text-base">{stat.label}</span>
@@ -158,7 +139,7 @@ function Dashboard() {
                     {activeTooltip === `dashboard-${index}` && (
                       <div className="absolute right-0 top-8 w-48 bg-gray-900 text-white text-xs rounded-lg p-2 shadow-lg z-10">
                         {stat.info}
-                        <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                        <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-95"></div>
                       </div>
                     )}
                   </div>
@@ -179,8 +160,7 @@ function Dashboard() {
             {blotterStats.map((stat, index) => (
               <div
                 key={index}
-                // Added hover:scale-[1.03], hover:shadow-md and transition-all duration-200
-                className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 cursor-pointer transition-all duration-200 hover:scale-[1.03] hover:shadow-lg"
+                className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer relative min-h-[140px]"
               >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-gray-700 font-medium text-base">{stat.label}</span>
@@ -206,12 +186,11 @@ function Dashboard() {
             ))}
           </div>
         </div>
-      </div>
 
       {/* Popup Modal */}
       {isPopupOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setIsPopupOpen(false)}>
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-hide" onClick={(e) => e.stopPropagation()}>
             {/* Header */}
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
               <h2 className="text-2xl font-semibold text-gray-900">File a Ticket</h2>
@@ -345,6 +324,236 @@ function Dashboard() {
                 >
                   Submit Ticket
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Traffic Advisory Modal */}
+      {activeModal === 'traffic' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setActiveModal(null)}>
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto scrollbar-hide" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div className="sticky top-0 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-6 py-4 flex items-center justify-between z-10 rounded-t-xl">
+              <div>
+                <h2 className="text-2xl font-bold">Traffic Advisory</h2>
+                <p className="text-sm text-indigo-100 mt-1">AI-Powered Traffic Predictions</p>
+              </div>
+              <button
+                onClick={() => setActiveModal(null)}
+                className="text-white hover:text-gray-200 transition-colors p-1 rounded-lg hover:bg-white/20"
+                aria-label="Close"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-6">
+              {/* Current Status */}
+              <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-100">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Current Traffic Status
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <p className="text-sm text-gray-600 mb-1">Peak Hours</p>
+                    <p className="text-xl font-bold text-gray-900">7-9 AM</p>
+                    <p className="text-sm text-gray-500">3-6 PM</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <p className="text-sm text-gray-600 mb-1">Traffic Level</p>
+                    <p className="text-xl font-bold text-orange-600">Moderate</p>
+                    <p className="text-sm text-gray-500">Expected delays</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <p className="text-sm text-gray-600 mb-1">Best Time</p>
+                    <p className="text-xl font-bold text-green-600">10 AM - 2 PM</p>
+                    <p className="text-sm text-gray-500">Low traffic</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Predictions */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                  AI Predictions
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium text-gray-900">Today's Forecast</p>
+                      <p className="text-sm text-gray-600">Traffic is expected to be moderate throughout the day. Peak congestion predicted between 7-9 AM and 5-7 PM.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="w-2 h-2 rounded-full bg-yellow-500 mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium text-gray-900">Weekend Alert</p>
+                      <p className="text-sm text-gray-600">Increased traffic expected this weekend due to local events. Plan alternative routes if possible.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Recommendations */}
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                  Recommendations
+                </h3>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-600 mt-1">•</span>
+                    <span>Use public transportation during peak hours to avoid delays</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-600 mt-1">•</span>
+                    <span>Consider carpooling to reduce traffic congestion</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-600 mt-1">•</span>
+                    <span>Plan your route ahead using real-time traffic updates</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Prevention Modal */}
+      {activeModal === 'prevention' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setActiveModal(null)}>
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto scrollbar-hide" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div className="sticky top-0 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-4 flex items-center justify-between z-10 rounded-t-xl">
+              <div>
+                <h2 className="text-2xl font-bold">Crime Prevention & Disaster Preparedness</h2>
+                <p className="text-sm text-purple-100 mt-1">Data-Driven Safety Insights</p>
+              </div>
+              <button
+                onClick={() => setActiveModal(null)}
+                className="text-white hover:text-gray-200 transition-colors p-1 rounded-lg hover:bg-white/20"
+                aria-label="Close"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-6">
+              {/* Safety Stats */}
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-100">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  Safety Statistics
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <p className="text-sm text-gray-600 mb-1">Incident Reports</p>
+                    <p className="text-xl font-bold text-gray-900">12</p>
+                    <p className="text-sm text-gray-500">This month</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <p className="text-sm text-gray-600 mb-1">Response Time</p>
+                    <p className="text-xl font-bold text-green-600">5 min</p>
+                    <p className="text-sm text-gray-500">Average</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border border-gray-200">
+                    <p className="text-sm text-gray-600 mb-1">Safety Level</p>
+                    <p className="text-xl font-bold text-blue-600">Good</p>
+                    <p className="text-sm text-gray-500">Area secure</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Crime Prevention */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  Crime Prevention Tips
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="w-2 h-2 rounded-full bg-purple-500 mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium text-gray-900">Home Security</p>
+                      <p className="text-sm text-gray-600">Ensure doors and windows are locked. Install security cameras and motion sensor lights in vulnerable areas.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="w-2 h-2 rounded-full bg-purple-500 mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium text-gray-900">Community Watch</p>
+                      <p className="text-sm text-gray-600">Participate in neighborhood watch programs. Report suspicious activities to authorities immediately.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Disaster Preparedness */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  Disaster Preparedness
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="w-2 h-2 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium text-gray-900">Emergency Kit</p>
+                      <p className="text-sm text-gray-600">Prepare an emergency kit with food, water, flashlight, first aid supplies, and important documents.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="w-2 h-2 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium text-gray-900">Evacuation Plan</p>
+                      <p className="text-sm text-gray-600">Know your evacuation routes and assembly points. Practice your family emergency plan regularly.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Emergency Contacts */}
+              <div className="bg-red-50 rounded-lg p-4 border border-red-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  Emergency Contacts
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                    <span className="text-gray-700">Emergency Hotline</span>
+                    <span className="font-semibold text-red-600">911</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                    <span className="text-gray-700">Barangay Office</span>
+                    <span className="font-semibold text-gray-900">(02) 123-4567</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

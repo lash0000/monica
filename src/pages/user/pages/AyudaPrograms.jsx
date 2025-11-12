@@ -250,10 +250,10 @@ function AyudaPrograms() {
       <div className="bg-foreground text-white py-8 xl:py-12">
         <div className="max-w-6xl xl:max-w-7xl mx-auto px-4">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-white hover:text-gray-200 transition-colors mb-4"
           >
-            <FaArrowLeft /> Back to Home
+            <FaArrowLeft /> Back
           </button>
           <div className="flex items-center gap-4 mb-2">
             <div className="w-16 h-16 xl:w-20 xl:h-20 bg-white/20 rounded-full flex items-center justify-center">
@@ -753,7 +753,7 @@ function AyudaPrograms() {
             </div>
 
             {/* Modal Content */}
-            <div className="p-6">
+            <div className="p-6 mb-0 pb-1">
               {/* Search Bar */}
               <div className="mb-4">
                 <div className="relative">
@@ -782,7 +782,7 @@ function AyudaPrograms() {
               </div>
 
               {/* Table */}
-              <div className="overflow-y-auto max-h-[calc(90vh-300px)]">
+              <div className="overflow-y-auto mb-0 max-h-[calc(90vh-300px)]">
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead className="sticky top-0 bg-gray-50">
@@ -821,7 +821,7 @@ function AyudaPrograms() {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-6 border-t border-gray-200 bg-gray-50">
+            <div className="p-3 ml-2 border-t border-gray-200 bg-gray-50">
               <div className="flex justify-between items-center">
                 <p className="text-sm text-gray-600">
                   {beneficiarySearchTerm ? (

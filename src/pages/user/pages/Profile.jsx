@@ -5,7 +5,7 @@ export default function Profile() {
       <main className="max-w-2xl mx-auto px-3 sm:px-4 lg:px-6 py-8">
         <div className="bg-white rounded-2xl shadow border overflow-hidden">
           {/* Banner */}
-          <div className="relative bg-[#152a64] h-28">
+          <div className="relative bg-slate-100 h-28">
             <div className="absolute left-1/2 -bottom-8 -translate-x-1/2 w-20 h-20 rounded-md ring-4 ring-white overflow-hidden shadow-lg">
               <img src="/assets/images/officials/chaewon.jpg" alt="avatar" className="w-full h-full object-cover" />
             </div>

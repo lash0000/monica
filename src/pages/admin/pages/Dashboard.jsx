@@ -194,8 +194,8 @@ function Dashboard() {
           <h2 className="text-2xl font-bold text-gray-800 mb-1">E-Applications</h2>
           <p className="text-sm text-gray-500">For barangay services available</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px]">
+        <div className="flex flex-wrap gap-4">
+          <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px] w-[280px] flex-shrink-0">
             {/* top-right action icon */}
             <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
               <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
@@ -203,7 +203,7 @@ function Dashboard() {
             <h3 className="text-sm font-medium text-gray-700 pr-12">Total of Ongoing to Review</h3>
             <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">0</span>
           </div>
-          <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px]">
+          <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px] w-[280px] flex-shrink-0">
             {/* top-right action icon */}
             <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
               <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
@@ -211,7 +211,7 @@ function Dashboard() {
             <h3 className="text-sm font-medium text-gray-700 pr-12">Total of Approved</h3>
             <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">0</span>
           </div>
-          <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px]">
+          <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px] w-[280px] flex-shrink-0">
             {/* top-right action icon */}
             <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
               <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
@@ -223,11 +223,12 @@ function Dashboard() {
 
 
       {/* Ayuda Section */}
-        <div className="mb-4">
+      
+        <div className="mb-4 hidden">
           <h2 className="text-2xl font-bold text-gray-800 mb-1">Ayuda</h2>
           <p className="text-sm text-gray-500">Status overview of activities related to Ayuda.</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px]">
             {/* top-right action icon */}
             <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">

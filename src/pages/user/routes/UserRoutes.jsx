@@ -33,7 +33,7 @@ const UserRoutes = () => [
     <Route path="my-tickets" element={<UserTicket />} />
     <Route path="ticket-dashboard" element={<TicketDashboard />} />
     <Route path="predictive-tickets" element={<PredictiveTickets />} />
-    <Route path="ticket/1" element={<TicketView />} />
+    <Route path="ticket/:id" element={<TicketView />} />
     <Route path="traffic" element={<TrafficAdvisory />} />
   </Route>
 ]

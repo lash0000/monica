@@ -6,6 +6,7 @@ import Ticket from '../pages/Ticket';
 import TicketDetail from '../pages/TicketDetail';
 import AyudaManagement from '../pages/AyudaManagement';
 import LandingManagement from '../pages/LandingManagement';
+import UserManagement from '../pages/UserManagement';
 
 const AdminRoutes = () => [
   <Route key="admin" path="/admin" element={<App_Layout />}>
@@ -14,6 +15,7 @@ const AdminRoutes = () => [
     <Route path="tickets/:id" element={<TicketDetail />} />
     <Route path="ayuda" element={<AyudaManagement />} />
     <Route path="landing" element={<LandingManagement />} />
+    <Route path="users" element={<UserManagement />} />
   </Route>
 ]
 

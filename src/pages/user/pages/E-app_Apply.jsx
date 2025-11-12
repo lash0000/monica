@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FaFileAlt, FaDollarSign, FaInfoCircle } from "react-icons/fa";
 
 const ServiceCard = ({ title, icon, onClick }) => (
   <button
@@ -14,41 +15,36 @@ const ServiceCard = ({ title, icon, onClick }) => (
   </button>
 );
 
-const DocumentIcon = () => (
-  <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-    <path d="M14 2v6h6" />
-    <path d="M16 13H8" />
-    <path d="M16 17H8" />
-    <path d="M10 9H8" />
-  </svg>
-);
-
 const services = [
   {
     id: "barangay-clearance",
     title: "Barangay Clearance",
-    icon: <DocumentIcon />,
+    icon: <FaFileAlt className="w-8 h-8 text-white" />,
   },
   {
     id: "business-permit",
     title: "Business Permit",
-    icon: <DocumentIcon />,
+    icon: <FaFileAlt className="w-8 h-8 text-white" />,
   },
   {
     id: "cedula",
     title: "Cedula",
-    icon: <DocumentIcon />,
+    icon: <FaFileAlt className="w-8 h-8 text-white" />,
   },
   {
     id: "certificate-residency",
     title: "Certificate of Residency",
-    icon: <DocumentIcon />,
+    icon: <FaFileAlt className="w-8 h-8 text-white" />,
   },
   {
     id: "indigency",
     title: "Indigency",
-    icon: <DocumentIcon />,
+    icon: <FaFileAlt className="w-8 h-8 text-white" />,
+  },
+  {
+    id: "cash-assistance",
+    title: "Cash Assistance Program",
+    icon: <FaDollarSign className="w-8 h-8 text-white" />,
   },
 ];
 
@@ -58,6 +54,10 @@ export default function E_app_Apply() {
   const handleSelectService = (serviceId) => {
     if (serviceId === "barangay-clearance") {
       navigate("/e-application/barangay-clearance");
+      return;
+    }
+    if (serviceId === "cash-assistance") {
+      navigate("/ayuda-programs");
       return;
     }
     // Placeholder for other services
@@ -72,9 +72,7 @@ export default function E_app_Apply() {
         {/* Reminder Box */}
         <div className="bg-[#50589C] text-white rounded-lg p-4 mb-8">
           <div className="flex items-center">
-            <svg className="w-5 h-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clipRule="evenodd" />
-            </svg>
+            <FaInfoCircle className="w-5 h-5 mr-2" />
             <span className="font-medium">Reminder</span>
           </div>
           <p className="mt-2 text-sm">

@@ -23,9 +23,9 @@ export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
   const menuItems = [
     { path: "/admin", icon: FaHome, label: "Dashboard" },
     { path: "/admin/tickets", icon: FaTicketAlt, label: "Tickets" },
-    { path: "/admin/ayuda", icon: FaHandHoldingHeart, label: "Program" },
-    { path: "/admin/landing", icon: FaNewspaper, label: "Landing" },
-    { path: "/admin/users", icon: FaUsers, label: "Users" },
+    {/*{ path: "/admin/ayuda", icon: FaHandHoldingHeart, label: "P" }, */},
+    { path: "/admin/landing", icon: FaNewspaper, label: "Content Management" },
+    { path: "/admin/users", icon: FaUsers, label: "User Management" },
     { path: "/admin/settings", icon: FaCog, label: "Settings" },
   ];
 
