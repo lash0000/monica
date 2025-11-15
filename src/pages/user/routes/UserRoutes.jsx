@@ -4,6 +4,7 @@ import Dashboard from '../pages/Dashboard';
 import CheckAuth from '../../../lib/CheckAuth';
 import TrafficAdvisory from '../pages/Traffic';
 import E_app_Apply from '../pages/E-app_Apply';
+import E_app_Bonafied from '../pages/E-app_Bonafied';
 import BarangayClearance from '../pages/BarangayClearance';
 import E_Health from '../pages/E-Health';
 import MedicalAppointment from '../pages/MedicalAppointment';
@@ -27,6 +28,7 @@ const UserRoutes = () => [
     <Route path="dashboard" element={<Dashboard />} />
     <Route path="ulat-trapiko" element={<TrafficAdvisory />} />
     <Route path="e-application" element={<E_app_Apply />} />
+    <Route path="e-application/bonafied" element={<E_app_Bonafied />} />
     <Route path="e-application/barangay-clearance" element={<BarangayClearance />} />
     <Route path="my-applications" element={<MyApplications />} />
     <Route path="e-health" element={<E_Health />} />
