@@ -100,7 +100,7 @@ const MyApplications = () => {
     };
 
     return (
-        <div className="flex justify-center py-4" style={{ fontFamily: 'var(--font-geist), Geist, sans-serif' }}>
+        <div className="flex items-center justify-center min-h-screen py-8 pb-20" style={{ fontFamily: 'var(--font-geist), Geist, sans-serif' }}>
             <div className="max-w-4xl w-full">
                 {/* Main White Card */}
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -163,7 +163,11 @@ const MyApplications = () => {
                         <div className="space-y-4 min-h-[400px]">
                             {displayedApplications.length > 0 ? (
                                 displayedApplications.map((app) => (
-                                    <div key={app.id} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white">
+                                    <div
+                                        key={app.id}
+                                        onClick={() => navigate(`/my-applications/${app.id}`)}
+                                        className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white cursor-pointer"
+                                    >
                                         {/* Header Bar */}
                                         <div className="h-3 w-full" style={{ backgroundColor: '#50589C' }}></div>
 
