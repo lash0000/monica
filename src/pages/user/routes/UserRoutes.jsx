@@ -19,6 +19,10 @@ import ForumThread from '../pages/NormalTicketPage';
 import TicketView from '../pages/TicketView';
 import MyApplications from '../pages/MyApplications';
 import BlotterTicketUrgency from '../pages/BlotterTicketUrgency';
+import BlotterTicketResolved from '../pages/BlotterTicketResolved';
+import BlotterTicketUnresolved from '../pages/BlotterTicketUnresolved';
+import BlotterTicketStaffAssign from '../pages/BlotterTicketStaffAssign';
+import BlotterTicketModal from '../pages/BlotterTicketModal';
 
 const UserRoutes = () => [
   // Pathless layout route - children are relative and match from root
