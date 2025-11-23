@@ -105,45 +105,6 @@ function Dashboard() {
             <h2 className="text-2xl font-bold text-gray-900 mb-1">My Tickets</h2>
             <p className="text-gray-500 text-sm">Status overview of your ticket activities</p>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setIsPopupOpen(true)}
-              // Added hover:scale-105 and duration-200
-              className="bg-indigo-600 hover:indigo-800 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200 text-sm font-medium hover:scale-105"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              File a ticket
-            </button>
-
-            {/*
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <button>Open</button>
-              </AlertDialogTrigger>
-
-              <AlertDialogPortal>
-                <AlertDialogOverlay />
-
-                <AlertDialogContent>
-                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone.
-                  </AlertDialogDescription>
-
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction destructive>Delete</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialogPortal>
-            </AlertDialog>
-        */}
-
-          </div>
-
-
         </div>
 
         {/* Dashboard Stats */}
