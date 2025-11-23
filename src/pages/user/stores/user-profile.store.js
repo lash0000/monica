@@ -72,20 +72,31 @@ const UserProfileStore = create((set, get) => ({
       const userProfile = data.UserProfile;
       const normalized = {
         account: {
-          email: data.email,
           user_id: data.user_id,
+          email: data.email,
           acc_type: data.acc_type,
           is_verified: data.is_verified,
+          createdAt: data.createdAt,
+          updatedAt: data.updatedAt,
         },
-
-        userProfile: data.UserProfile ? {
-          ...data.UserProfile,
-          name: data.UserProfile?.name || {},
-          address: data.UserProfile?.address || {},
-          birthdate: data.UserProfile?.birthdate || null,
-          phone_number: data.UserProfile?.phone_number || null,
-          type_of_residency: data.UserProfile?.type_of_residency || null,
-        } : null
+        userProfile: userProfile
+          ? {
+            id: userProfile.id,
+            user_id: userProfile.user_id,
+            name: userProfile.name || {},
+            birthdate: userProfile.birthdate || null,
+            phone_number: userProfile.phone_number || null,
+            user_type: userProfile.user_type || null,
+            admin_role: userProfile.admin_role,
+            gender: userProfile.gender || null,
+            nationality: userProfile.nationality || null,
+            civil_status: userProfile.civil_status || null,
+            type_of_residency: userProfile.type_of_residency || null,
+            address: userProfile.address || {},
+            createdAt: userProfile.createdAt,
+            updatedAt: userProfile.updatedAt,
+          }
+          : null,
       };
 
       set({ profile: normalized, loading: false });
@@ -100,6 +111,7 @@ const UserProfileStore = create((set, get) => ({
       return { error: err.message };
     }
   },
+
 
   updateUserProfile: async (updateData, token) => {
     if (!token) return;
@@ -122,15 +134,18 @@ const UserProfileStore = create((set, get) => ({
 
       const updated = res.data;
 
-      const current = get().profile || { account: {}, userProfile: {} };
+      const current = get().profile || {
+        account: {},
+        userProfile: {},
+      };
 
       const merged = {
         ...current,
         userProfile: {
           ...current.userProfile,
           ...updated,
-          name: updated.name || current.userProfile?.name,
-          address: updated.address || current.userProfile?.address,
+          name: updated.name || current.userProfile.name,
+          address: updated.address || current.userProfile.address,
         },
       };
 
@@ -147,6 +162,21 @@ const UserProfileStore = create((set, get) => ({
   },
 
   clearProfile: () => set({ profile: null }),
+
+  isAdmin: () => {
+    const p = get().profile;
+    if (!p) return false;
+
+    const role =
+      p.userProfile?.admin_role ||
+      p.UserProfile?.admin_role ||
+      null;
+
+    if (!role) return false;
+
+    return role.toLowerCase() !== "none" && role.trim() !== "";
+  },
+
 }));
 
 export default UserProfileStore;

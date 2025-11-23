@@ -9,10 +9,10 @@ function UserManagement() {
     const domains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com'];
     const roles = ['admin', 'user'];
     const statuses = ['active', 'inactive'];
-    
+
     const users = [];
     const startDate = new Date('2023-01-01');
-    
+
     for (let i = 1; i <= 50; i++) {
       const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
       const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
@@ -21,16 +21,16 @@ function UserManagement() {
       const contactNumber = `09${Math.floor(Math.random() * 900000000) + 100000000}`;
       const role = roles[Math.floor(Math.random() * roles.length)];
       const status = statuses[Math.floor(Math.random() * statuses.length)];
-      
+
       const daysAgo = Math.floor(Math.random() * 730);
       const registeredDate = new Date(startDate);
       registeredDate.setDate(registeredDate.getDate() + daysAgo);
-      
+
       const streetNum = Math.floor(Math.random() * 999) + 1;
       const streets = ['Main Street', 'Oak Avenue', 'Pine Road', 'Elm Street', 'Maple Drive'];
       const street = streets[Math.floor(Math.random() * streets.length)];
       const address = `${streetNum} ${street}, Barangay Santa Monica`;
-      
+
       users.push({
         id: i,
         name,
@@ -43,7 +43,7 @@ function UserManagement() {
         lastLogin: Math.random() > 0.3 ? new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] : null
       });
     }
-    
+
     return users;
   };
 
@@ -71,13 +71,13 @@ function UserManagement() {
   // Filter and sort users
   const filteredAndSortedUsers = useMemo(() => {
     let filtered = users.filter(user => {
-      const matchesSearch = searchTerm === '' || 
+      const matchesSearch = searchTerm === '' ||
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.contactNumber.includes(searchTerm);
       const matchesRole = filterRole === 'all' || user.role === filterRole;
       const matchesStatus = filterStatus === 'all' || user.status === filterStatus;
-      
+
       return matchesSearch && matchesRole && matchesStatus;
     });
 
@@ -85,7 +85,7 @@ function UserManagement() {
       filtered = [...filtered].sort((a, b) => {
         let aValue = a[sortColumn];
         let bValue = b[sortColumn];
-        
+
         if (sortColumn === 'registeredDate' || sortColumn === 'lastLogin') {
           aValue = aValue ? new Date(aValue).getTime() : 0;
           bValue = bValue ? new Date(bValue).getTime() : 0;
@@ -93,7 +93,7 @@ function UserManagement() {
           aValue = aValue.toLowerCase();
           bValue = bValue.toLowerCase();
         }
-        
+
         if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
         if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
         return 0;
@@ -152,8 +152,8 @@ function UserManagement() {
     }
 
     if (editingUser) {
-      setUsers(users.map(u => 
-        u.id === editingUser.id 
+      setUsers(users.map(u =>
+        u.id === editingUser.id
           ? { ...u, ...userForm }
           : u
       ));
@@ -180,8 +180,8 @@ function UserManagement() {
   };
 
   const handleToggleStatus = (user) => {
-    setUsers(users.map(u => 
-      u.id === user.id 
+    setUsers(users.map(u =>
+      u.id === user.id
         ? { ...u, status: u.status === 'active' ? 'inactive' : 'active' }
         : u
     ));
@@ -246,7 +246,7 @@ function UserManagement() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-600">Total Users</p>
-                <p className="text-xl font-bold text-gray-900">{stats.total}</p>
+                <p className="text-xl font-bold text-gray-900">0</p>
               </div>
               <FaUsers className="text-foreground text-lg" />
             </div>
@@ -254,26 +254,8 @@ function UserManagement() {
           <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-600">Active</p>
-                <p className="text-xl font-bold text-green-600">{stats.active}</p>
-              </div>
-              <FaCheckCircle className="text-green-600 text-lg" />
-            </div>
-          </div>
-          <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-gray-600">Inactive</p>
-                <p className="text-xl font-bold text-red-600">{stats.inactive}</p>
-              </div>
-              <FaTimes className="text-red-600 text-lg" />
-            </div>
-          </div>
-          <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-200">
-            <div className="flex items-center justify-between">
-              <div>
                 <p className="text-xs text-gray-600">Admins</p>
-                <p className="text-xl font-bold text-blue-600">{stats.admins}</p>
+                <p className="text-xl font-bold text-blue-600">0</p>
               </div>
               <FaUserShield className="text-blue-600 text-lg" />
             </div>
@@ -281,8 +263,17 @@ function UserManagement() {
           <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-600">Regular Users</p>
-                <p className="text-xl font-bold text-gray-600">{stats.regularUsers}</p>
+                <p className="text-xs text-gray-600">Bonafide</p>
+                <p className="text-xl font-bold text-gray-600">0</p>
+              </div>
+              <FaUserCircle className="text-gray-600 text-lg" />
+            </div>
+          </div>
+          <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-600">Non Residents</p>
+                <p className="text-xl font-bold text-gray-600">0</p>
               </div>
               <FaUserCircle className="text-gray-600 text-lg" />
             </div>
@@ -377,14 +368,14 @@ function UserManagement() {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort('name')}>
+                  onClick={() => handleSort('name')}>
                   <div className="flex items-center">
                     Name
                     <SortIcon column="name" />
                   </div>
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort('email')}>
+                  onClick={() => handleSort('email')}>
                   <div className="flex items-center">
                     Email
                     <SortIcon column="email" />
@@ -394,21 +385,15 @@ function UserManagement() {
                   Contact
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort('role')}>
+                  onClick={() => handleSort('role')}>
                   <div className="flex items-center">
                     Role
                     <SortIcon column="role" />
                   </div>
                 </th>
+
                 <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort('status')}>
-                  <div className="flex items-center">
-                    Status
-                    <SortIcon column="status" />
-                  </div>
-                </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort('registeredDate')}>
+                  onClick={() => handleSort('registeredDate')}>
                   <div className="flex items-center">
                     Registered
                     <SortIcon column="registeredDate" />
@@ -447,37 +432,16 @@ function UserManagement() {
                       </div>
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap">
-                      <span className={`px-1.5 py-0.5 text-xs font-semibold ${
-                        user.role === 'admin' 
-                      }`}>
+                      <span className={`px-1.5 py-0.5 text-xs font-semibold ${user.role === 'admin'
+                        }`}>
                         {user.role === 'admin' ? (
                           <span className="flex items-center gap-1">
-                           <span className="text-blue-600">ADMIN</span> 
+                            <span className="text-blue-600">ADMIN</span>
                           </span>
                         ) : (
                           <span className="text-gray-600">USER</span>
                         )}
                       </span>
-                    </td>
-                    <td className="px-4 py-2 whitespace-nowrap">
-                      <button
-                        onClick={() => handleToggleStatus(user)}
-                        className={`px-1.5 py-0.5 text-xs font-semibold rounded-full flex items-center gap-1 transition-colors ${
-                          user.status === 'active' 
-                            ? 'bg-green-100 text-green-800 hover:bg-green-200' 
-                            : 'bg-red-100 text-red-800 hover:bg-red-200'
-                        }`}
-                      >
-                        {user.status === 'active' ? (
-                          <>
-                            <FaCheckCircle className="text-xs" /> Active
-                          </>
-                        ) : (
-                          <>
-                            <FaTimes className="text-xs" /> Inactive
-                          </>
-                        )}
-                      </button>
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-xs text-gray-600">
                       {formatDate(user.registeredDate)}
@@ -508,7 +472,7 @@ function UserManagement() {
                     <FaUsers className="text-gray-300 text-3xl mx-auto mb-3" />
                     <p className="text-gray-600 font-medium text-sm">No users found</p>
                     <p className="text-gray-500 text-xs mt-1">
-                      {hasActiveFilters 
+                      {hasActiveFilters
                         ? 'Try adjusting your search or filter criteria'
                         : 'Get started by adding a new user'}
                     </p>
@@ -538,11 +502,10 @@ function UserManagement() {
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`px-2 py-1 text-sm border rounded-lg transition-colors ${
-                      currentPage === page
-                        ? 'bg-foreground text-white border-foreground'
-                        : 'border-gray-300 hover:bg-gray-100'
-                    }`}
+                    className={`px-2 py-1 text-sm border rounded-lg transition-colors ${currentPage === page
+                      ? 'bg-foreground text-white border-foreground'
+                      : 'border-gray-300 hover:bg-gray-100'
+                      }`}
                   >
                     {page}
                   </button>
@@ -563,9 +526,9 @@ function UserManagement() {
       {/* Add/Edit User Modal */}
       {showUserModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-             onClick={() => setShowUserModal(false)}>
+          onClick={() => setShowUserModal(false)}>
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-lg border border-gray-200"
-               onClick={(e) => e.stopPropagation()}>
+            onClick={(e) => e.stopPropagation()}>
             {/* Modal Header */}
             <div className="bg-foreground text-white p-4 sticky top-0 z-10">
               <div className="flex items-center justify-between">

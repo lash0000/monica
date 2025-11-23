@@ -1,6 +1,10 @@
+// It also included the admin_role privilege.
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useLocation } from "react-router-dom";
+import UserProfileStore from "../../user/stores/user-profile.store";
+
 
 const AuthContext = createContext(null);
 
@@ -36,7 +40,7 @@ export function AuthProvider({ children }) {
     try {
       const res = await fetch(`${apiBaseUrl}/api/v1/data/user-creds/login`, {
         method: "POST",
-        credentials: "include", // important for HTTP-only refresh cookie
+        credentials: "include",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ email, password }),
       });
@@ -63,6 +67,7 @@ export function AuthProvider({ children }) {
       setSessionId(session_id);
       setUser({ user_id });
 
+      await UserProfileStore.getState().fetchUserProfile(user_id, access_token);
       return { success: true };
     } catch (err) {
       console.error("login error:", err);
