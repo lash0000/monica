@@ -19,18 +19,11 @@ export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
   const { profile, loading: profileLoading, fetchUserProfile } = UserProfileStore();
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-
-  // ---------------------------------------------------------
-  // LOAD PROFILE ONCE — ONLY when dashboard is mounted
-  // ---------------------------------------------------------
   useEffect(() => {
     if (!user?.user_id || !accessToken) return;
     fetchUserProfile(user.user_id, accessToken);
   }, [user?.user_id, accessToken, fetchUserProfile]);
 
-  // ---------------------------------------------------------
-  // HANDLE CLICK OUTSIDE
-  // ---------------------------------------------------------
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (notificationRef.current && !notificationRef.current.contains(event.target)) {
@@ -44,9 +37,6 @@ export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // ---------------------------------------------------------
-  // LOGOUT HANDLER
-  // ---------------------------------------------------------
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
@@ -61,17 +51,13 @@ export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
     }
   };
 
-  // ---------------------------------------------------------
-  // DISPLAY NAME HANDLER (Last First M.)
-  // ---------------------------------------------------------
-
   const formatDisplayName = (p) => {
     if (!p || !p.userProfile || !p.userProfile.name) return null;
 
     const { first = "", middle = "", last = "" } = p.userProfile.name;
     const middleInitial = middle ? `${middle.charAt(0).toUpperCase()}.` : "";
 
-    return `${last} ${first} ${middleInitial}`.trim();
+    return `${last}, ${first} ${middleInitial}`.trim();
   };
 
   const displayName =

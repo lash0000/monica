@@ -1,70 +1,75 @@
-import React, { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import UserProfileStore from "../stores/user-profile.store"
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import UserProfileStore from "../stores/user-profile.store";
 
 export default function UpdateProfile() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const {
     profile,
     fetchUserProfile,
     updateUserProfile,
     loading
-  } = UserProfileStore()
+  } = UserProfileStore();
 
-  const token = localStorage.getItem("access_token")
-  const userId = localStorage.getItem("user_id")
+  const token = localStorage.getItem("access_token");
+  const userId = localStorage.getItem("user_id");
 
-  const [formData, setFormData] = useState(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [delayDone, setDelayDone] = useState(false)
+  const [formData, setFormData] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [delayDone, setDelayDone] = useState(false);
+
   useEffect(() => {
-    const timer = setTimeout(() => setDelayDone(true), 2000)
-    return () => clearTimeout(timer)
-  }, [])
+    const timer = setTimeout(() => setDelayDone(true), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const inputClass =
-    "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm " +
-    "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+    "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent";
 
   useEffect(() => {
     if (userId && token) {
-      fetchUserProfile(userId, token)
+      fetchUserProfile(userId, token);
     }
-  }, [userId, token])
+  }, [userId, token]);
 
+  // FIX: Correctly read from profile.userProfile
   useEffect(() => {
-    if (profile) {
-      setFormData({
-        name: profile.name || {
-          first: "",
-          middle: "",
-          last: "",
-          suffix: "",
-        },
-        birthdate: profile.birthdate || "",
-        phone_number: profile.phone_number || "",
-        type_of_residency: profile.type_of_residency || "",
-        civil_status: profile.civil_status || "",
-        gender: profile.gender || "",
-        nationality: profile.nationality || "",
+    if (!profile?.userProfile) return;
 
-        address: profile.address || {
-          street_address: "",
-          house_no: "",
-          street: "",
-          subdivision: "",
-          barangay: "",
-          city: "",
-          province: "",
-          zip_code: "",
-        },
-      })
+    const up = profile.userProfile;
 
-    }
-  }, [profile])
+    setFormData({
+      name: {
+        first: up?.name?.first ?? "",
+        middle: up?.name?.middle ?? "",
+        last: up?.name?.last ?? "",
+        suffix: up?.name?.suffix ?? "",
+      },
+      birthdate: up?.birthdate ?? "",
+      phone_number: up?.phone_number ?? "",
+      type_of_residency: up?.type_of_residency ?? "",
+      civil_status: up?.civil_status ?? "",
+      gender: up?.gender ?? "",
+      nationality: up?.nationality ?? "",
+      address: {
+        street_address: up?.address?.street_address ?? "",
+        house_no: up?.address?.house_no ?? "",
+        street: up?.address?.street ?? "",
+        subdivision: up?.address?.subdivision ?? "",
+        barangay: up?.address?.barangay ?? "",
+        city: up?.address?.city ?? "",
+        province: up?.address?.province ?? "",
+        zip_code: up?.address?.zip_code ?? "",
+      },
+      contact_person: {
+        number: up?.contact_person?.number ?? "",
+        name: up?.contact_person?.name ?? ""
+      }
+    });
+  }, [profile]);
 
-  // Show loading UI while store is loading OR during artificial delay
+  // Loading screen
   if (!delayDone || loading || !formData) {
     return (
       <div className="flex items-center justify-center h-[70vh]">
@@ -73,7 +78,7 @@ export default function UpdateProfile() {
           <p className="text-gray-600 text-sm">Loading profile information...</p>
         </div>
       </div>
-    )
+    );
   }
 
   const handleNameChange = (field, value) => {
@@ -83,8 +88,8 @@ export default function UpdateProfile() {
         ...prev.name,
         [field]: value,
       },
-    }))
-  }
+    }));
+  };
 
   const handleAddressChange = (field, value) => {
     setFormData(prev => ({
@@ -93,25 +98,34 @@ export default function UpdateProfile() {
         ...prev.address,
         [field]: value,
       },
-    }))
-  }
+    }));
+  };
+
+  const handleContactPersonChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      contact_person: {
+        ...prev.contact_person,
+        [field]: value
+      }
+    }));
+  };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value,
-    }))
-  }
-
+    }));
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
 
     let result;
 
-    // CASE 1 — No profile yet → CREATE
+    // CASE 1 — No profile in database → CREATE
     if (!profile?.userProfile) {
       result = await UserProfileStore.getState().createUserProfile(
         { user_id: userId, ...formData },
@@ -124,15 +138,14 @@ export default function UpdateProfile() {
       result = await updateUserProfile(formData, token);
     }
 
-    setIsSubmitting(false)
+    setIsSubmitting(false);
 
     if (result?.success) {
-      navigate(-1)
+      navigate(-1);
     } else {
-      alert("Failed to save profile.")
+      alert("Failed to save profile.");
     }
-  }
-
+  };
 
   return (
     <main className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-6 py-8">
@@ -145,13 +158,11 @@ export default function UpdateProfile() {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-8">
-
           {/* Name Section */}
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Name Information</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                 <input
@@ -195,7 +206,6 @@ export default function UpdateProfile() {
                   placeholder="e.g., Jr., Sr."
                 />
               </div>
-
             </div>
           </div>
 
@@ -204,7 +214,6 @@ export default function UpdateProfile() {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Personal Details</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
                 <input
@@ -236,6 +245,7 @@ export default function UpdateProfile() {
                   onChange={handleInputChange}
                   className={inputClass}
                 >
+                  <option value="">Select</option>
                   <option value="bonafide">Bonafide</option>
                   <option value="non-resident">Non-Resident</option>
                 </select>
@@ -297,7 +307,6 @@ export default function UpdateProfile() {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Address Information</h2>
 
             <div className="space-y-4">
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
                 <input
@@ -309,7 +318,6 @@ export default function UpdateProfile() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">House No.</label>
                   <input
@@ -329,7 +337,6 @@ export default function UpdateProfile() {
                     className={inputClass}
                   />
                 </div>
-
               </div>
 
               <div>
@@ -343,7 +350,6 @@ export default function UpdateProfile() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Barangay</label>
                   <input
@@ -383,18 +389,45 @@ export default function UpdateProfile() {
                     className={inputClass}
                   />
                 </div>
+              </div>
+            </div>
+          </div>
 
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Emergency Contacts</h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Contact Number (Landline or Phone Number)
+                </label>
+                <input
+                  type="text"
+                  value={formData.contact_person.number}
+                  onChange={(e) => handleContactPersonChange("number", e.target.value)}
+                  className={inputClass}
+                />
               </div>
 
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Contact Person (Name)
+                </label>
+                <input
+                  type="text"
+                  value={formData.contact_person.name}
+                  onChange={(e) => handleContactPersonChange("name", e.target.value)}
+                  className={inputClass}
+                />
+              </div>
             </div>
           </div>
 
           {/* Buttons */}
           <div className="flex justify-end gap-3 pt-6 border-t">
-
             <button
               type="button"
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
               onClick={() => navigate(-1)}
             >
               Cancel
@@ -403,15 +436,13 @@ export default function UpdateProfile() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50"
             >
               {isSubmitting ? "Saving..." : "Save Changes"}
             </button>
-
           </div>
-
         </form>
       </div>
     </main>
-  )
+  );
 }

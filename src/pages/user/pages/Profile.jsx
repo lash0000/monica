@@ -194,7 +194,7 @@ export default function Profile() {
               <div className="border-t p-3">
                 <div className="text-[11px] text-gray-500">Permanent Address</div>
                 <div className="text-sm">
-                  {userProfile.address?.house_no ?? ""} {userProfile.address?.street ?? ""}
+                  {userProfile.address?.house_no ?? ""} {userProfile.address?.street_address ?? ""}
                   {userProfile.address?.street ? ", " : ""}
                   {userProfile.address?.barangay ?? ""}
                   {userProfile.address?.barangay ? ", " : ""}{" "}
@@ -206,8 +206,19 @@ export default function Profile() {
               {/* Emergency Contact */}
               <div className="border-t p-3">
                 <div className="text-[11px] text-gray-500">Emergency Contacts</div>
-                <div className="text-sm">N/A</div>
+
+                {userProfile?.contact_person?.number || userProfile?.contact_person?.name ? (
+                  <div className="text-sm">
+                    {userProfile.contact_person?.name ?? "Unnamed"}
+                    {userProfile.contact_person?.number
+                      ? ` — ${userProfile.contact_person.number}`
+                      : ""}
+                  </div>
+                ) : (
+                  <div className="text-sm">N/A</div>
+                )}
               </div>
+
 
             </div>
           </div>
