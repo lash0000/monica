@@ -10,9 +10,13 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import UserTicketStore from "../stores/Ticket.store";
 
-function TicketCard({ ticket }) {
+
+function TicketCard({ ticket, rawId, navigate }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-5">
+    <div
+      className="bg-white rounded-xl shadow-sm border p-5 transition-colors hover:shadow-xl"
+      onClick={() => navigate(`/ticket/${rawId}`)}
+    >
       <div className="mb-2">
         <span className="text-[11px] px-2 py-1 rounded-full bg-gray-100 text-gray-600">
           {ticket.type}
@@ -145,10 +149,14 @@ export default function UserTicket() {
           </div>
         )}
 
+
         {!loading &&
           paged.map((t) => (
             <TicketCard
               key={t.ticket_id}
+              rawId={t.id}
+              base_path={base_path}
+              navigate={navigate}
               ticket={{
                 type: (t.category || "N/A").charAt(0).toUpperCase() + (t.category || "N/A").slice(1),
                 title: t.subject || "Untitled Ticket",

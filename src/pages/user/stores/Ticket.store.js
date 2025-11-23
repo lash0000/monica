@@ -57,20 +57,25 @@ const useTicketStore = create((set, get) => ({
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
 
+      console.log("[fetchTicket] API RESPONSE:", data);
+
       const first = data?.UserCredential?.UserProfile?.name?.first || "";
       const last = data?.UserCredential?.UserProfile?.name?.last || "";
       const middle = data?.UserCredential?.UserProfile?.name?.middle?.[0] || "";
 
+      // FIX: Keep the entire ticket from API
+      const fullTicket = {
+        ...data,                     // includes Files, Comments, and all fields
+        openedByName: `${last}, ${first} ${middle}.`,
+        title: data.subject,
+        body: data.concern_details,
+        mappedTag: data.category,
+        openedTime: data.createdAt,
+        updates: data.Comments || []
+      };
+
       set({
-        singleTicket: {
-          id: data.id,
-          title: data.subject,
-          body: data.concern_details,
-          mappedTag: data.category,
-          openedTime: data.createdAt,
-          openedByName: `${last}, ${first} ${middle}.`,
-          updates: data.Comments || []
-        },
+        singleTicket: fullTicket,
         loading: false
       });
 
