@@ -1,226 +1,401 @@
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import socket from "../../../lib/socket";
 
-// Mock ticket data - replace with actual data fetching
-const TICKETS = [
-  { 
-    id: 1, 
-    tag: "Social Services", 
-    title: "AICS pati TUPAD assistance", 
-    body: "Hindi pa po ako nakakatanggap ng tulong pinansyal, baka pwede po magpa-follow up.",
-    openedBy: "Henson, Justine Eldrich V.",
-    openedTime: "12 hours ago",
-    status: "Resolved",
-    urgencyLevel: "Urgent",
-    category: "Social Services",
-    dateTime: "13/10/25 at 12:31 PM GMT (+8)",
-    description: "Matagong naghihintay nang matagal yung request sa Barangay Santa Monica. Natatanggap na po namin ang niyong concern at lahat ay ariling nila na para sa agapang abuyon.",
-    basicServices: [
-      "Maintenance & Infrastructure: I-refer sa Engineering/Utility Team",
-      "Healthcare: I-appoint sa Barangay Health Center/Health Personnel",
-      "Social Services: Ipa-handle sa Social Services Office",
-      "Community Programs: Ko-coordinate sa Community Affairs Unit",
-      "Administrative & Governance: I-address ng Barangay Administrative Office",
-      "Others: I-review ng assigned staff"
-    ],
-    nextSteps: "Makatitiyak pang makikipag-ugnayan ang assigned staff para sa karagdagang detalye",
-    updates: [
-      {
-        author: "Admin 456565",
-        time: "10h ago",
-        tag: "Admin Staff",
-        content: "Salamat po sa inyong follow-up. Ayon sa pinakahuling tala mula sa aming Social Services Office, ang libralidad ng schedule para sa AICS at TUPAD batch ay sinasamantalahan nitong sinasinang ng DSWD at City Social Welfare and Development Department (CSWDD). Kung nais ninyong makakupo ng nasasalat list, makakadiskubre po kayo ng latest list bawat Putas ang social welfare staff para sa iskandarya (kung mawawala) sa reference number (kung mayroon)."
-      },
-      {
-        author: "Henson, Justine Eldrich V.",
-        time: "10h ago",
-        tag: "Bonafide",
-        content: "When po uli ang bagan?"
-      },
-      {
-        author: "Admin 456565",
-        time: "6h ago",
-        tag: "Admin Staff",
-        content: "Wala po as of now, we will update nalang po requesting here sooner."
-      },
-      {
-        author: "Bose, John Lander G.",
-        time: "6h ago",
-        tag: "Bonafide",
-        content: "Why naman wala pa huhu"
-      }
-    ]
-  }
-];
+import UserTicketStore from "../stores/Ticket.store";
+import UserProfileStore from "../stores/user-profile.store";
 
+function timeAgo(dateString) {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const now = new Date();
+  const diff = now - date;
+
+  const sec = Math.floor(diff / 1000);
+  const min = Math.floor(sec / 60);
+  const hr = Math.floor(min / 60);
+  const day = Math.floor(hr / 24);
+
+  if (sec < 10) return "just now";
+  if (sec < 60) return `${sec} seconds ago`;
+  if (min === 1) return "a minute ago";
+  if (min < 60) return `${min} minutes ago`;
+  if (hr === 1) return "an hour ago";
+  if (hr < 24) return `${hr} hours ago`;
+  if (day === 1) return "yesterday";
+  if (day < 7) return `${day} days ago`;
+
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+}
+
+
+/* CATEGORY MAPPING (same as Ticket.jsx) */
+const CATEGORY_TO_TAG = {
+  maintenance: "maintenance",
+  healthcare: "healthcare",
+  infrastructure: "administrative",
+  environmental: "community programs",
+  safety: "social services",
+  other: "others",
+  general: "general"
+};
+
+/* ---------------------------
+   TicketView Page
+   --------------------------- */
 export default function TicketView() {
   const { id } = useParams();
-  const ticket = TICKETS.find(t => t.id === parseInt(id));
-  const [comment, setComment] = useState("");
 
-  // if (!ticket) {
-  //   return <div>Ticket not found</div>;
-  // }
+  const {
+    singleTicket,
+    comments,
+    loading,
 
-  const replyCount = ticket?.updates?.length || 2;
+    fetchTicket,
+    fetchComments,
+    postComment,
 
+    joinRoom,
+    leaveRoom,
+    initializeSocketListeners
+  } = UserTicketStore();
+
+  const { profile } = UserProfileStore();
+
+  const [localTicket, setLocalTicket] = useState(null);
+  const [commentInput, setCommentInput] = useState("");
+
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimeoutRef = useRef(null);
+  const localTypingRef = useRef(false);
+
+  const [page, setPage] = useState(1);
+  const pageSize = 6;
+
+  /* ---------------------------
+     INITIALIZE SOCKET LISTENERS
+     --------------------------- */
+  useEffect(() => {
+    initializeSocketListeners();
+    return () => {
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    };
+  }, []);
+
+  /* ---------------------------
+     JOIN ROOM & FETCH TICKET
+     --------------------------- */
+  useEffect(() => {
+    if (!id) return;
+
+    joinRoom(id);
+    fetchTicket(id);
+    fetchComments(id);
+
+    return () => {
+      leaveRoom(id);
+      try {
+        socket.emit("typing:stop", id);
+      } catch (_) { }
+    };
+  }, [id]);
+
+  /* ---------------------------
+     SOCKET: OTHER USER TYPING
+     --------------------------- */
+  useEffect(() => {
+    if (!id) return;
+
+    const onIncoming = ({ ticketId }) => {
+      if (String(ticketId) === String(id)) setIsTyping(true);
+    };
+    const onClear = ({ ticketId }) => {
+      if (String(ticketId) === String(id)) setIsTyping(false);
+    };
+
+    socket.on("typing:incoming", onIncoming);
+    socket.on("typing:clear", onClear);
+
+    return () => {
+      socket.off("typing:incoming", onIncoming);
+      socket.off("typing:clear", onClear);
+    };
+  }, [id]);
+
+  /* ---------------------------
+     MERGE UPDATES + COMMENTS
+     --------------------------- */
+  useEffect(() => {
+    if (!singleTicket) return;
+
+    let merged = Array.isArray(singleTicket.updates)
+      ? [...singleTicket.updates]
+      : [];
+
+    (comments || []).forEach((c) => {
+      if (!merged.some((m) => String(m.id) === String(c.id))) {
+        merged.push(c);
+      }
+    });
+
+    const seen = new Set();
+    merged = merged.filter((u) => {
+      const key = String(u.id || `${u.parent_id}-${u.comment}`);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+    setLocalTicket({
+      ...singleTicket,
+      updates: merged
+    });
+  }, [singleTicket, comments]);
+
+  /* ---------------------------
+     LOADING
+     --------------------------- */
+  if (loading || !localTicket) {
+    return (
+      <div className="flex justify-center items-center h-screen text-gray-600">
+        Loading ticket…
+      </div>
+    );
+  }
+
+  /* ---------------------------
+     EXTRACT FIELDS (NO FALLBACKS)
+     --------------------------- */
+  const {
+    title,
+    subject,
+    body,
+    concern_details,
+    openedByName,
+    createdAt,
+    category,
+    status,
+    priority,
+    description,
+    basic_services,
+    next_steps,
+    updates = []
+  } = localTicket;
+
+  const selectedCategory = (() => {
+    const lower = (category || "").toLowerCase();
+    return CATEGORY_TO_TAG[lower] || lower || "general";
+  })();
+
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil((updates || []).length / pageSize)
+  );
+
+  const currentComments = (updates || []).slice(
+    (page - 1) * pageSize,
+    page * pageSize
+  );
+
+  /* ---------------------------
+     COMMENT INPUT HANDLING
+     --------------------------- */
+  const handleTypingChange = (e) => {
+    const v = e.target.value;
+    setCommentInput(v);
+
+    if (!localTicket?.id) return;
+
+    if (!localTypingRef.current) {
+      try {
+        socket.emit("typing:start", localTicket.id);
+      } catch (_) { }
+      localTypingRef.current = true;
+    }
+
+    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    typingTimeoutRef.current = setTimeout(() => {
+      try {
+        socket.emit("typing:stop", localTicket.id);
+      } catch (_) { }
+      localTypingRef.current = false;
+      setIsTyping(false);
+      typingTimeoutRef.current = null;
+    }, 1800);
+  };
+
+  const handleSendComment = async () => {
+    const text = commentInput.trim();
+    if (!text || !localTicket?.id) return;
+
+    try {
+      await postComment(localTicket.id, {
+        commented_by: profile?.id || localStorage.getItem("user_id"),
+        comment: text
+      });
+      socket.emit("typing:stop", localTicket.id);
+    } catch (err) {
+      console.error(err);
+    }
+
+    setCommentInput("");
+    localTypingRef.current = false;
+    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    setIsTyping(false);
+  };
+
+  /* ---------------------------
+     RENDER
+     --------------------------- */
   return (
     <div className="flex justify-center w-full px-8 py-6 bg-gray">
       <div className="max-w-4xl w-full bg-white p-2 rounded-lg shadow-md py-6 px-8">
-        {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-sm mb-6">
+
+        {/* Category Tabs */}
+        <div className="flex items-center gap-2 text-sm mb-4">
           <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full font-medium">
-            Social Services
+            {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
           </span>
           <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full font-medium">
-            Opened by Henson, Justine Eldrich V.
+            Opened by {openedByName}
           </span>
         </div>
 
-        {/* Title */}
-       
-
-        {/* Original Post */}
-         <h2 className="text-2xl font-bold text-gray-900">
-          {ticket?.title || "AICS pati TUPAD assistance"}
+        {/* Title + Body */}
+        <h2 className="text-2xl font-bold text-gray-900 mb-1">
+          {title || subject}
         </h2>
-        <div className="bg-white-50 rounded-lg p-4 mb-6">
-          <p className="text-gray-700 mb-4">
-            {ticket?.body || "Hindi pa po ako nakakatanggap ng tulong pinansyal, baka pwede po magpa-follow up."}
-          </p>
-          <div className="flex items-center gap-4 mb-0">
-            <button className="flex items-center gap-2 text-gray-600">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-              Replies (3)
-            </button>
-            <button className="flex items-center gap-2 text-gray-600">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-              </svg>
-              Share your thoughts
-            </button>
-          </div>
 
-        </div>
+        <p className="text-gray-700 mb-4 whitespace-pre-wrap">
+          {body || concern_details}
+        </p>
 
-        {/* Thread Info */}
-        <div className="bg-blue-100 border border-red-100 rounded-lg px-4 py-3 mb-6">
-          <p className="text-sm text-blue-900">
-            {ticket?.openedBy || "Henson, Justine Eldrich V."} opened this thread ({ticket?.openedTime || "12 hours ago"})
-          </p>
-        </div>
         {/* Comment Input */}
-        <div className="mt-6 bg-white rounded-lg p-4">
+        <div className="mt-6 bg-white rounded-lg mb-6">
           <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
+            value={commentInput}
+            onChange={handleTypingChange}
             placeholder="Salamat po sa mga pagtutuod..."
             className="w-full border border-gray-300 rounded-lg p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows={3}
           />
           <div className="flex justify-end mt-3">
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+            <button
+              onClick={handleSendComment}
+              disabled={!commentInput.trim()}
+              className={`px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors ${!commentInput.trim()
+                ? "opacity-60 cursor-not-allowed"
+                : "hover:bg-blue-700"
+                }`}
+            >
               Post Comment
             </button>
           </div>
         </div>
-        {/* Ticket Details */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
-              D
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-3">
-                <p className="font-medium text-gray-900">DeepSeek AI</p>
-                <span className="text-gray-400">•</span>
-                <p className="text-sm text-gray-500">10h ago</p>
-                <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full font-medium">
-                  System Generated
-                </span>
-              </div>
 
-              <div className="space-y-4 text-sm">
-                <div>
-                  <p className="font-medium text-gray-700 mb-1">Category:</p>
-                  <p className="text-gray-900">{ticket?.category || "Social Services"}</p>
-                </div>
-
-                <div>
-                  <p className="font-medium text-gray-700 mb-1">Status:</p>
-                    <p className="text-gray-900">{ticket?.status || "Resolved"}</p>
-                  
-                </div>
-
-                <div>
-                  <p className="font-medium text-gray-700 mb-1">Urgency Level:</p>
-                  <div className="flex gap-2 flex-wrap">
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">Urgent</span>
-                    <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded">Medium</span>
-                    <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded">High</span>
-                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Critical</span>
-                  </div>
-                </div>
-
-                <div>
-                  <p className="font-medium text-gray-700 mb-1">Date and Time:</p>
-                  <p className="text-gray-900">{ticket?.dateTime || "13/10/25 at 12:31 PM GMT (+8)"}</p>
-                </div>
-
-                <div>
-                  <p className="font-medium text-gray-700 mb-1">Description:</p>
-                  <p className="text-gray-900">
-                    {ticket?.description || "Matagong naghihintay nang matagal yung request sa Barangay Santa Monica."}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="font-medium text-gray-700 mb-1">Basis sa kung anong office isasalo ung concern:</p>
-                  <ul className="space-y-1.5 ml-8">
-                    {(ticket?.basicServices || TICKETS[0].basicServices).map((service, index) => (
-                      <li key={index} className="text-gray-700 list-disc">{service}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <p className="font-medium text-gray-700 mb-1">Next Steps:</p>
-                  <p className="text-gray-900">
-                    {ticket?.nextSteps || "Makatitiyak pang makikipag-ugnayan ang assigned staff para sa karagdagang detalye"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Updates Section */}
+        {/* Ticket Details - tago muna */}
+        {/* Comments Section */}
         <div className="space-y-4">
-          {(ticket?.updates || TICKETS[0].updates).map((update, index) => (
-            <div key={index} className="bg-white border border-gray-200 rounded-lg p-4">
+          {currentComments.map((update) => (
+            <div key={update.id} className="bg-white border rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
-                  {update.author.charAt(0)}
+
+                <div className="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center">
+                  {(
+                    update?.UserProfile?.name?.last ||
+                    update?.UserProfile?.name?.first ||
+                    update?.author ||
+                    "U"
+                  ).charAt(0).toUpperCase()}
                 </div>
+
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="font-medium text-gray-900">{update.author}</p>
+                    <p className="font-medium text-gray-900">
+                      {update?.UserProfile
+                        ? `${update.UserProfile.name.last}, ${update.UserProfile.name.first}${update.UserProfile.name.middle
+                          ? ` ${update.UserProfile.name.middle.charAt(0)}.`
+                          : ""
+                        }`
+                        : update?.UserCredential?.email ||
+                        update?.author ||
+                        "Unknown User"}
+                    </p>
+
                     <span className="text-gray-400">•</span>
-                    <p className="text-sm text-gray-500">{update.time}</p>
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">
-                      {update.tag}
-                    </span>
+
+                    <p className="text-xs text-gray-500">
+                      {timeAgo(
+                        update?.createdAt ||
+                        update?.updatedAt ||
+                        update?.created_at ||
+                        update?.updated_at
+                      )}
+                    </p>
                   </div>
-                  <p className="text-gray-700 text-sm">{update.content}</p>
+
+                  <p className="text-gray-700 text-sm whitespace-pre-wrap">
+                    {update?.comment || update?.content}
+                  </p>
                 </div>
+
               </div>
             </div>
           ))}
         </div>
 
-        
+        {/* Someone is typing */}
+        {isTyping && (
+          <p className="text-xs text-gray-500 mt-2">Someone is typing...</p>
+        )}
+
+        {/* Pagination - Style A */}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-end mt-6">
+            <nav className="flex items-center gap-2 text-sm">
+
+              {/* Previous */}
+              <button
+                onClick={() => page > 1 && setPage(page - 1)}
+                disabled={page === 1}
+                className={`px-3 py-1 border rounded-md bg-white text-gray-700 hover:bg-gray-100 ${page === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+              >
+                Previous
+              </button>
+
+              {/* Dynamic Page Numbers */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+                <button
+                  key={num}
+                  onClick={() => setPage(num)}
+                  className={`px-3 py-1 border rounded-md 
+            ${num === page ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-100"}
+          `}
+                >
+                  {num}
+                </button>
+              ))}
+
+              {/* Next */}
+              <button
+                onClick={() => page < totalPages && setPage(page + 1)}
+                disabled={page === totalPages}
+                className={`px-3 py-1 border rounded-md bg-white text-gray-700 hover:bg-gray-100 ${page === totalPages ? "opacity-50 cursor-not-allowed" : ""}`}
+              >
+                Next
+              </button>
+
+            </nav>
+          </div>
+        )}
+
       </div>
     </div>
   );

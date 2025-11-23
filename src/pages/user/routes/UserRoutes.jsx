@@ -11,7 +11,6 @@ import MedicalAppointment from '../pages/MedicalAppointment';
 import Profile from '../pages/Profile';
 import UserTicket from '../pages/UserTicket';
 import Ticket from '../pages/Ticket';
-import TicketDashboard from '../pages/TicketDashboard';
 import PredictiveTickets from '../pages/PredictiveTickets';
 import CrimePreventionReport from '../pages/2ndPredictiveTickets';
 import IncidentReportThread from '../pages/BlotterTicketPage1';
@@ -24,9 +23,10 @@ import BlotterTicketResolved from '../pages/BlotterTicketResolved';
 import BlotterTicketUnresolved from '../pages/BlotterTicketUnresolved';
 import BlotterTicketStaffAssign from '../pages/BlotterTicketStaffAssign';
 import BlotterTicketModal from '../pages/BlotterTicketModal';
+import UpdateProfile from '../pages/UpdateProfile';
+import FileTicket from '../pages/FileTicket';
 
 const UserRoutes = () => [
-  // Pathless layout route - children are relative and match from root
   <Route
     key="authenticated"
     element={<CheckAuth><Authenticated_Layout /></CheckAuth>}
@@ -41,9 +41,11 @@ const UserRoutes = () => [
     <Route path="e-health" element={<E_Health />} />
     <Route path="e-health/:type" element={<MedicalAppointment />} />
     <Route path="profile" element={<Profile />} />
+    <Route path="profile/update-profile" element={<UpdateProfile />} />
     <Route path="ticket" element={<Ticket />} />
+    <Route path="ticket/:id" element={<TicketView />} />
     <Route path="my-tickets" element={<UserTicket />} />
-    <Route path="ticket-dashboard" element={<TicketDashboard />} />
+    <Route path="my-tickets/add-new-ticket" element={<FileTicket />} />
     <Route path="predictive-tickets" element={<PredictiveTickets />} />
     <Route path="2nd-predictive-tickets" element={<CrimePreventionReport />} />
     <Route path="blotter-ticket-page-1" element={<IncidentReportThread />} />
@@ -53,7 +55,7 @@ const UserRoutes = () => [
     <Route path="blotter-ticket-urgency" element={<BlotterTicketUrgency />} />
     <Route path="blotter-ticket-modal" element={<BlotterTicketModal />} />
     <Route path="normal-ticket-page" element={<ForumThread />} />
-    <Route path="ticket/1" element={<TicketView />} />
+
     <Route path="traffic" element={<TrafficAdvisory />} />
   </Route>
 ]

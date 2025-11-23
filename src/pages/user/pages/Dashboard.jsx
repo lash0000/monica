@@ -12,16 +12,16 @@ function Dashboard() {
   });
 
   const dashboardStats = [
-    { label: 'Resolved', count: 1, info: 'Tickets that have been successfully resolved and closed' },
-    { label: 'Pending', count: 1, info: 'Tickets that are currently being reviewed and awaiting action' },
-    { label: 'Archived', count: 3, info: 'Tickets that have been archived for record keeping' }
+    { label: 'Resolved', count: 0, info: 'Tickets that have been successfully resolved and closed' },
+    { label: 'Pending', count: 0, info: 'Tickets that are currently being reviewed and awaiting action' },
+    { label: 'Archived', count: 0, info: 'Tickets that have been archived for record keeping' }
   ];
 
   const blotterStats = [
     { label: 'Resolved', count: 0, info: 'Blotter reports that have been resolved' },
-    { label: 'Unresolved', count: 1, info: 'Blotter reports that are still pending resolution' },
-    { label: 'Pending', count: 1, info: 'Blotter reports currently under review' },
-    { label: 'Archived', count: 2, info: 'Blotter reports that have been archived' }
+    { label: 'Unresolved', count: 0, info: 'Blotter reports that are still pending resolution' },
+    { label: 'Pending', count: 0, info: 'Blotter reports currently under review' },
+    { label: 'Archived', count: 0, info: 'Blotter reports that have been archived' }
   ];
 
   const handleFileChange = (e) => {
@@ -65,47 +65,47 @@ function Dashboard() {
 
   return (
     <>
-        <div className="max-w-7xl mx-auto mt-10">
-    
-          {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
-            {/* Purple Card - Traffic Category */}
-            <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl p-6 text-white relative overflow-hidden shadow-lg min-h-[220px] pb-16 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
-              <div className="mb-2">
-                <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">Traffic Advisory</span>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Narito ang ulat-trapiko para sa ating barangay</h3>
-              <p className="text-sm text-purple-100 mb-4">Mula sa prediksyon ng Artificial Intelligence</p>
-              <button 
-                onClick={() => setActiveModal('traffic')}
-                className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors inline-flex items-center gap-2 absolute left-6 bottom-6"
-              >
-                <span>→</span> Explore
-              </button>
+      <div className="max-w-7xl mx-auto mt-10">
+        {/* Feature Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+          {/* Purple Card - Traffic Category */}
+          <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl p-6 text-white relative overflow-hidden shadow-lg min-h-[220px] pb-16 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
+            <div className="mb-2">
+              <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">Traffic Advisory</span>
             </div>
-
-            {/* Pink Card - Crime Category */}
-            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white relative overflow-hidden shadow-lg min-h-[220px] pb-16 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
-              <div className="mb-2">
-                <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">Prevention</span>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Narito ang ulat kontra kriminalidad at paghahanda sa bawat sakuna.</h3>
-              <p className="text-sm text-pink-100 mb-4">Ito ay batay sa mga nakukuhang data mula sa mga insident reports para sa ating barangay</p>
-              <button 
-                onClick={() => setActiveModal('prevention')}
-                className="bg-white text-pink-600 px-4 py-2 rounded-lg font-semibold hover:bg-pink-50 transition-colors inline-flex items-center gap-2 absolute left-6 bottom-6"
-              >
-                <span>→</span> Explore
-              </button>
-            </div>
+            <h3 className="text-xl font-bold mb-2">Narito ang ulat-trapiko para sa ating barangay</h3>
+            <p className="text-sm text-purple-100 mb-4">Mula sa prediksyon ng Artificial Intelligence</p>
+            <button
+              onClick={() => setActiveModal('traffic')}
+              className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors inline-flex items-center gap-2 absolute left-6 bottom-6"
+            >
+              <span>→</span> Explore
+            </button>
           </div>
 
-          {/* My Tickets Section */}
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">My Tickets</h2>
-              <p className="text-gray-500 text-sm">Status overview of your ticket activities</p>
+          {/* Pink Card - Crime Category */}
+          <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white relative overflow-hidden shadow-lg min-h-[220px] pb-16 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
+            <div className="mb-2">
+              <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">Prevention</span>
             </div>
+            <h3 className="text-xl font-bold mb-2">Narito ang ulat kontra kriminalidad at paghahanda sa bawat sakuna.</h3>
+            <p className="text-sm text-pink-100 mb-4">Ito ay batay sa mga nakukuhang data mula sa mga insident reports para sa ating barangay</p>
+            <button
+              onClick={() => setActiveModal('prevention')}
+              className="bg-white text-pink-600 px-4 py-2 rounded-lg font-semibold hover:bg-pink-50 transition-colors inline-flex items-center gap-2 absolute left-6 bottom-6"
+            >
+              <span>→</span> Explore
+            </button>
+          </div>
+        </div>
+
+        {/* My Tickets Section */}
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-1">My Tickets</h2>
+            <p className="text-gray-500 text-sm">Status overview of your ticket activities</p>
+          </div>
+          <div className="flex gap-2">
             <button
               onClick={() => setIsPopupOpen(true)}
               // Added hover:scale-105 and duration-200
@@ -116,76 +116,104 @@ function Dashboard() {
               </svg>
               File a ticket
             </button>
+
+            {/*
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button>Open</button>
+              </AlertDialogTrigger>
+
+              <AlertDialogPortal>
+                <AlertDialogOverlay />
+
+                <AlertDialogContent>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone.
+                  </AlertDialogDescription>
+
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction destructive>Delete</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogPortal>
+            </AlertDialog>
+        */}
+
           </div>
 
-          {/* Dashboard Stats */}
-          <div className="flex flex-wrap gap-4 mb-12">
-            {dashboardStats.map((stat, index) => (
-              <div
-                key={index}
-                className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer relative min-h-[140px] w-[280px] flex-shrink-0"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-gray-700 font-medium text-base">{stat.label}</span>
-                  <div className="relative">
-                    <button
-                      onClick={() => setActiveTooltip(activeTooltip === `dashboard-${index}` ? null : `dashboard-${index}`)}
-                      onMouseEnter={() => setActiveTooltip(`dashboard-${index}`)}
-                      onMouseLeave={() => setActiveTooltip(null)}
-                      className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
-                    >
-                      <span className="text-gray-400 text-xs">?</span>
-                    </button>
-                    {activeTooltip === `dashboard-${index}` && (
-                      <div className="absolute right-0 top-8 w-48 bg-gray-900 text-white text-xs rounded-lg p-2 shadow-lg z-10">
-                        {stat.info}
-                        <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-95"></div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="text-5xl font-bold text-gray-900">{stat.count}</div>
-              </div>
-            ))}
-          </div>
 
-          {/* Blotter Section */}
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">Blotter</h2>
-            <p className="text-gray-500 text-sm">Status overview of your ticket activities related to blotter report.</p>
-          </div>
-
-          {/* Blotter Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {blotterStats.map((stat, index) => (
-              <div
-                key={index}
-                className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer relative min-h-[140px]"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-gray-700 font-medium text-base">{stat.label}</span>
-                  <div className="relative">
-                    <button
-                      onClick={() => setActiveTooltip(activeTooltip === `blotter-${index}` ? null : `blotter-${index}`)}
-                      onMouseEnter={() => setActiveTooltip(`blotter-${index}`)}
-                      onMouseLeave={() => setActiveTooltip(null)}
-                      className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
-                    >
-                      <span className="text-gray-400 text-xs">?</span>
-                    </button>
-                    {activeTooltip === `blotter-${index}` && (
-                      <div className="absolute right-0 top-8 w-48 bg-gray-900 text-white text-xs rounded-lg p-2 shadow-lg z-10">
-                        {stat.info}
-                        <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="text-5xl font-bold text-gray-900">{stat.count}</div>
-              </div>
-            ))}
-          </div>
         </div>
+
+        {/* Dashboard Stats */}
+        <div className="flex flex-wrap gap-4 mb-12">
+          {dashboardStats.map((stat, index) => (
+            <div
+              key={index}
+              className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer relative min-h-[140px] w-[280px] flex-shrink-0"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-gray-700 font-medium text-base">{stat.label}</span>
+                <div className="relative">
+                  <button
+                    onClick={() => setActiveTooltip(activeTooltip === `dashboard-${index}` ? null : `dashboard-${index}`)}
+                    onMouseEnter={() => setActiveTooltip(`dashboard-${index}`)}
+                    onMouseLeave={() => setActiveTooltip(null)}
+                    className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="text-gray-400 text-xs">?</span>
+                  </button>
+                  {activeTooltip === `dashboard-${index}` && (
+                    <div className="absolute right-0 top-8 w-48 bg-gray-900 text-white text-xs rounded-lg p-2 shadow-lg z-10">
+                      {stat.info}
+                      <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-95"></div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="text-5xl font-bold text-gray-900">{stat.count}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Blotter Section */}
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-1">Blotter</h2>
+          <p className="text-gray-500 text-sm">Status overview of your ticket activities related to blotter report.</p>
+        </div>
+
+        {/* Blotter Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {blotterStats.map((stat, index) => (
+            <div
+              key={index}
+              className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer relative min-h-[140px]"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-gray-700 font-medium text-base">{stat.label}</span>
+                <div className="relative">
+                  <button
+                    onClick={() => setActiveTooltip(activeTooltip === `blotter-${index}` ? null : `blotter-${index}`)}
+                    onMouseEnter={() => setActiveTooltip(`blotter-${index}`)}
+                    onMouseLeave={() => setActiveTooltip(null)}
+                    className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="text-gray-400 text-xs">?</span>
+                  </button>
+                  {activeTooltip === `blotter-${index}` && (
+                    <div className="absolute right-0 top-8 w-48 bg-gray-900 text-white text-xs rounded-lg p-2 shadow-lg z-10">
+                      {stat.info}
+                      <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="text-5xl font-bold text-gray-900">{stat.count}</div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Popup Modal */}
       {isPopupOpen && (

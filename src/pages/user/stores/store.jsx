@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import { useLocation } from "react-router-dom";
 
 const AuthContext = createContext(null);
 
@@ -8,38 +10,29 @@ export function AuthProvider({ children }) {
   const [sessionId, setSessionId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const MONICA_URL = import.meta.env.VITE_MONICA_URL;
+  const location = useLocation();
+  const apiBaseUrl = import.meta.env.VITE_SOCKET_URL;
 
-  // Load from localStorage or sessionStorage on startup
   useEffect(() => {
-    // Check localStorage first (remember me enabled)
-    let savedUser = localStorage.getItem("auth_user");
-    let savedAccess = localStorage.getItem("auth_token");
-    let savedSession = localStorage.getItem("auth_session");
+    const savedToken = localStorage.getItem("access_token");
+    const savedSession = localStorage.getItem("session_id");
+    const savedUserId = localStorage.getItem("user_id");
 
-    // If not in localStorage, check sessionStorage (temporary session)
-    if (!savedUser || !savedAccess || !savedSession) {
-      savedUser = sessionStorage.getItem("auth_user");
-      savedAccess = sessionStorage.getItem("auth_token");
-      savedSession = sessionStorage.getItem("auth_session");
-    }
-
-    if (savedUser && savedAccess && savedSession) {
-      setUser(JSON.parse(savedUser));
-      setAccessToken(savedAccess);
+    if (savedToken && savedSession && savedUserId) {
+      setAccessToken(savedToken);
       setSessionId(savedSession);
+      setUser({ user_id: savedUserId });
     }
+
     setLoading(false);
+    // run once on mount
   }, []);
 
-  // ---------------------------
-  // LOGIN
-  // ---------------------------
-  const login = async (email, password, rememberMe = false) => {
+  const login = async (email, password) => {
     try {
-      const res = await fetch(`${MONICA_URL}/api/v1/data/user-creds/login`, {
+      const res = await fetch(`${apiBaseUrl}/api/v1/data/user-creds/login`, {
         method: "POST",
-        credentials: "include", // ensures refreshToken cookie is saved
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -47,95 +40,87 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Login failed");
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.message || "Login failed");
 
-      setUser(data.user);
-      setAccessToken(data.accessToken);
-      setSessionId(data.sessionId);
+      const { user_id, session_id, access_token } = payload.data || {};
 
-      // Save to localStorage if remember me is checked, otherwise use sessionStorage
-      if (rememberMe) {
-        localStorage.setItem("auth_user", JSON.stringify(data.user));
-        localStorage.setItem("auth_token", data.accessToken);
-        localStorage.setItem("auth_session", data.sessionId);
-      } else {
-        // Use sessionStorage for temporary session (cleared when browser closes)
-        sessionStorage.setItem("auth_user", JSON.stringify(data.user));
-        sessionStorage.setItem("auth_token", data.accessToken);
-        sessionStorage.setItem("auth_session", data.sessionId);
-        // Clear localStorage auth data if remember me is not checked
-        localStorage.removeItem("auth_user");
-        localStorage.removeItem("auth_token");
-        localStorage.removeItem("auth_session");
-      }
+      // persist
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("session_id", session_id);
+      localStorage.setItem("user_id", user_id);
+
+      Cookies.set("date_login", new Date().toISOString(), {
+        secure: true,
+        sameSite: "strict",
+        path: "/",
+      });
+
+      setAccessToken(access_token);
+      setSessionId(session_id);
+      setUser({ user_id });
+
+      // socket init removed by design
 
       return { success: true };
     } catch (err) {
-      console.error("Login error:", err);
+      console.error("login error:", err);
       return { success: false, message: err.message };
     }
   };
 
-  // ---------------------------
-  // REFRESH TOKEN
-  // ---------------------------
   const refreshAccessToken = async () => {
     try {
-      const res = await fetch(`${MONICA_URL}/api/v1/data/user-creds/refresh`, {
+      const res = await fetch(`${apiBaseUrl}/api/v1/data/user-creds/refresh`, {
         method: "POST",
-        credentials: "include", // <-- send the refreshToken cookie
+        credentials: "include",
         headers: { Accept: "application/json" },
       });
 
-      const data = await res.json();
+      const payload = await res.json();
 
       if (!res.ok) {
-        console.warn("Failed to refresh access token:", data.message);
-        logout();
+        await logout();
         return false;
       }
 
-      setAccessToken(data.accessToken);
-      
-      // Save to the same storage type that was used for login
-      const rememberMe = localStorage.getItem("remember_me") === "true";
-      if (rememberMe) {
-        localStorage.setItem("auth_token", data.accessToken);
-      } else {
-        sessionStorage.setItem("auth_token", data.accessToken);
+      const newToken = payload.data?.access_token;
+      if (!newToken) {
+        await logout();
+        return false;
       }
-      
-      console.info("✅ Access token refreshed successfully");
+
+      localStorage.setItem("access_token", newToken);
+      setAccessToken(newToken);
+
+      // socket refresh removed by design
+
       return true;
     } catch (err) {
-      console.error("Token refresh failed:", err);
-      logout();
+      console.error("token refresh failed:", err);
+      await logout();
       return false;
     }
   };
 
-  // ---------------------------
-  // FETCH WITH AUTO REFRESH
-  // ---------------------------
   const fetchWithAuth = async (url, options = {}) => {
     try {
+      const headers = {
+        ...(options.headers || {}),
+        Authorization: `Bearer ${accessToken}`,
+        Accept: "application/json",
+      };
+
       const res = await fetch(url, {
         ...options,
-        headers: {
-          ...(options.headers || {}),
-          Authorization: `Bearer ${accessToken}`,
-          Accept: "application/json",
-        },
+        headers,
       });
 
       if (res.status === 401) {
-        console.warn("Access token expired, refreshing...");
+        // try refresh
         const refreshed = await refreshAccessToken();
-
         if (refreshed) {
-          // Retry the request with the new token (check both storage types)
-          const newToken = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
+          const newToken = localStorage.getItem("access_token");
           const retryRes = await fetch(url, {
             ...options,
             headers: {
@@ -145,79 +130,55 @@ export function AuthProvider({ children }) {
             },
           });
           return retryRes;
-        } else {
-          throw new Error("Session expired, please login again.");
         }
+        throw new Error("Session expired. Please login again.");
       }
 
       return res;
     } catch (err) {
-      console.error("FetchWithAuth error:", err);
+      console.error("fetchWithAuth error:", err);
       throw err;
     }
   };
 
-  // ---------------------------
-  // LOGOUT
-  // ---------------------------
   const logout = async () => {
+    const storedSessionId = localStorage.getItem("session_id");
+    const storedUserId = localStorage.getItem("user_id");
+
     try {
-      // Check both localStorage and sessionStorage for session ID
-      const storedSessionId = sessionId || localStorage.getItem("auth_session") || sessionStorage.getItem("auth_session");
-
-      if (!storedSessionId) {
-        console.warn("No session ID found — skipping logout request");
-        return;
-      }
-
-      const res = await fetch(`${MONICA_URL}/api/v1/data/user-creds/logout`, {
+      await fetch(`${apiBaseUrl}/api/v1/data/user-creds/logout`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({ sessionId: storedSessionId }),
+        body: JSON.stringify({
+          sessionid: storedSessionId,
+          user_id: storedUserId,
+        }),
       });
-
-      if (!res.ok) {
-        const msg = await res.text();
-        console.error("Logout failed:", msg);
-      } else {
-        console.info("✅ Logout successful");
-      }
     } catch (err) {
-      console.error("Logout request failed:", err);
+      console.error("logout error:", err);
     } finally {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("session_id");
+      localStorage.removeItem("user_id");
+
+      Cookies.remove("date_login", { path: "/" });
+
       setUser(null);
       setAccessToken(null);
       setSessionId(null);
-      // Clear both localStorage and sessionStorage
-      localStorage.removeItem("auth_user");
-      localStorage.removeItem("auth_token");
-      localStorage.removeItem("auth_session");
-      sessionStorage.removeItem("auth_user");
-      sessionStorage.removeItem("auth_token");
-      sessionStorage.removeItem("auth_session");
+
+      // socket disconnect removed by design
     }
   };
 
-  // ---------------------------
-  // AUTO REFRESH INTERVAL
-  // ---------------------------
   useEffect(() => {
-    if (!user) return;
-
-    // Try refresh immediately after login / reload
-    refreshAccessToken();
-
-    // Schedule periodic refresh (every 14 minutes)
-    const interval = setInterval(() => {
-      refreshAccessToken();
-    }, 14 * 60 * 1000);
-
-    return () => clearInterval(interval);
-  }, [user]);
+    if (!accessToken) return;
+    void refreshAccessToken();
+  }, [location.pathname]);
 
   return (
     <AuthContext.Provider
