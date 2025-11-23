@@ -3,11 +3,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaBell, FaUser, FaSignOutAlt, FaBars } from "react-icons/fa";
 import { useAuth } from "../stores/store";
 import UserProfileStore from "../stores/user-profile.store";
+import { RiAdminFill } from "react-icons/ri"
 
 export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-
+  const [activeTooltip, setActiveTooltip] = useState(null);
   const notificationRef = useRef(null);
   const profileRef = useRef(null);
 
@@ -101,6 +102,28 @@ export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
 
       {/* RIGHT SECTION */}
       <div className="flex items-center space-x-2 lg:space-x-4">
+        {!profileLoading && profile?.userProfile?.admin_role && (
+          <div
+            className="relative"
+            onMouseEnter={() => setActiveTooltip("admin")}
+            onMouseLeave={() => setActiveTooltip(null)}
+          >
+            <button
+              className="relative p-2 text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-100"
+              onClick={() => navigate("/admin")}
+            >
+              <RiAdminFill className="size-5" />
+            </button>
+
+            {activeTooltip === "admin" && (
+              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-2 py-1 bg-black text-white text-xs rounded shadow-lg whitespace-nowrap z-50">
+                Admin Page
+              </div>
+            )}
+          </div>
+        )}
+
+
         {/* NOTIFICATION */}
         <div className="relative" ref={notificationRef}>
           <button
