@@ -25,6 +25,7 @@ import BlotterTicketStaffAssign from '../pages/BlotterTicketStaffAssign';
 import BlotterTicketModal from '../pages/BlotterTicketModal';
 import UpdateProfile from '../pages/UpdateProfile';
 import FileTicket from '../pages/FileTicket';
+import ApplicationForm from '../pages/ApplicationForm';
 
 const UserRoutes = () => [
   <Route
@@ -34,8 +35,7 @@ const UserRoutes = () => [
     <Route path="dashboard" element={<Dashboard />} />
     <Route path="ulat-trapiko" element={<TrafficAdvisory />} />
     <Route path="e-application" element={<E_app_Apply />} />
-    <Route path="e-application/bonafied" element={<E_app_Bonafied />} />
-    <Route path="e-application/barangay-clearance" element={<BarangayClearance />} />
+    <Route path="e-application/:id" element={<ApplicationForm />} />
     <Route path="my-applications" element={<MyApplications />} />
     <Route path="my-applications/:id" element={<ApplicationStatus />} />
     <Route path="e-health" element={<E_Health />} />
