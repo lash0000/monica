@@ -28,7 +28,7 @@ export default function UpdateUser() {
   const [formData, setFormData] = useState(null);
   const [isAdminRole, setIsAdminRole] = useState(false);
   const [roleText, setRoleText] = useState("");
-
+  const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [delayDone, setDelayDone] = useState(false);
 
@@ -52,6 +52,7 @@ export default function UpdateUser() {
     if (!profile?.userProfile) return;
 
     const up = profile.userProfile;
+    setEmail(profile.account?.email || "");
 
     // Admin role logic
     setIsAdminRole(!!up.admin_role && up.admin_role.trim() !== "");
@@ -164,6 +165,18 @@ export default function UpdateUser() {
           {/* Account Section */}
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Account Information</h2>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input
+                type="text"
+                className="border rounded-md px-3 py-2 w-full disabled:text-gray-400"
+                placeholder="Enter role (e.g., Super Admin)"
+                value={email}
+                disabled
+                onChange={(e) => setRoleText(e.target.value)}
+              />
+            </div>
 
             {/* Admin role switch */}
             <div className="flex items-center justify-between border rounded-md p-3">

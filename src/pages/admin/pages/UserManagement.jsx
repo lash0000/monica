@@ -46,7 +46,6 @@ function SearchFilters({
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 setSearchTerm(searchText); // this triggers the actual search
-                currentPage(1);
               }
             }}
             className="w-full pl-10 pr-4 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-foreground focus:border-foreground"
@@ -539,9 +538,73 @@ function UserManagement() {
 
   if (loading) {
     return (
-      <div className="w-full p-8 text-center text-gray-700 text-sm">
-        Loading users...
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th
+                  className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("name")}
+                >
+                  <div className="flex items-center">
+                    Name <SortIcon column="name" />
+                  </div>
+                </th>
+
+                <th
+                  className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("email")}
+                >
+                  <div className="flex items-center">
+                    Email <SortIcon column="email" />
+                  </div>
+                </th>
+
+                <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Contact
+                </th>
+
+                <th
+                  className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("role")}
+                >
+                  <div className="flex items-center">
+                    Role <SortIcon column="role" />
+                  </div>
+                </th>
+
+                <th
+                  className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("registeredDate")}
+                >
+                  <div className="flex items-center">
+                    Registered <SortIcon column="registeredDate" />
+                  </div>
+                </th>
+
+                <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td colSpan="7" className="px-4 py-8 text-center">
+                  <div className="flex items-center justify-center h-[70vh]">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="animate-spin h-12 w-12 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+                      <p className="text-gray-600 text-sm">Loading...</p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+
     );
   }
 
