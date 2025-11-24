@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { MdArrowBack } from 'react-icons/md';
 import { useApplicationStore } from '../stores/Application.store'; // adjust path
 
-const ApplicationStatus = () => {
+export default function ApplicationStatus() {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -175,5 +175,3 @@ const ApplicationStatus = () => {
     </div>
   );
 };
-
-export default ApplicationStatus;
