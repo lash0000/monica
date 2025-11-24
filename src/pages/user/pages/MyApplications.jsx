@@ -2,36 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiInfo } from 'react-icons/fi';
 import { FaPlus } from 'react-icons/fa';
-import { myApplication } from '../stores/Application.store';
+import { useApplicationStore } from '../stores/Application.store';
 
 const MyApplications = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('ongoing');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [applications, setApplications] = useState([]);
-  const [loading, setLoading] = useState(false);
-
   const ITEMS_PER_PAGE = 5;
+
+  const { myApplication, applications, loading } = useApplicationStore();
 
   const userId = localStorage.getItem("user_id");
 
   // Fetch user applications
   useEffect(() => {
-    const fetchApps = async () => {
-      if (!userId) return;
-
-      setLoading(true);
-      const res = await myApplication(userId);
-
-      if (res.success) {
-        setApplications(res.applications || []);
-      }
-
-      setLoading(false);
-    };
-
-    fetchApps();
+    if (userId) {
+      myApplication(userId);
+    }
   }, [userId]);
 
   // -----------------------------

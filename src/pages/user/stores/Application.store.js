@@ -1,74 +1,71 @@
-import axios from "axios";
-import { toast } from "sonner";
+import { create } from 'zustand';
+import axios from 'axios';
+import { toast } from 'sonner';
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL; // or your constant
 
-export const myApplication = async (userId) => {
-  try {
-    const token = localStorage.getItem("access_token");
-    if (!token) throw new Error("No access token found.");
+export const useApplicationStore = create((set, get) => ({
+  loading: false,
+  applications: [],
+  error: null,
 
-    const res = await axios.get(
-      `${SOCKET_URL}/api/v1/data/applications/user/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  // Fetch applications from logged-in user
+  myApplication: async (userId) => {
+    try {
+      set({ loading: true, error: null });
 
-    return {
-      success: true,
-      data: res.data,
-      applications: res.data.applications || [],
-    };
-  } catch (err) {
-    const message = err.response?.data || err.message;
-    return {
-      success: false,
-      error: message,
-    };
-  }
-};
+      const token = localStorage.getItem("access_token");
+      if (!token) throw new Error("No access token found.");
 
-export const createApplication = async (payload) => {
-  try {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      toast.error("Missing access token.");
-      return { success: false };
+      const res = await axios.get(
+        `${SOCKET_URL}/api/v1/data/applications/user/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      set({ applications: res.data.applications || [] });
+      return res.data;
+    } catch (err) {
+      set({ error: err.response?.data || err.message });
+      throw err;
+    } finally {
+      set({ loading: false });
     }
+  },
 
-    const res = await axios.post(
-      `${SOCKET_URL}/api/v1/data/applications`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
-    );
+  // Submit new application
+  createApplication: async (payload) => {
+    try {
+      set({ loading: true, error: null });
 
-    toast.success("Application submitted successfully.");
+      const token = localStorage.getItem("access_token");
+      if (!token) throw new Error("No access token found.");
 
-    return {
-      success: true,
-      data: res.data.application,
-    };
-  } catch (err) {
-    const message =
-      err.response?.data?.message ||
-      err.message ||
-      "Application submission failed.";
+      const res = await axios.post(
+        `${SOCKET_URL}/api/v1/data/applications`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    toast.error(message);
+      // Optional: push the new application into state
+      set((state) => ({
+        applications: [res.data.application, ...state.applications],
+      }));
 
-    return {
-      success: false,
-      error: message,
-    };
-  }
-};
+      toast.success("Application submitted successfully!")
+      return res.data;
+    } catch (err) {
+      set({ error: err.response?.data || err.message });
+      throw err;
+    } finally {
+      set({ loading: false });
+    }
+  },
+}));

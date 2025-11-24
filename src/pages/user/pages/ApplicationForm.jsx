@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import UserProfileStore from "../stores/user-profile.store";
-import { createApplication } from "../stores/Application.store";
 import { services } from "./E-app_Apply";
 import { FaInfoCircle } from "react-icons/fa";
+import { useApplicationStore } from "../stores/Application.store";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -11,8 +11,7 @@ export default function ApplicationForm() {
 
   // Zustand for profile only
   const { profile, fetchUserProfile } = UserProfileStore();
-
-  // Local loading (no more Zustand loading)
+  const { createApplication } = useApplicationStore();
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("access_token");

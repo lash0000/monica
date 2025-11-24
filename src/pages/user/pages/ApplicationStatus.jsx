@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MdArrowBack } from 'react-icons/md';
-import { useApplicationStore } from '../stores/Application.store'; // adjust path
+import { useApplicationStore } from '../stores/Application.store';
 
 export default function ApplicationStatus() {
   const navigate = useNavigate();
