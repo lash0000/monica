@@ -17,6 +17,7 @@ import IncidentReportThread from '../pages/BlotterTicketPage1';
 import ForumThread from '../pages/NormalTicketPage';
 import TicketView from '../pages/TicketView';
 import MyApplications from '../pages/MyApplications';
+import ApplicationList from '../pages/e-application-as-bonafide';
 
 const UserRoutes = () => [
   // Pathless layout route - children are relative and match from root
@@ -41,6 +42,7 @@ const UserRoutes = () => [
     <Route path="normal-ticket-page" element={<ForumThread />} />
     <Route path="ticket/1" element={<TicketView />} />
     <Route path="traffic" element={<TrafficAdvisory />} />
+    <Route path="e-application-as-bonafide" element={<ApplicationList />} />
   </Route>
 ]
 
