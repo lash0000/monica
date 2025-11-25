@@ -6,14 +6,20 @@ import Ticket from '../pages/Ticket';
 import TicketDetail from '../pages/TicketDetail';
 import AyudaManagement from '../pages/AyudaManagement';
 import LandingManagement from '../pages/LandingManagement';
+import UserManagement from '../pages/UserManagement';
+import UpdateUser from '../pages/UpdateUser';
+import Events from '../pages/EventsPage';
 
 const AdminRoutes = () => [
   <Route key="admin" path="/admin" element={<App_Layout />}>
     <Route index element={<Dashboard />} />
     <Route path="tickets" element={<Ticket />} />
     <Route path="tickets/:id" element={<TicketDetail />} />
+    <Route path="events" element={<Events />} />
     <Route path="ayuda" element={<AyudaManagement />} />
     <Route path="landing" element={<LandingManagement />} />
+    <Route path="users" element={<UserManagement />} />
+    <Route path="users/:id" element={<UpdateUser />} />
   </Route>
 ]
 

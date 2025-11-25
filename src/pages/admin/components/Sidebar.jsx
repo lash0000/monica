@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaHome, FaTicketAlt, FaUsers, FaCog, FaHandHoldingHeart, FaNewspaper } from "react-icons/fa";
+import { MdEvent } from "react-icons/md";
+import { IoIosPaper } from "react-icons/io";
 
 export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -23,8 +25,9 @@ export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
   const menuItems = [
     { path: "/admin", icon: FaHome, label: "Dashboard" },
     { path: "/admin/tickets", icon: FaTicketAlt, label: "Tickets" },
-    { path: "/admin/ayuda", icon: FaHandHoldingHeart, label: "Program" },
-    { path: "/admin/landing", icon: FaNewspaper, label: "Landing" },
+    { path: "/admin/applications", icon: IoIosPaper, label: "Applications" },
+    { path: "/admin/events", icon: MdEvent, label: "Events" },
+    { path: "/admin/landing", icon: FaNewspaper, label: "Telekonsulta" },
     { path: "/admin/users", icon: FaUsers, label: "Users" },
     { path: "/admin/settings", icon: FaCog, label: "Settings" },
   ];
@@ -81,8 +84,8 @@ export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
                 <Icon className="size-5 flex-shrink-0" />
                 <span
                   className={`font-medium transition-all duration-300 ${isExpanded || isMobileVisible
-                      ? "ml-3 opacity-100"
-                      : "ml-0 opacity-0 w-0 overflow-hidden"
+                    ? "ml-3 opacity-100"
+                    : "ml-0 opacity-0 w-0 overflow-hidden"
                     }`}
                 >
                   {label}

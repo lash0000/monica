@@ -13,7 +13,7 @@ import EmergencyHotlines from '../pages/EmergencyHotlines';
 import Events from '../pages/Events';
 import AyudaPrograms from '../pages/AyudaPrograms';
 import FileTicket from '../pages/FileTicket';
-import E_app_Apply from '../pages/E-app_Apply';   
+import E_app_Apply from '../pages/E-app_Apply';
 import E_app_Bonafied from '../pages/E-app_Bonafied';
 import CheckRegisterAuth from '../../../lib/CheckRegisterAuth';
 import CheckAuth from '../../../lib/CheckAuth';

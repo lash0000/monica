@@ -3,28 +3,34 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../pages/user/stores/store";
 
 export default function CheckAuth({ children }) {
-  const { user, loading } = useAuth();
+  const { accessToken, loading } = useAuth();
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) {
-      const timer = setTimeout(() => setRedirect(true), 3000);
+    if (!loading && !accessToken) {
+      const timer = setTimeout(() => setRedirect(true), 2000);
       return () => clearTimeout(timer);
     }
-  }, [loading, user]);
+  }, [loading, accessToken]);
 
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-primary border-opacity-70 mb-4"></div>
-        <p className="text-gray-700 dark:text-gray-300 font-medium">Checking session...</p>
+        <p className="text-gray-700 dark:text-gray-300 font-medium">
+          Checking session...
+        </p>
       </div>
     );
   }
 
-  if (!user && redirect) return <Navigate to="/login" replace />;
+  // If no token → redirect after delay
+  if (!accessToken && redirect) {
+    return <Navigate to="/login" replace />;
+  }
 
-  if (!user) {
+  // Unauthorized state before redirect
+  if (!accessToken) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 transition-all duration-500">
         <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 max-w-sm text-center">
@@ -44,5 +50,6 @@ export default function CheckAuth({ children }) {
     );
   }
 
+  // Authorized → show protected content
   return children;
 }

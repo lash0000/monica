@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { FaMapMarkerAlt, FaPaperPlane, FaTimes, FaSearch } from 'react-icons/fa';
 import { FaFileMedical } from 'react-icons/fa6';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-
+import UserTicketStore from '../stores/Ticket.store';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function FileTicket() {
+  const navigate = useNavigate();
+  const { addNewTicket, loading, error, success } = UserTicketStore();
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB per file
   const [formData, setFormData] = useState({
     subject: '',
@@ -32,13 +33,6 @@ function FileTicket() {
   const [suggestions, setSuggestions] = useState([]);
   const [isFetchingSuggestions, setIsFetchingSuggestions] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
-
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -119,11 +113,25 @@ function FileTicket() {
     setFormData(prev => ({ ...prev, maintenanceType: type }));
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission here
+
+    const user_id = localStorage.getItem("user_id");
+    const payload = {
+      user_id,
+      subject: formData.subject,
+      category: formData.category,
+      concern_details: formData.description,
+      files: selectedFiles // MUST be "files" no [] 
+    };
+    const res = await addNewTicket(payload);
+    if (res) {
+      navigate(-1);
+    } else {
+      alert("Something went wrong submitting your ticket.");
+    }
   };
+
 
 
   const maintenanceTypes = useMemo(() => [
@@ -250,9 +258,20 @@ function FileTicket() {
     <div className="w-full min-h-screen bg-slate-50 p-4">
       <div className="container lg:mx-auto lg:max-w-2xl bg-white rounded-lg shadow-md overflow-hidden">
         {/* Header */}
-        <div className="bg-secondary p-4 text-white">
-          <h1 className="text-xl font-bold mb-1">File Ticket</h1>
-          <p className="text-sm opacity-90">Submit an incident report</p>
+        <div
+          className={`p-8 text-white transition-colors ${formData.category === "Complaint" || formData.category === "Incident Report"
+            ? "bg-red-500"
+            : "bg-secondary"
+            }`}
+        >
+          <h1 className="text-xl font-bold mb-1">File a Ticket</h1>
+          <p className="text-sm opacity-90">
+            {formData.category === "Complaint"
+              ? "Para sa pormal na pagsasampa ng inyong reklamo o hinaing."
+              : formData.category === "Incident Report"
+                ? "Para sa pormal na pag-uulat ng isang naganap na insidente."
+                : "Para sa makabuluhang usapan para sa ating mga sinasakupan."}
+          </p>
         </div>
 
         {/* Form */}
@@ -287,6 +306,8 @@ function FileTicket() {
               <option value="safety">Safety</option>
               <option value="environmental">Environmental</option>
               <option value="maintenance">Maintenance</option>
+              <option value="complaint">Complaint</option>
+              <option value="incident-report">Incident Report</option>
               <option value="other">Other</option>
             </select>
           </div>
@@ -330,15 +351,37 @@ function FileTicket() {
             {/* File list */}
             {selectedFiles.length > 0 && (
               <div className="mt-2">
-                {selectedFiles.map((file, idx) => (
-                  <div key={`${file.name}-${idx}`} className="flex items-center justify-between p-2 border border-gray-200 rounded-md mb-1 bg-white">
+                {selectedFiles.slice(0, 3).map((file, idx) => (
+                  <div
+                    key={`${file.name}-${idx}`}
+                    className="flex items-center justify-between p-2 border border-gray-200 rounded-md mb-1 bg-white"
+                  >
                     <div className="overflow-hidden">
-                      <div className="text-xs font-semibold text-gray-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-md">{file.name}</div>
-                      <div className="text-xs text-gray-500">{(file.size / (1024 * 1024)).toFixed(2)} MB</div>
+                      <div className="text-xs font-semibold text-gray-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-md">
+                        {file.name}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {(file.size / (1024 * 1024)).toFixed(2)} MB
+                      </div>
                     </div>
-                    <button type="button" onClick={() => removeImage(imagePreviews[idx]?.id || Date.now())} className="border-none bg-transparent text-gray-900 cursor-pointer p-0 text-sm hover:text-red-500">×</button>
+
+                    <button
+                      type="button"
+                      onClick={() => removeImage(imagePreviews[idx]?.id)}
+                      className="border-none bg-transparent text-gray-900 cursor-pointer p-0 text-sm hover:text-red-500"
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
+
+                {/* +N MORE INDICATOR */}
+                {selectedFiles.length > 4 && (
+                  <div className="flex items-center justify-center p-2 border border-dashed border-gray-300 rounded-md bg-gray-50 text-gray-600 text-sm font-semibold">
+                    +{selectedFiles.length - 4} more file{selectedFiles.length - 4 > 1 ? "s" : ""}
+                  </div>
+                )}
+
               </div>
             )}
           </div>
@@ -395,21 +438,22 @@ function FileTicket() {
           )}
 
           {/* Maintenance Needed - removed from UI as requested */}
-
-          {/* Persons Involved */}
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Persons Involved (Optional)
-            </label>
-            <input
-              type="text"
-              name="personsInvolved"
-              value={formData.personsInvolved}
-              onChange={handleInputChange}
-              placeholder="List names if applicable.."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
-            />
-          </div>
+          {/* Persons Involved — Only for Complaint or Incident Report */}
+          {(formData.category === "Complaint" || formData.category === "Incident Report") && (
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Persons Involved (Optional)
+              </label>
+              <input
+                type="text"
+                name="personsInvolved"
+                value={formData.personsInvolved}
+                onChange={handleInputChange}
+                placeholder="List names if applicable.."
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
+              />
+            </div>
+          )}
 
           {/* Submit Button */}
           <div className="flex justify-end gap-2">
@@ -420,9 +464,9 @@ function FileTicket() {
             >
               Clear All
             </button>
-            <button type="submit" className="bg-secondary text-white border-none rounded-md px-4 py-2 text-sm font-semibold cursor-pointer inline-flex items-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
+            <button className="bg-secondary text-white border-none rounded-md px-4 py-2 text-sm font-semibold cursor-pointer inline-flex items-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
               <FaPaperPlane />
-              Submit Ticket
+              Proceed
             </button>
           </div>
         </form>

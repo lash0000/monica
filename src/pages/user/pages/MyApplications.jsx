@@ -1,238 +1,225 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiInfo } from 'react-icons/fi';
 import { FaPlus } from 'react-icons/fa';
+import { useApplicationStore } from '../stores/Application.store';
 
 const MyApplications = () => {
-    const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('ongoing');
-    const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('ongoing');
+  const [currentPage, setCurrentPage] = useState(1);
 
-    // Helper function to format date and calculate relative time
-    const formatLastUpdate = (date) => {
-        const now = new Date();
-        const updateDate = new Date(date);
-        const diffInMs = now - updateDate;
-        const diffInSeconds = Math.floor(diffInMs / 1000);
-        const diffInMinutes = Math.floor(diffInSeconds / 60);
-        const diffInHours = Math.floor(diffInMinutes / 60);
-        const diffInDays = Math.floor(diffInHours / 24);
-        const diffInWeeks = Math.floor(diffInDays / 7);
-        const diffInMonths = Math.floor(diffInDays / 30);
-        const diffInYears = Math.floor(diffInDays / 365);
+  const ITEMS_PER_PAGE = 5;
 
-        // Calculate relative time string
-        let relativeTime = '';
-        if (diffInSeconds < 60) {
-            relativeTime = 'just now';
-        } else if (diffInMinutes < 60) {
-            relativeTime = `${diffInMinutes} ${diffInMinutes === 1 ? 'minute' : 'minutes'} ago`;
-        } else if (diffInHours < 24) {
-            relativeTime = `${diffInHours} ${diffInHours === 1 ? 'hour' : 'hours'} ago`;
-        } else if (diffInDays < 7) {
-            relativeTime = `${diffInDays} ${diffInDays === 1 ? 'day' : 'days'} ago`;
-        } else if (diffInWeeks < 4) {
-            relativeTime = `${diffInWeeks} ${diffInWeeks === 1 ? 'week' : 'weeks'} ago`;
-        } else if (diffInMonths < 12) {
-            relativeTime = `${diffInMonths} ${diffInMonths === 1 ? 'month' : 'months'} ago`;
-        } else {
-            relativeTime = `${diffInYears} ${diffInYears === 1 ? 'year' : 'years'} ago`;
-        }
+  const { myApplication, applications, loading } = useApplicationStore();
 
-        // Check if the date is today
-        const isToday = updateDate.toDateString() === now.toDateString();
+  const userId = localStorage.getItem("user_id");
 
-        if (isToday) {
-            // Format time as "02:38 PM"
-            const hours = updateDate.getHours();
-            const minutes = updateDate.getMinutes();
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            const displayHours = hours % 12 || 12;
-            const displayMinutes = minutes.toString().padStart(2, '0');
-            const timeString = `${displayHours}:${displayMinutes} ${ampm}`;
-            return `${timeString} (${relativeTime})`;
-        } else {
-            // Format date as "Wed, Oct 1."
-            const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-            const dayName = days[updateDate.getDay()];
-            const monthName = months[updateDate.getMonth()];
-            const day = updateDate.getDate();
-            return `${dayName}, ${monthName} ${day}. (${relativeTime})`;
-        }
-    };
+  // Fetch user applications
+  useEffect(() => {
+    if (userId) {
+      myApplication(userId);
+    }
+  }, [userId]);
 
-    // Applications with actual timestamps
-    const applications = [
-        {
-            id: 1,
-            title: 'Application for Barangay Clearance',
-            lastUpdateTimestamp: new Date(Date.now() - 7 * 60 * 60 * 1000), // 7 hours ago
-            status: 'ongoing',
-        },
-        {
-            id: 2,
-            title: 'Application for Business Permit',
-            lastUpdateTimestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 1 week ago
-            status: 'ongoing',
-        },
-    ];
+  // -----------------------------
+  // FORMAT DATE
+  // -----------------------------
+  const formatLastUpdate = (date) => {
+    const now = new Date();
+    const d = new Date(date);
+    const diff = now - d;
 
-    const approvedApplications = [
-        {
-            id: 3,
-            title: 'Application for Indigency for Burial Assistance',
-            lastUpdateTimestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 1 week ago
-            status: 'approved',
-        },
-        {
-            id: 4,
-            title: 'Application for Ayuda Assistance',
-            lastUpdateTimestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-            status: 'approved',
-        },
-    ];
+    const seconds = Math.floor(diff / 1000);
+    const mins = Math.floor(seconds / 60);
+    const hours = Math.floor(mins / 60);
+    const days = Math.floor(hours / 24);
+    const weeks = Math.floor(days / 7);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(days / 365);
 
-    const displayedApplications = activeTab === 'ongoing' ? applications : approvedApplications;
+    let rel = '';
+    if (seconds < 60) rel = 'just now';
+    else if (mins < 60) rel = `${mins} minutes ago`;
+    else if (hours < 24) rel = `${hours} hours ago`;
+    else if (days < 7) rel = `${days} days ago`;
+    else if (weeks < 4) rel = `${weeks} weeks ago`;
+    else if (months < 12) rel = `${months} months ago`;
+    else rel = `${years} years ago`;
 
-    const handleApplyNow = () => {
-        navigate('/e-application');
-    };
+    const isToday = d.toDateString() === now.toDateString();
 
-    return (
-        <div className="flex justify-center py-4" style={{ fontFamily: 'var(--font-geist), Geist, sans-serif' }}>
-            <div className="max-w-4xl w-full">
-                {/* Main White Card */}
-                <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div className="p-6">
-                        {/* Reminder Section - Inside the card content area, like autofill */}
-                        <div className="mb-6 rounded-lg p-4" style={{ backgroundColor: '#E8EAF6' }}>
-                            <div className="flex items-start gap-3">
-                                <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#50589C' }}>
-                                    <FiInfo className="w-3 h-3 text-white" />
-                                </div>
-                                <div>
-                                    <p className="font-bold text-gray-900 mb-1">Reminder</p>
-                                    <p className="text-sm text-gray-600">
-                                        For the non-residents of our barangay we will provide the applicable documents that you will inquire for available services.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+    if (isToday) {
+      const h = d.getHours();
+      const m = String(d.getMinutes()).padStart(2, '0');
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const hh = h % 12 || 12;
+      return `${hh}:${m} ${ampm} (${rel})`;
+    } else {
+      const daysMap = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+      const monthsMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+      return `${daysMap[d.getDay()]}, ${monthsMap[d.getMonth()]} ${d.getDate()}. (${rel})`;
+    }
+  };
 
-                        {/* Navigation Bar */}
-                        <div className="mb-6 pb-4 border-b border-gray-200 flex items-center justify-between flex-wrap gap-4">
-                            {/* Tabs */}
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => setActiveTab('ongoing')}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'ongoing'
-                                        ? 'shadow-sm'
-                                        : 'text-gray-600 hover:text-gray-800'
-                                        }`}
-                                    style={activeTab === 'ongoing' ? { backgroundColor: '#F4F4F4', color: '#000' } : {}}
-                                >
-                                    Ongoing
-                                </button>
-                                <button
-                                    onClick={() => setActiveTab('approved')}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'approved'
-                                        ? 'shadow-sm'
-                                        : 'text-gray-600 hover:text-gray-800'
-                                        }`}
-                                    style={activeTab === 'approved' ? { backgroundColor: '#F4F4F4', color: '#000' } : {}}
-                                >
-                                    Approved
-                                </button>
-                            </div>
+  // -----------------------------
+  // SEPARATE APPLICATIONS BY STATUS
+  // -----------------------------
+  const ongoingStatuses = ['for-review', 'withdrawn', 'rejected'];
+  const approvedStatuses = ['approved'];
 
-                            {/* Apply Now Button */}
-                            <button
-                                onClick={handleApplyNow}
-                                className="text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition-colors"
-                                style={{ backgroundColor: '#50589C' }}
-                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3d4577'}
-                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#50589C'}
-                            >
-                                <FaPlus className="w-3.5 h-3.5" />
-                                Apply Now
-                            </button>
-                        </div>
+  const ongoingApps = applications.filter(app => ongoingStatuses.includes(app.status));
+  const approvedApps = applications.filter(app => approvedStatuses.includes(app.status));
 
-                        {/* Applications List */}
-                        <div className="space-y-4 min-h-[400px]">
-                            {displayedApplications.length > 0 ? (
-                                displayedApplications.map((app) => (
-                                    <div key={app.id} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white">
-                                        {/* Header Bar */}
-                                        <div className="h-3 w-full" style={{ backgroundColor: '#50589C' }}></div>
+  const displayedApplications =
+    activeTab === 'ongoing' ? ongoingApps : approvedApps;
 
-                                        {/* Content */}
-                                        <div className="p-5">
-                                            <h3 className="text-lg font-bold text-gray-900 mb-2">
-                                                {app.title}
-                                            </h3>
-                                            <p className="text-sm text-gray-500">
-                                                Last Update: {formatLastUpdate(app.lastUpdateTimestamp)}
-                                            </p>
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="flex items-center justify-center h-64 text-gray-500">
-                                    <p>No {activeTab === 'ongoing' ? 'ongoing' : 'approved'} applications found.</p>
-                                </div>
-                            )}
-                        </div>
+  // -----------------------------
+  // PAGINATION
+  // -----------------------------
+  const totalPages = Math.ceil(displayedApplications.length / ITEMS_PER_PAGE);
 
-                        {/* Pagination */}
-                        <div className="mt-6 pt-4 border-t border-gray-200 flex items-center justify-end gap-3">
-                            <button
-                                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                                disabled={currentPage === 1}
-                                className="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
-                            >
-                                &lt; Previous
-                            </button>
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
 
-                            <div className="flex items-center gap-1">
-                                <button
-                                    onClick={() => setCurrentPage(1)}
-                                    className={`px-3 py-1.5 text-sm rounded transition-colors font-bold ${currentPage === 1 ? '' : 'text-gray-700 hover:bg-gray-100'}`}
-                                    style={currentPage === 1 ? { backgroundColor: '#F4F4F4', color: '#000' } : {}}
-                                >
-                                    1
-                                </button>
-                                <button
-                                    onClick={() => setCurrentPage(2)}
-                                    className={`px-3 py-1.5 text-sm rounded transition-colors font-bold ${currentPage === 2 ? '' : 'text-gray-700 hover:bg-gray-100'}`}
-                                    style={currentPage === 2 ? { backgroundColor: '#F4F4F4', color: '#000' } : {}}
-                                >
-                                    2
-                                </button>
-                                <button
-                                    onClick={() => setCurrentPage(3)}
-                                    className={`px-3 py-1.5 text-sm rounded transition-colors font-bold ${currentPage === 3 ? '' : 'text-gray-700 hover:bg-gray-100'}`}
-                                    style={currentPage === 3 ? { backgroundColor: '#F4F4F4', color: '#000' } : {}}
-                                >
-                                    3
-                                </button>
-                                <span className="px-2 text-gray-500">...</span>
-                            </div>
+  const paginatedApplications = displayedApplications.slice(startIndex, endIndex);
 
-                            <button
-                                onClick={() => setCurrentPage(currentPage + 1)}
-                                className="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 transition-colors font-medium"
-                            >
-                                Next &gt;
-                            </button>
-                        </div>
-                    </div>
+  // Reset page when switching tabs
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab]);
+
+  return (
+    <div className="flex items-center justify-center min-h-screen py-8 pb-20"
+      style={{ fontFamily: 'var(--font-geist), Geist, sans-serif' }}>
+      <div className="max-w-4xl w-full">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div className="p-6">
+
+            {/* Reminder */}
+            <div className="mb-6 rounded-lg p-4" style={{ backgroundColor: '#E8EAF6' }}>
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: '#50589C' }}>
+                  <FiInfo className="size-4 text-white" />
                 </div>
+                <div>
+                  <p className="font-bold text-gray-900 mb-1">Reminder</p>
+                  <p className="text-sm text-gray-600">
+                    This is still in development phase.
+                  </p>
+                </div>
+              </div>
             </div>
+
+            {/* Tabs */}
+            <div className="mb-6 pb-4 border-b border-gray-200 flex items-center justify-between flex-wrap gap-4">
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setActiveTab('ongoing')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all
+                  ${activeTab === 'ongoing' ? 'shadow-sm' : 'text-gray-600 hover:text-gray-800'}`}
+                  style={activeTab === 'ongoing' ? { backgroundColor: '#F4F4F4', color: '#000' } : {}}
+                >
+                  Ongoing
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('approved')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all 
+                  ${activeTab === 'approved' ? 'shadow-sm' : 'text-gray-600 hover:text-gray-800'}`}
+                  style={activeTab === 'approved' ? { backgroundColor: '#F4F4F4', color: '#000' } : {}}
+                >
+                  Approved
+                </button>
+              </div>
+
+              <button
+                onClick={() => navigate('/e-application')}
+                className="text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition-colors"
+                style={{ backgroundColor: '#50589C' }}
+              >
+                <FaPlus className="w-3.5 h-3.5" />
+                Apply Now
+              </button>
+            </div>
+
+            {/* App List */}
+            <div className="space-y-4 min-h-[400px]">
+              {loading ? (
+                <div className="flex items-center justify-center h-64 text-gray-500">
+                  Loading applications...
+                </div>
+              ) : paginatedApplications.length > 0 ? (
+                paginatedApplications.map(app => (
+                  <div
+                    key={app.id}
+                    onClick={() => navigate(`/my-applications/${app.id}`)}
+                    className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white cursor-pointer"
+                  >
+                    <div className="h-3 w-full" style={{ backgroundColor: '#50589C' }}></div>
+
+                    <div className="p-5">
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">
+                        Application for {app.application_service}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        Last Update: {formatLastUpdate(app.updatedAt)}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="flex items-center justify-center h-64 text-gray-500">
+                  <p>No {activeTab === 'ongoing' ? 'ongoing' : 'approved'} applications found.</p>
+                </div>
+              )}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-6 pt-4 border-t border-gray-200 flex items-center justify-end gap-3">
+
+                {/* Previous */}
+                <button
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  &lt; Previous
+                </button>
+
+                {/* Page Numbers */}
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+                    <button
+                      key={num}
+                      onClick={() => setCurrentPage(num)}
+                      className={`px-3 py-1.5 text-sm rounded transition-colors font-bold
+                      ${currentPage === num ? '' : 'text-gray-700 hover:bg-gray-100'}`}
+                      style={currentPage === num ? { backgroundColor: '#F4F4F4', color: '#000' } : {}}
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Next */}
+                <button
+                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  Next &gt;
+                </button>
+
+              </div>
+            )}
+
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default MyApplications;
-

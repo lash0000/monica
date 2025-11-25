@@ -484,7 +484,7 @@ function Landing() {
         </button>
 
         {/* Content */}
-        <div className="absolute left-8 xl:left-16 top-1/2 transform -translate-y-1/2 z-10 max-w-md xl:max-w-lg">
+        <div className="absolute left-8 xl:left-16 top-1/2 transform -translate-y-1/2 z-10 max-w-md xl:max-w-lg ml-10">
           <p className="text-lg xl:text-xl mb-2 xl:mb-3 font-medium opacity-90" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)' }}>Welcome to</p>
           <h1 className="text-3xl xl:text-5xl font-bold mb-3 xl:mb-4" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)' }}>Barangay Santa Monica</h1>
           <p className="text-lg xl:text-xl font-semibold opacity-95" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)' }}>Community Safety, Reimagined</p>

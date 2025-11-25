@@ -1,17 +1,29 @@
-import { useState, useRef, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaBell, FaUser, FaSignOutAlt, FaBars } from 'react-icons/fa';
-import { useAuth } from '../stores/store';
+import { useState, useRef, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaBell, FaUser, FaSignOutAlt, FaBars } from "react-icons/fa";
+import { useAuth } from "../stores/store";
+import UserProfileStore from "../stores/user-profile.store";
+import { RiAdminFill } from "react-icons/ri"
 
 export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [activeTooltip, setActiveTooltip] = useState(null);
   const notificationRef = useRef(null);
   const profileRef = useRef(null);
+
   const location = useLocation();
+  const base_path = location.pathname;
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
-  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  const { user, accessToken, logout } = useAuth();
+  const { profile, loading: profileLoading, fetchUserProfile } = UserProfileStore();
+
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  useEffect(() => {
+    if (!user?.user_id || !accessToken) return;
+    fetchUserProfile(user.user_id, accessToken);
+  }, [user?.user_id, accessToken, fetchUserProfile]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -22,88 +34,124 @@ export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
         setIsProfileOpen(false);
       }
     };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = async () => {
-    setIsLoggingOut(true)
+    setIsLoggingOut(true);
     try {
-      await logout()
+      await logout();
       setTimeout(() => {
-        setIsLoggingOut(false)
-        navigate('/');
-      }, 1000)
+        setIsLoggingOut(false);
+        navigate("/");
+      }, 1000);
     } catch (error) {
-      console.error("Logout failed:", error)
-      setIsLoggingOut(false)
+      console.error("Logout failed:", error);
+      setIsLoggingOut(false);
     }
-  }
+  };
+
+  const formatDisplayName = (p) => {
+    if (!p || !p.userProfile || !p.userProfile.name) return null;
+
+    const { first = "", middle = "", last = "" } = p.userProfile.name;
+    const middleInitial = middle ? `${middle.charAt(0).toUpperCase()}.` : "";
+
+    return `${last}, ${first} ${middleInitial}`.trim();
+  };
+
+  const displayName =
+    profileLoading
+      ? "Loading..."
+      : profile?.userProfile
+        ? formatDisplayName(profile)
+        : "User";
+
 
   return (
-    <div className={`fixed top-0 z-50 flex items-center justify-between bg-white shadow-lg p-3 border-b border-gray-200 transition-all duration-300 ${isSidebarCollapsed ? 'md:left-16' : 'md:left-64'} left-0 right-0`}>
-      {/* Left side - Burger menu (mobile) and Page title */}
+    <div
+      className={`fixed top-0 z-50 flex items-center justify-between bg-white shadow-lg p-3 border-b border-gray-200 transition-all duration-300 ${isSidebarCollapsed ? "md:left-16" : "md:left-64"
+        } left-0 right-0`}
+    >
+      {/* LEFT SECTION */}
       <div className="flex items-center space-x-4">
-        {/* Burger Menu - Only visible on mobile */}
         <button
           onClick={onMobileMenuToggle}
-          className="md:hidden p-2 text-gray-700 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+          className="md:hidden p-2 text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors"
         >
           <FaBars className="w-5 h-5" />
         </button>
 
-        {location.pathname === '/Dashboard' && (
-          <>
-            <h1 className="text-3xl font-bold text-gray-800 ml-5">Home</h1>
-
-          </>
+        {location.pathname === "/Dashboard" && (
+          <h1 className="text-3xl font-bold text-gray-800 ml-5">Home</h1>
         )}
-        {location.pathname === '/Ticket' && (
+        {location.pathname === "/Ticket" && (
           <h1 className="text-xl font-bold text-gray-800">Ticket</h1>
         )}
-        {location.pathname === '/E-Application' && (
+        {location.pathname === "/E-Application" && (
           <h1 className="text-xl font-bold text-gray-800">E-Application</h1>
+        )}
+
+        {profile && profile.userProfile === null && (
+          <div className="px-4 py-2 bg-red-600 text-white rounded-full text-sm select-none ">
+            Kindly provide your profile information first!
+          </div>
         )}
       </div>
 
-      {/* Right side - Notifications and Profile */}
+      {/* RIGHT SECTION */}
       <div className="flex items-center space-x-2 lg:space-x-4">
-        {/* Notification Icon with Dropdown */}
+        {!profileLoading && profile?.userProfile?.admin_role && (
+          <div
+            className="relative"
+            onMouseEnter={() => setActiveTooltip("admin")}
+            onMouseLeave={() => setActiveTooltip(null)}
+          >
+            <button
+              className="relative p-2 text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-100"
+              onClick={() => navigate("/admin")}
+            >
+              <RiAdminFill className="size-5" />
+            </button>
+
+            {activeTooltip === "admin" && (
+              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-2 py-1 bg-black text-white text-xs rounded shadow-lg whitespace-nowrap z-50">
+                Admin Page
+              </div>
+            )}
+          </div>
+        )}
+
+
+        {/* NOTIFICATION */}
         <div className="relative" ref={notificationRef}>
           <button
             onClick={() => setIsNotificationOpen(!isNotificationOpen)}
-            className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+            className="relative p-2 text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-100"
           >
-            <FaBell className="w-5 h-5" />
-            {/* Notification Badge */}
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
-              3
-            </span>
+            <FaBell className="size-5" />
+            <div className="hidden">
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                0
+              </span>
+            </div>
+
           </button>
 
-          {/* Notification Dropdown */}
           {isNotificationOpen && (
-            <div className="absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50">
+            <div className="absolute right-0 mt-3 w-80 bg-white border border-gray-200 shadow-xl rounded-xl py-2 z-50">
               <div className="px-4 py-3 border-b border-gray-100">
                 <h3 className="text-sm font-semibold text-gray-800">Notifications</h3>
               </div>
+
               <div className="max-h-64 overflow-y-auto">
                 <div className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50">
-                  <p className="text-sm text-gray-800 font-medium">New ticket submitted successfully</p>
+                  <p className="text-sm font-medium">New ticket submitted successfully</p>
                   <p className="text-xs text-gray-500 mt-1">2 minutes ago</p>
                 </div>
-                <div className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50">
-                  <p className="text-sm text-gray-800 font-medium">Your ticket #12345 has been resolved</p>
-                  <p className="text-xs text-gray-500 mt-1">1 hour ago</p>
-                </div>
-                <div className="px-4 py-3 hover:bg-gray-50 cursor-pointer">
-                  <p className="text-sm text-gray-800 font-medium">New announcement posted</p>
-                  <p className="text-xs text-gray-500 mt-1">3 hours ago</p>
-                </div>
               </div>
+
               <div className="px-4 py-3 border-t border-gray-100">
                 <Link to="/notifications" className="text-sm text-[#4B663B] hover:text-[#3a5230] font-medium">
                   View all notifications
@@ -113,32 +161,30 @@ export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
           )}
         </div>
 
-        {/* Profile Icon with Dropdown */}
+        {/* PROFILE */}
         <div className="relative" ref={profileRef}>
           <button
             onClick={() => setIsProfileOpen(!isProfileOpen)}
-            className="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+            className="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-100"
           >
             <FaUser className="w-5 h-5" />
-            <span className="text-sm font-medium">
-              {user?.email || 'User'}
-            </span>
+            <span className="text-sm font-medium">{displayName}</span>
           </button>
 
-          {/* Profile Dropdown */}
           {isProfileOpen && (
-            <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50">
+            <div className="absolute right-0 mt-3 w-48 bg-white border border-gray-200 shadow-xl rounded-xl py-2 z-50">
               <Link
                 to="/profile"
-                className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 onClick={() => setIsProfileOpen(false)}
+                className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
               >
                 <FaUser className="w-4 h-4 mr-3 text-gray-500" />
                 Profile
               </Link>
+
               <button
                 onClick={handleLogout}
-                className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
               >
                 <FaSignOutAlt className="w-4 h-4 mr-3 text-gray-500" />
                 Logout
@@ -146,38 +192,18 @@ export function FloatingTopBar({ isSidebarCollapsed, onMobileMenuToggle }) {
             </div>
           )}
 
-          {/* Logout Loading Dialog Overlay */}
-
+          {/* LOGOUT MODAL */}
           {isLoggingOut && (
-            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-[9999] transition-opacity">
-              <div className="bg-white dark:bg-gray-800 px-8 py-6 rounded-xl shadow-lg flex flex-col items-center space-y-3 border border-gray-200 dark:border-gray-700">
-                <svg
-                  className="animate-spin h-6 w-6 text-secondary"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                  ></path>
+            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-[9999]">
+              <div className="bg-white px-8 py-6 rounded-xl shadow-lg flex flex-col items-center space-y-3 border">
+                <svg className="animate-spin h-6 w-6 text-secondary" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" strokeWidth="4" stroke="currentColor"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                 </svg>
-                <p className="text-gray-700 dark:text-gray-200 font-medium">
-                  Logging out...
-                </p>
+                <p className="text-gray-700 font-medium">Logging out...</p>
               </div>
             </div>
           )}
-
         </div>
       </div>
     </div>
