@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {useTicketStore} from '../stores/myTickets.store';
 
-function Dashboard() {
+function Dashboard({ userId }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState(null);
-  const [activeModal, setActiveModal] = useState(null); // 'traffic' or 'prevention'
+  const [activeModal, setActiveModal] = useState(null);
+
   const [formData, setFormData] = useState({
     subject: '',
     category: 'Healthcare',
@@ -11,19 +13,68 @@ function Dashboard() {
     attachments: []
   });
 
+  // Zustand Store
+  const {
+    ticketStatus,
+    blotterStatus,
+    fetchTicketStatus,
+    fetchBlotterStatus,
+    loading,
+    error
+  } = useTicketStore();
+
+  // Fetch data once userId is available
+  useEffect(() => {
+    if (userId) {
+      fetchTicketStatus(userId);
+      fetchBlotterStatus(userId);
+    }
+  }, [userId, fetchTicketStatus, fetchBlotterStatus]);
+
+  // Replace static dashboard stats
   const dashboardStats = [
-    { label: 'Resolved', count: 0, info: 'Tickets that have been successfully resolved and closed' },
-    { label: 'Pending', count: 0, info: 'Tickets that are currently being reviewed and awaiting action' },
-    { label: 'Archived', count: 0, info: 'Tickets that have been archived for record keeping' }
+    {
+      label: 'Resolved',
+      count: ticketStatus?.resolved ?? 0,
+      info: 'Tickets that have been successfully resolved and closed'
+    },
+    {
+      label: 'Pending',
+      count: ticketStatus?.pending ?? 0,
+      info: 'Tickets that are currently being reviewed and awaiting action'
+    },
+    {
+      label: 'Archived',
+      count: ticketStatus?.archived ?? 0,
+      info: 'Tickets that have been archived for record keeping'
+    }
   ];
 
+  // Replace static blotter stats
   const blotterStats = [
-    { label: 'Resolved', count: 0, info: 'Blotter reports that have been resolved' },
-    { label: 'Unresolved', count: 0, info: 'Blotter reports that are still pending resolution' },
-    { label: 'Pending', count: 0, info: 'Blotter reports currently under review' },
-    { label: 'Archived', count: 0, info: 'Blotter reports that have been archived' }
+    {
+      label: 'Resolved',
+      count: blotterStatus?.resolved ?? 0,
+      info: 'Blotter reports that have been resolved'
+    },
+    {
+      label: 'Unresolved',
+      count: blotterStatus?.unresolved ?? 0,
+      info: 'Blotter reports that are still pending resolution'
+    },
+    {
+      label: 'Pending',
+      count: blotterStatus?.pending ?? 0,
+      info: 'Blotter reports currently under review'
+    },
+    {
+      label: 'Archived',
+      count: blotterStatus?.archived ?? 0,
+      info: 'Blotter reports that have been archived'
+    }
   ];
 
+  // File change handling
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     setFormData(prev => ({
@@ -46,12 +97,7 @@ function Dashboard() {
     }
     console.log('Form submitted:', formData);
     setIsPopupOpen(false);
-    setFormData({
-      subject: '',
-      category: 'Healthcare',
-      concernDetails: '',
-      attachments: []
-    });
+    clearAll();
   };
 
   const clearAll = () => {
