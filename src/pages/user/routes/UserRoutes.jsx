@@ -17,9 +17,6 @@ import IncidentReportThread from '../pages/BlotterTicketPage1';
 import ForumThread from '../pages/NormalTicketPage';
 import TicketView from '../pages/TicketView';
 import MyApplications from '../pages/MyApplications';
-<<<<<<< HEAD
-import ApplicationList from '../pages/e-application-as-bonafide';
-=======
 import ApplicationStatus from '../pages/ApplicationStatus';
 import BlotterTicketUrgency from '../pages/BlotterTicketUrgency';
 import BlotterTicketResolved from '../pages/BlotterTicketResolved';
@@ -29,7 +26,6 @@ import BlotterTicketModal from '../pages/BlotterTicketModal';
 import UpdateProfile from '../pages/UpdateProfile';
 import FileTicket from '../pages/FileTicket';
 import ApplicationForm from '../pages/ApplicationForm';
->>>>>>> a23f1a4063e13ab9509bb416897a51feef207602
 
 const UserRoutes = () => [
   <Route
@@ -59,9 +55,7 @@ const UserRoutes = () => [
     <Route path="blotter-ticket-urgency" element={<BlotterTicketUrgency />} />
     <Route path="blotter-ticket-modal" element={<BlotterTicketModal />} />
     <Route path="normal-ticket-page" element={<ForumThread />} />
-
     <Route path="traffic" element={<TrafficAdvisory />} />
-    <Route path="e-application-as-bonafide" element={<ApplicationList />} />
   </Route>
 ]
 
