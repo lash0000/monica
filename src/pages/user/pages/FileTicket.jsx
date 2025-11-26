@@ -259,7 +259,7 @@ function FileTicket() {
       <div className="container lg:mx-auto lg:max-w-2xl bg-white rounded-lg shadow-md overflow-hidden">
         {/* Header */}
         <div
-          className={`p-8 text-white transition-colors ${formData.category === "Complaint" || formData.category === "Incident Report"
+          className={`p-8 text-white transition-colors ${formData.category === "Complaint" || formData.category === "Incident-Report"
             ? "bg-red-500"
             : "bg-secondary"
             }`}
@@ -268,7 +268,7 @@ function FileTicket() {
           <p className="text-sm opacity-90">
             {formData.category === "Complaint"
               ? "Para sa pormal na pagsasampa ng inyong reklamo o hinaing."
-              : formData.category === "Incident Report"
+              : formData.category === "Incident-Report"
                 ? "Para sa pormal na pag-uulat ng isang naganap na insidente."
                 : "Para sa makabuluhang usapan para sa ating mga sinasakupan."}
           </p>
@@ -302,13 +302,13 @@ function FileTicket() {
             >
               <option value="" disabled className="hidden">Select</option>
               <option value="Healthcare">Healthcare</option>
-              <option value="infrastructure">Infrastructure</option>
-              <option value="safety">Safety</option>
-              <option value="environmental">Environmental</option>
-              <option value="maintenance">Maintenance</option>
-              <option value="complaint">Complaint</option>
-              <option value="incident-report">Incident Report</option>
-              <option value="other">Other</option>
+              <option value="Infrastructure">Infrastructure</option>
+              <option value="Safety">Safety</option>
+              <option value="Environmental">Environmental</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Complaint">Complaint</option>
+              <option value="Incident-Report">Incident Report</option>
+              <option value="Other">Other</option>
             </select>
           </div>
 
