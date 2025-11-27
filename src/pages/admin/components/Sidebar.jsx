@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaTicketAlt, FaUsers, FaCog, FaHandHoldingHeart, FaNewspaper } from "react-icons/fa";
+import { FaHome, FaTicketAlt, FaUsers, FaCog, FaNewspaper, FaStethoscope } from "react-icons/fa";
 import { MdEvent } from "react-icons/md";
 import { IoIosPaper } from "react-icons/io";
 
@@ -27,7 +27,8 @@ export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
     { path: "/admin/tickets", icon: FaTicketAlt, label: "Tickets" },
     { path: "/admin/applications", icon: IoIosPaper, label: "Applications" },
     { path: "/admin/events", icon: MdEvent, label: "Events" },
-    { path: "/admin/landing", icon: FaNewspaper, label: "Telekonsulta" },
+    { path: "/admin/landing", icon: FaNewspaper, label: "Landing CMS" },
+    { path: "/admin/telekonsulta", icon: FaStethoscope, label: "Telekonsulta" },
     { path: "/admin/users", icon: FaUsers, label: "Users" },
     { path: "/admin/settings", icon: FaCog, label: "Settings" },
   ];
