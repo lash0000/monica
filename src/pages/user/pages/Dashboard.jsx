@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
-import {useTicketStore} from '../stores/myTickets.store';
+import { useTicketStore } from '../stores/myTickets.store';
 
-function Dashboard({ userId }) {
+function Dashboard() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
 
   const [formData, setFormData] = useState({
-    subject: '',
-    category: 'Healthcare',
-    concernDetails: '',
+    subject: "",
+    category: "Healthcare",
+    concernDetails: "",
     attachments: []
   });
 
-  // Zustand Store
   const {
     ticketStatus,
     blotterStatus,
@@ -23,13 +22,10 @@ function Dashboard({ userId }) {
     error
   } = useTicketStore();
 
-  // Fetch data once userId is available
   useEffect(() => {
-    if (userId) {
-      fetchTicketStatus(userId);
-      fetchBlotterStatus(userId);
-    }
-  }, [userId, fetchTicketStatus, fetchBlotterStatus]);
+    fetchTicketStatus();
+    fetchBlotterStatus();
+  }, [fetchTicketStatus, fetchBlotterStatus]);
 
   // Replace static dashboard stats
   const dashboardStats = [
@@ -187,7 +183,7 @@ function Dashboard({ userId }) {
         {/* Blotter Section */}
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-1">Blotter</h2>
-          <p className="text-gray-500 text-sm">Status overview of your ticket activities related to blotter report.</p>
+          <p className="text-gray-500 text-sm">Status overview of your ticket activities related to complaints and incident reports.</p>
         </div>
 
         {/* Blotter Stats */}
