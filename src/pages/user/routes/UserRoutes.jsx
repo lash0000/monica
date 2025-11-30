@@ -26,6 +26,8 @@ import BlotterTicketModal from '../pages/BlotterTicketModal';
 import UpdateProfile from '../pages/UpdateProfile';
 import FileTicket from '../pages/FileTicket';
 import ApplicationForm from '../pages/ApplicationForm';
+import EventSecondPage from '../pages/EventSecondPage';
+import EventsMainPage from '../pages/EventsMainPage';
 
 const UserRoutes = () => [
   <Route
@@ -40,6 +42,8 @@ const UserRoutes = () => [
     <Route path="my-applications/:id" element={<ApplicationStatus />} />
     <Route path="e-health" element={<E_Health />} />
     <Route path="e-health/:type" element={<MedicalAppointment />} />
+    <Route path="events" element={<EventsMainPage />} />
+    <Route path="events/:id" element={<EventSecondPage />} />
     <Route path="profile" element={<Profile />} />
     <Route path="profile/update-profile" element={<UpdateProfile />} />
     <Route path="ticket" element={<Ticket />} />
