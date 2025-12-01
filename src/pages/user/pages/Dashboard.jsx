@@ -120,7 +120,7 @@ function Dashboard() {
             <h3 className="text-xl font-bold mb-2">Narito ang ulat-trapiko para sa ating barangay</h3>
             <p className="text-sm text-purple-100 mb-4">Mula sa prediksyon ng Artificial Intelligence</p>
             <button
-              onClick={() => navigate('')}
+              onClick={() => navigate('/traffic')}
               className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors inline-flex items-center gap-2 absolute left-6 bottom-6"
             >
               <span>→</span> Explore
@@ -135,7 +135,7 @@ function Dashboard() {
             <h3 className="text-xl font-bold mb-2">Narito ang ulat kontra kriminalidad at paghahanda sa bawat sakuna.</h3>
             <p className="text-sm text-pink-100 mb-4">Ito ay batay sa mga nakukuhang data mula sa mga insident reports para sa ating barangay</p>
             <button
-              onClick={() => setActiveModal('prevention')}
+              onClick={() => navigate('/predictive-tickets')}
               className="bg-white text-pink-600 px-4 py-2 rounded-lg font-semibold hover:bg-pink-50 transition-colors inline-flex items-center gap-2 absolute left-6 bottom-6"
             >
               <span>→</span> Explore

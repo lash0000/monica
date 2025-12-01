@@ -31,7 +31,7 @@ function PredictiveTickets() {
 
     return (
         <div className="min-h-screen bg-gray-100 p-8">
-            <div className="max-w-[1600px] mx-auto">
+            <div className="lg:max-w-[1024px] mx-auto lg:container">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-start justify-between mb-2">
