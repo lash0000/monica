@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
-import {useTicketStore} from '../stores/myTickets.store';
+import { useTicketStore } from '../stores/myTickets.store';
+import { useNavigate } from 'react-router-dom';
 
-function Dashboard({ userId }) {
+function Dashboard() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    subject: '',
-    category: 'Healthcare',
-    concernDetails: '',
+    subject: "",
+    category: "Healthcare",
+    concernDetails: "",
     attachments: []
   });
 
-
-  // Zustand Store
   const {
     ticketStatus,
     blotterStatus,
@@ -23,14 +23,10 @@ function Dashboard({ userId }) {
     loading,
     error
   } = useTicketStore();
-    console.log(ticketStatus);
-  // Fetch data once userId is available
   useEffect(() => {
-    if (userId) {
-      fetchTicketStatus(userId);
-      fetchBlotterStatus(userId);
-    }
-  }, [userId, fetchTicketStatus, fetchBlotterStatus]);
+    fetchTicketStatus();
+    fetchBlotterStatus();
+  }, [fetchTicketStatus, fetchBlotterStatus]);
 
   // Replace static dashboard stats
   const dashboardStats = [
@@ -123,7 +119,7 @@ function Dashboard({ userId }) {
             <h3 className="text-xl font-bold mb-2">Narito ang ulat-trapiko para sa ating barangay</h3>
             <p className="text-sm text-purple-100 mb-4">Mula sa prediksyon ng Artificial Intelligence</p>
             <button
-              onClick={() => setActiveModal('traffic')}
+              onClick={() => navigate('/traffic')}
               className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors inline-flex items-center gap-2 absolute left-6 bottom-6"
             >
               <span>→</span> Explore
@@ -138,7 +134,7 @@ function Dashboard({ userId }) {
             <h3 className="text-xl font-bold mb-2">Narito ang ulat kontra kriminalidad at paghahanda sa bawat sakuna.</h3>
             <p className="text-sm text-pink-100 mb-4">Ito ay batay sa mga nakukuhang data mula sa mga insident reports para sa ating barangay</p>
             <button
-              onClick={() => setActiveModal('prevention')}
+              onClick={() => navigate('/predictive-tickets')}
               className="bg-white text-pink-600 px-4 py-2 rounded-lg font-semibold hover:bg-pink-50 transition-colors inline-flex items-center gap-2 absolute left-6 bottom-6"
             >
               <span>→</span> Explore
@@ -188,7 +184,7 @@ function Dashboard({ userId }) {
         {/* Blotter Section */}
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-1">Blotter</h2>
-          <p className="text-gray-500 text-sm">Status overview of your ticket activities related to blotter report.</p>
+          <p className="text-gray-500 text-sm">Status overview of your ticket activities related to complaints and incident reports.</p>
         </div>
 
         {/* Blotter Stats */}

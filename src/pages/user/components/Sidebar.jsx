@@ -43,7 +43,7 @@ export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
       icon: MdEvent,
       label: "Events",
       expandable: false,
-      path: "",
+      path: "/events",
     },
     {
       icon: MdHealthAndSafety,

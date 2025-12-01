@@ -23,7 +23,7 @@ const LandingRoutes = () => [
   <Route key="public" path="/" element={<Public_Layout />}>
     <Route index element={<Landingv2 />} />
     <Route path="emergency-hotlines" element={<EmergencyHotlines />} />
-    <Route path="events" element={<Events />} />
+    
     <Route path="ayuda-programs" element={<AyudaPrograms />} />
     <Route path="login" element={<Login />} />
     <Route path="signup" element={<SignUp />} />
