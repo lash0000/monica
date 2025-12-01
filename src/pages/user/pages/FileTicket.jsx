@@ -3,6 +3,7 @@ import { FaMapMarkerAlt, FaPaperPlane, FaTimes, FaSearch } from 'react-icons/fa'
 import { FaFileMedical } from 'react-icons/fa6';
 import UserTicketStore from '../stores/Ticket.store';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 function FileTicket() {
   const navigate = useNavigate();
@@ -116,20 +117,35 @@ function FileTicket() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const user_id = localStorage.getItem("user_id");
-    const payload = {
-      user_id,
-      subject: formData.subject,
-      category: formData.category,
-      concern_details: formData.description,
-      files: selectedFiles // MUST be "files" no [] 
-    };
-    const res = await addNewTicket(payload);
-    if (res) {
-      navigate(-1);
-    } else {
-      alert("Something went wrong submitting your ticket.");
-    }
+      // Allowed file extensions
+      const allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'heif'];
+
+      // Validate files
+      if (selectedFiles && selectedFiles.length > 0) {
+        for (const file of selectedFiles) {
+          const ext = file.name.split('.').pop().toLowerCase();
+          if (!allowedTypes.includes(ext)) {
+            alert('Only the following formats are allowed: jpg, jpeg, png, gif, heif.');
+            return;
+          }
+        }
+      }
+
+      const user_id = localStorage.getItem("user_id");
+      const payload = {
+        user_id,
+        subject: formData.subject,
+        category: formData.category,
+        concern_details: formData.description,
+        files: selectedFiles // MUST be "files" no []
+      };
+      const res = await addNewTicket(payload);
+      if (res) {
+        toast.success('Ticket submitted successfully!');
+        navigate(-1);
+      } else {
+        toast.error("Something went wrong submitting your ticket.");
+      }
   };
 
 
