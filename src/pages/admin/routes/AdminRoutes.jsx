@@ -12,6 +12,8 @@ import Events from '../pages/EventsPage';
 import Telekonsulta from '../pages/Telekonsulta';
 import TelekonsultaDetail from '../pages/TelekonsultaDetail';
 import TelekonsultaChatStandalone from '../pages/TelekonsultaChatStandalone';
+import ApplicationRecords from '../pages/ApplicationRecords';
+import ApplicationForReview from '../pages/ApplicationForReview';
 
 const AdminRoutes = () => [
   <Route key="admin" path="/admin" element={<App_Layout />}>
@@ -26,6 +28,8 @@ const AdminRoutes = () => [
     <Route path="telekonsulta/:id/chat" element={<TelekonsultaChatStandalone />} />
     <Route path="users" element={<UserManagement />} />
     <Route path="users/:id" element={<UpdateUser />} />
+    <Route path="applications" element={<ApplicationRecords/>} />
+    <Route path="applications/:id" element={<ApplicationForReview/>} />
   </Route>
 ]
 
