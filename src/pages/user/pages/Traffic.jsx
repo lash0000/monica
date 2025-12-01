@@ -80,7 +80,8 @@ function TrafficAdvisory() {
         // Adjusted padding to 'py-8 px-8' to focus on horizontal space for wider cards
         <div className="min-h-screen bg-gray-100 py-8 px-8"> 
             {/* The inner div is now effectively full-width minus the outer padding */}
-            <div className="mx-auto"> 
+            <div className="mx-auto lg:max-w-[1024px] lg:container"> 
+
                 {/* Header */}
                 <div className="mb-6">
                     <div className="flex items-center gap-3 mb-2">
