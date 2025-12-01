@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function ApplicationRecords() {
   const navigate = useNavigate();
-
+ 
   // Mock Data matching the screenshot
   const applications = [
     {

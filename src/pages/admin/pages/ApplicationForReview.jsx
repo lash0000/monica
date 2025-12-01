@@ -2,7 +2,7 @@ import { User, Check, Copy } from 'lucide-react';
 
 export default function ApplicationForReview() {
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-gray-100 p-4"> 
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-t-lg">
