@@ -29,10 +29,15 @@ fetchTicketStatus: async (userId) => {
     console.log("[fetchTicketStatus] raw response:", res.data);
 
     set((state) => {
+      console.log("[fetchTicketStatus] state before set:", state);
+      console.log("[fetchTicketStatus] res.data:", res.data);
+
       const next = { ...state, ticketStatus: res.data, loading: false };
-      console.log("[fetchTicketStatus] next ticketStatus:", next.ticketStatus);
+      console.log("[fetchTicketStatus] next:", next);
+
       return next;
     });
+
   } catch (err) {
     console.error("[fetchTicketStatus] error:", err);
     set({

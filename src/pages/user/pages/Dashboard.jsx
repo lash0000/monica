@@ -13,6 +13,7 @@ function Dashboard({ userId }) {
     attachments: []
   });
 
+
   // Zustand Store
   const {
     ticketStatus,
@@ -22,7 +23,7 @@ function Dashboard({ userId }) {
     loading,
     error
   } = useTicketStore();
-
+    console.log(ticketStatus);
   // Fetch data once userId is available
   useEffect(() => {
     if (userId) {
