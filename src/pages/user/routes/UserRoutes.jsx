@@ -29,6 +29,8 @@ import ApplicationForm from '../pages/ApplicationForm';
 import EventSecondPage from '../pages/EventSecondPage';
 import EventsMainPage from '../pages/EventsMainPage';
 import ErrorPage from '../../admin/pages/404';
+import ApplicationDocument from '../pages/ApplicationDocument';
+import Header_Layout from '../layouts/Header';
 
 const UserRoutes = () => [
   <Route
@@ -62,7 +64,10 @@ const UserRoutes = () => [
     <Route path="normal-ticket-page" element={<ForumThread />} />
     <Route path="traffic" element={<TrafficAdvisory />} />
     <Route path="*" element={<ErrorPage />} />
-  </Route>
+  </Route>,
+  <Route element={<CheckAuth><Header_Layout /></CheckAuth>}>
+    <Route path="document/:id" element={<ApplicationDocument />} />
+  </Route>,
 ]
 
 export default UserRoutes;

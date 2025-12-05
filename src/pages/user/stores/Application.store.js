@@ -7,6 +7,7 @@ const SOCKET_URL = import.meta.env.VITE_SOCKET_URL; // or your constant
 export const useApplicationStore = create((set, get) => ({
   loading: false,
   applications: [],
+  currentApplication: null,
   error: null,
 
   // Fetch applications from logged-in user
@@ -61,6 +62,34 @@ export const useApplicationStore = create((set, get) => ({
 
       toast.success("Application submitted successfully!")
       return res.data;
+    } catch (err) {
+      set({ error: err.response?.data || err.message });
+      throw err;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  viewApplication: async (applicationId) => {
+    try {
+      set({ loading: true, error: null });
+
+      const token = localStorage.getItem("access_token");
+      if (!token) throw new Error("No access token found.");
+
+      const res = await axios.get(
+        `${SOCKET_URL}/api/v1/data/applications/view/${applicationId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const app = res.data.application;
+
+      set({ currentApplication: app });
+      return app;
     } catch (err) {
       set({ error: err.response?.data || err.message });
       throw err;

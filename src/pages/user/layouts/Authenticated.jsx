@@ -5,7 +5,7 @@ import { FloatingTopBar } from "../components/FloatingTopBar";
 import { Footer } from "../components/Navbar";
 
 function Authenticated_Layout() {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // Start collapsed for auto-expand
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 

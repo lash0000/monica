@@ -2,13 +2,14 @@ import React, { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MdArrowBack } from 'react-icons/md';
 import { useApplicationStore } from '../stores/Application.store';
+import { CiPaperplane } from 'react-icons/ci';
+import { FaPaperPlane } from 'react-icons/fa';
 
 export default function ApplicationStatus() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { applications, myApplication } = useApplicationStore();
-
+  const { applications, myApplication, viewApplication, currentApplication } = useApplicationStore();
   const userId = localStorage.getItem("user_id");
 
   // Fetch applications if not yet loaded
@@ -17,6 +18,11 @@ export default function ApplicationStatus() {
       myApplication(userId);
     }
   }, [applications.length, userId]);
+
+  const handleView = async () => {
+    await viewApplication(id);
+    navigate(`/document/${id}`);
+  };
 
   // Dynamically find the application by ID
   const selectedApp = useMemo(() => {
@@ -117,18 +123,27 @@ export default function ApplicationStatus() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen py-8 pb-20" style={{ fontFamily: 'var(--font-geist), Geist, sans-serif' }}>
+    <div className="flex items-center justify-center min-h-screen py-8 pb-20">
       <div className="max-w-4xl w-full mt-10">
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200">
           <div className="p-8 pb-24">
-            <button
-              onClick={() => navigate('/my-applications')}
-              className="mb-4 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-              style={{ backgroundColor: '#50589C', color: '#fff' }}
-            >
-              <MdArrowBack className="w-4 h-4" />
-              Back
-            </button>
+            <div className="flex justify-between items-center w-full">
+              <button
+                onClick={() => navigate('/my-applications')}
+                className="mb-4 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-blue-600 text-white"
+              >
+                <MdArrowBack className="w-4 h-4" />
+                Back
+              </button>
+
+              <button
+                className="mb-4 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-pink-500 text-white"
+                onClick={handleView}
+              >
+                <FaPaperPlane /> View
+              </button>
+
+            </div>
 
             {/* Dynamic Title */}
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
