@@ -28,6 +28,7 @@ import FileTicket from '../pages/FileTicket';
 import ApplicationForm from '../pages/ApplicationForm';
 import EventSecondPage from '../pages/EventSecondPage';
 import EventsMainPage from '../pages/EventsMainPage';
+import ErrorPage from '../../admin/pages/404';
 
 const UserRoutes = () => [
   <Route
@@ -60,6 +61,7 @@ const UserRoutes = () => [
     <Route path="blotter-ticket-modal" element={<BlotterTicketModal />} />
     <Route path="normal-ticket-page" element={<ForumThread />} />
     <Route path="traffic" element={<TrafficAdvisory />} />
+    <Route path="*" element={<ErrorPage />} />
   </Route>
 ]
 

@@ -14,9 +14,15 @@ import TelekonsultaDetail from '../pages/TelekonsultaDetail';
 import TelekonsultaChatStandalone from '../pages/TelekonsultaChatStandalone';
 import ApplicationRecords from '../pages/ApplicationRecords';
 import ApplicationForReview from '../pages/ApplicationForReview';
+import ErrorPage from '../pages/404'
+import CheckAdmin from '../../../lib/CheckAdmin';
 
 const AdminRoutes = () => [
-  <Route key="admin" path="/admin" element={<App_Layout />}>
+  <Route key="admin" path="/admin" element={
+    <CheckAdmin>
+      <App_Layout />
+    </CheckAdmin>}
+  >
     <Route index element={<Dashboard />} />
     <Route path="tickets" element={<Ticket />} />
     <Route path="tickets/:id" element={<TicketDetail />} />
@@ -28,8 +34,9 @@ const AdminRoutes = () => [
     <Route path="telekonsulta/:id/chat" element={<TelekonsultaChatStandalone />} />
     <Route path="users" element={<UserManagement />} />
     <Route path="users/:id" element={<UpdateUser />} />
-    <Route path="applications" element={<ApplicationRecords/>} />
-    <Route path="applications/:id" element={<ApplicationForReview/>} />
+    <Route path="applications" element={<ApplicationRecords />} />
+    <Route path="applications/:id" element={<ApplicationForReview />} />
+    <Route path="*" element={<ErrorPage />} />
   </Route>
 ]
 
