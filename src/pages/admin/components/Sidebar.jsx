@@ -27,7 +27,7 @@ export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
     { path: "/admin/tickets", icon: FaTicketAlt, label: "Tickets" },
     { path: "/admin/applications", icon: IoIosPaper, label: "Applications" },
     { path: "/admin/events", icon: MdEvent, label: "Events" },
-    { path: "/admin/landing", icon: FaNewspaper, label: "Landing CMS" },
+    { path: "/admin/landing", icon: FaNewspaper, label: "Contents" },
     { path: "/admin/telekonsulta", icon: FaStethoscope, label: "Telekonsulta" },
     { path: "/admin/users", icon: FaUsers, label: "Users" },
     { path: "/admin/settings", icon: FaCog, label: "Settings" },

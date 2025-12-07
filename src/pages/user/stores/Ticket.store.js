@@ -165,26 +165,41 @@ const useTicketStore = create((set, get) => ({
     }
   },
 
-  // ------------------------------------------------------
-  // PATCH TICKET
-  // ------------------------------------------------------
-  updateTicket: async (ticketId, patch) => {
+  updateTicket: async (ticketId, payload) => {
     set({ loading: true, error: null, success: false });
 
     try {
-      const res = await fetch(
-        `${API}/api/v1/data/tickets/${ticketId}`,
-        defaultFetchOptions("PATCH", patch)
-      );
+      const token = localStorage.getItem("access_token");
+      if (!token) throw new Error("Missing access token");
+      if (!ticketId) throw new Error("Missing ticketId");
+
+      const fd = new FormData();
+      Object.entries(payload).forEach(([key, value]) => {
+        if (key === "files" && Array.isArray(value)) {
+          value.forEach(file => fd.append("files", file));
+        } else if (value !== undefined && value !== null) {
+          fd.append(key, value);
+        }
+      });
+
+      const res = await fetch(`${API}/api/v1/data/tickets/${ticketId}`, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd
+      });
 
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
 
+      const updatedTicket = data.ticket;
+
       set((state) => ({
-        tickets: state.tickets.map(t => (t.id === ticketId ? { ...t, ...patch } : t)),
+        tickets: state.tickets.map(t =>
+          t.id === ticketId ? { ...t, ...updatedTicket } : t
+        ),
         singleTicket:
           state.singleTicket?.id === ticketId
-            ? { ...state.singleTicket, ...patch }
+            ? { ...state.singleTicket, ...updatedTicket }
             : state.singleTicket,
         loading: false,
         success: true
@@ -194,35 +209,6 @@ const useTicketStore = create((set, get) => ({
 
     } catch (err) {
       set({ error: err.message || String(err), loading: false, success: false });
-      throw err;
-    }
-  },
-
-  // ------------------------------------------------------
-  // DELETE TICKET
-  // ------------------------------------------------------
-  deleteTicket: async (ticketId) => {
-    set({ loading: true, error: null });
-
-    try {
-      const res = await fetch(
-        `${API}/api/v1/data/tickets/${ticketId}`,
-        defaultFetchOptions("DELETE")
-      );
-
-      if (!res.ok) throw new Error(await res.text());
-      const data = await res.json();
-
-      set((state) => ({
-        tickets: state.tickets.filter(t => t.id !== ticketId),
-        singleTicket: state.singleTicket?.id === ticketId ? null : state.singleTicket,
-        loading: false
-      }));
-
-      return data;
-
-    } catch (err) {
-      set({ error: err.message || String(err), loading: false });
       throw err;
     }
   },

@@ -10,6 +10,28 @@ export const useApplicationStore = create((set, get) => ({
   currentApplication: null,
   error: null,
 
+  allApplications: async () => {
+    try {
+      set({ loading: true, error: null });
+      const token = localStorage.getItem("access_token");
+      if (!token) throw new Error("No access token found.");
+
+      const res = await axios.get(`${SOCKET_URL}/api/v1/data/applications`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      set({ applications: res.data.applications || [] });
+      return res.data;
+    } catch (err) {
+      set({ error: err.response?.data || err.message });
+      throw err;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
   // Fetch applications from logged-in user
   myApplication: async (userId) => {
     try {
@@ -90,6 +112,40 @@ export const useApplicationStore = create((set, get) => ({
 
       set({ currentApplication: app });
       return app;
+    } catch (err) {
+      set({ error: err.response?.data || err.message });
+      throw err;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  updateApplication: async (applicationId, payload) => {
+    try {
+      set({ loading: true, error: null });
+
+      const token = localStorage.getItem("access_token");
+      if (!token) throw new Error("No access token found.");
+
+      const res = await axios.patch(
+        `${SOCKET_URL}/api/v1/data/applications/${applicationId}`,
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const updated = res.data.application;
+      set((state) => ({
+        applications: state.applications.map((a) =>
+          a.id === updated.id ? updated : a
+        ),
+        currentApplication:
+          state.currentApplication?.id === updated.id
+            ? updated
+            : state.currentApplication,
+      }));
+
+      toast.success("Application updated successfully!");
+      return updated;
     } catch (err) {
       set({ error: err.response?.data || err.message });
       throw err;
