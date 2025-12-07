@@ -112,28 +112,33 @@ export default function ApplicationForReview() {
                     Feedback
                   </button>
 
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <button className="ml-auto bg-pink-500 text-white px-6 py-2 rounded-full font-medium hover:bg-pink-600 flex items-center gap-2">
-                        <Check className="w-4 h-4" />
-                        Approve
-                      </button>
-                    </AlertDialogTrigger>
+                  {app.status !== "approved" && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <button className="ml-auto bg-pink-500 text-white px-6 py-2 rounded-full font-medium hover:bg-pink-600 flex items-center gap-2">
+                          <Check className="w-4 h-4" />
+                          Approve
+                        </button>
+                      </AlertDialogTrigger>
 
-                    <AlertDialogPortal>
-                      <AlertDialogOverlay />
-                      <AlertDialogContent>
-                        <AlertDialogTitle>Confirm Action</AlertDialogTitle>
-                        <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={handleStatusSubmit}>
-                            Proceed
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialogPortal>
-                  </AlertDialog>
+                      <AlertDialogPortal>
+                        <AlertDialogOverlay />
+                        <AlertDialogContent>
+                          <AlertDialogTitle>Confirm Action</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone.
+                          </AlertDialogDescription>
+
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleStatusSubmit}>
+                              Proceed
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialogPortal>
+                    </AlertDialog>
+                  )}
 
                 </div>
 

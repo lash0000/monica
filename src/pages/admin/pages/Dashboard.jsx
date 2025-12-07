@@ -1,8 +1,26 @@
 import { FaArrowRight } from 'react-icons/fa';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { useDashboardStore } from '../stores/Dashboard.store';
 
 function Dashboard() {
-  // Sample data for charts
+  // -------------------------------
+  // FETCH STORE DATA
+  // -------------------------------
+  const {
+    fetchTicketCategories,
+    fetchApplicantAnalytics,
+    ticketCategories,
+    applicantAnalytics,
+  } = useDashboardStore();
+
+  useEffect(() => {
+    fetchTicketCategories();
+    fetchApplicantAnalytics();
+  }, []);
+
+  // -------------------------------
+  // CHART MONTH COMPUTATION
+  // -------------------------------
   const getLastMonths = (count) => {
     const formatter = new Intl.DateTimeFormat('en', { month: 'short' });
     const result = [];
@@ -15,7 +33,6 @@ function Dashboard() {
   };
 
   const months = useMemo(() => getLastMonths(6), []);
-
   const rangeLabel = useMemo(() => {
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth() - 5, 1);
@@ -28,36 +45,59 @@ function Dashboard() {
     }
     return `${fmt.format(start)} ${startYear} - ${fmt.format(end)} ${endYear}`;
   }, []);
-  // Example demo values to visualize the chart clearly (0–100 scale)
-  const [complaintData, setComplaintData] = useState([75, 52, 40, 20, 70, 15]);
-  const [incidentData, setIncidentData] = useState([18, 7, 4, 2, 28, 12]);
 
-  const loadSampleData = () => {
-    // deterministic sample values to clearly show bars
-    setComplaintData([80, 52, 38, 20, 75, 12]);
-    setIncidentData([18, 7, 5, 3, 28, 12]);
-  };
+  // Temporary demo chart values
+  const [complaintData] = useState([75, 52, 40, 20, 70, 15]);
+  const [incidentData] = useState([18, 7, 4, 2, 28, 12]);
 
-  const maxComplaint = Math.max(100, ...complaintData);
-  const maxIncident = Math.max(100, ...incidentData);
-
+  // -------------------------------
+  // SERVICE MANAGEMENT USING REAL API VALUES
+  // -------------------------------
   const serviceCategories = [
-    { name: 'Maintenance & Infrastructure', count: 0 },
-    { name: 'Healthcare', count: 0 },
-    { name: 'Social Services & Assistance', count: 0 },
-    { name: 'Community Programs', count: 0 },
-    { name: 'Administrative & Governance', count: 0 },
-    { name: 'Others', count: 0 },
+    {
+      name: 'Maintenance & Infrastructure',
+      count: ticketCategories?.Infrastructure ?? 0
+    },
+    {
+      name: 'Healthcare',
+      count: ticketCategories?.Healthcare ?? 0
+    },
+    {
+      name: 'Social Services & Assistance',
+      count: ticketCategories?.['Social-Services'] ?? 0
+    },
+    {
+      name: 'Community Programs',
+      count: ticketCategories?.Community ?? 0
+    },
+    {
+      name: 'Administrative & Governance',
+      count: ticketCategories?.Administrative ?? 0
+    },
+    {
+      name: 'Others',
+      count: ticketCategories?.Other ?? 0
+    },
   ];
+
+  // -------------------------------
+  // E-APPLICATIONS USING REAL API VALUES
+  // -------------------------------
+  const totalForReview = applicantAnalytics?.['for-review'] ?? 0;
+  const totalApproved = applicantAnalytics?.approved ?? 0;
 
   return (
     <div className="w-full space-y-6 mt-10">
-      {/* Top Advisory Cards */}
+
+      {/* ------------------------------ */}
+      {/* TOP CARDS */}
+      {/* ------------------------------ */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Traffic Advisory Card */}
         <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-6 text-white shadow-lg relative min-h-[220px] pb-16">
           <div className="mb-2">
-            <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">Traffic Advisory</span>
+            <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">
+              Traffic Advisory
+            </span>
           </div>
           <h3 className="text-xl font-bold mb-2">Narito ang ulat-trapiko para sa ating barangay</h3>
           <p className="text-sm text-purple-100 mb-4">Mula sa prediksyon ng Artificial Intelligence</p>
@@ -66,37 +106,37 @@ function Dashboard() {
           </button>
         </div>
 
-        {/* Prevention Card */}
         <div className="bg-gradient-to-br from-pink-600 to-pink-700 rounded-2xl p-6 text-white shadow-lg relative min-h-[220px] pb-16">
           <div className="mb-2">
             <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">Prevention</span>
           </div>
           <h3 className="text-xl font-bold mb-2">Narito ang ulat kontra kriminalidad at paghahanda sa bawat sakuna</h3>
-          <p className="text-sm text-pink-100 mb-4">Ito ay batay sa mga nakukuhang data mula sa mga insident reports para sa ating barangay</p>
+          <p className="text-sm text-pink-100 mb-4">Base sa data mula sa mga incident reports</p>
           <button className="bg-white text-pink-600 px-4 py-2 rounded-lg font-semibold hover:bg-pink-50 transition-colors flex items-center gap-2 absolute left-6 bottom-6">
             Explore <FaArrowRight />
           </button>
         </div>
       </div>
 
-      {/* Service Management Section */}
+      {/* ------------------------------ */}
+      {/* SERVICE MANAGEMENT */}
+      {/* ------------------------------ */}
       <div className="mb-4">
         <h2 className="text-2xl font-bold text-gray-800 mb-1">Service Management</h2>
-        <p className="text-sm text-gray-500">Mula sa prediksyon ng Artificial Intelligence</p>
+        <p className="text-sm text-gray-500">Mula sa mga existing tickets ng ating mga ka-barangay.</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {serviceCategories.map((service, index) => (
-          <div key={index} className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer relative min-h-[140px]">
-            {/* top-right action icon */}
+        {serviceCategories.map((service, i) => (
+          <div key={i} className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer relative min-h-[140px]">
             <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
               <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
             </div>
             <h3 className="text-sm font-medium text-gray-700 pr-12">{service.name}</h3>
-            {/* fixed-position count */}
             <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-800">{service.count}</span>
           </div>
         ))}
       </div>
+
 
       {/* Blotter Section */}
       <div className="mb-6 flex items-start justify-between gap-4">
@@ -189,81 +229,36 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* E-Applications Section */}
+      {/* ------------------------------ */}
+      {/* E-APPLICATIONS */}
+      {/* ------------------------------ */}
       <div className="mb-4">
         <h2 className="text-2xl font-bold text-gray-800 mb-1">E-Applications</h2>
         <p className="text-sm text-gray-500">For barangay services available</p>
       </div>
       <div className="flex flex-wrap gap-4">
+
+        {/* FOR REVIEW */}
         <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px] w-[280px] flex-shrink-0">
-          {/* top-right action icon */}
           <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
-            <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
+            <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" />
           </div>
           <h3 className="text-sm font-medium text-gray-700 pr-12">Total of Ongoing to Review</h3>
-          <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">0</span>
+          <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">{totalForReview}</span>
         </div>
+
+        {/* APPROVED */}
         <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px] w-[280px] flex-shrink-0">
-          {/* top-right action icon */}
           <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
-            <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
+            <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" />
           </div>
           <h3 className="text-sm font-medium text-gray-700 pr-12">Total of Approved</h3>
-          <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">0</span>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px] w-[280px] flex-shrink-0">
-          {/* top-right action icon */}
-          <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
-            <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
-          </div>
-          <h3 className="text-sm font-medium text-gray-700 pr-12">Total of Disapproved</h3>
-          <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">0</span>
+          <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">{totalApproved}</span>
         </div>
       </div>
 
-
-      {/* Ayuda Section */}
-
-      <div className="mb-4 hidden">
-        <h2 className="text-2xl font-bold text-gray-800 mb-1">Ayuda</h2>
-        <p className="text-sm text-gray-500">Status overview of activities related to Ayuda.</p>
-      </div>
-      <div className="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px]">
-          {/* top-right action icon */}
-          <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
-            <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
-          </div>
-          <h3 className="text-sm font-medium text-gray-700 pr-12">Beneficiaries</h3>
-          <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">1,236</span>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px]">
-          {/* top-right action icon */}
-          <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
-            <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
-          </div>
-          <h3 className="text-sm font-medium text-gray-700 pr-12">Active</h3>
-          <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">1,098</span>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px]">
-          {/* top-right action icon */}
-          <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
-            <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
-          </div>
-          <h3 className="text-sm font-medium text-gray-700 pr-12">Pending</h3>
-          <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">498</span>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer relative min-h-[140px]">
-          {/* top-right action icon */}
-          <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-300 bg-gray-100 flex items-center justify-center">
-            <FaArrowRight className="text-gray-600 text-xs rotate-[320deg]" style={{ transformOrigin: 'center' }} />
-          </div>
-          <h3 className="text-sm font-medium text-gray-700 pr-12">Claimed</h3>
-          <span className="absolute bottom-4 left-4 text-3xl font-bold text-gray-900">600</span>
-        </div>
-      </div>
     </div>
-  )
+  );
 }
 
 export default Dashboard;

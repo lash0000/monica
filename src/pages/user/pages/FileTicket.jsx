@@ -325,8 +325,13 @@ function FileTicket() {
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-secondary focus:border-transparent bg-white"
             >
               <option value="" disabled className="hidden">Select</option>
+              // Admin side
               <option value="Healthcare">Healthcare</option>
               <option value="Infrastructure">Infrastructure</option>
+              <option value="Social-Services">Social Services & Assistance</option>
+              <option value="Community">Community</option>
+              <option value="Administrative">Administrative & Governance</option>
+              // Others
               <option value="Safety">Safety</option>
               <option value="Environmental">Environmental</option>
               <option value="Maintenance">Maintenance</option>

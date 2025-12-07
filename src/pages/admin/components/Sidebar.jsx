@@ -30,7 +30,6 @@ export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
     { path: "/admin/landing", icon: FaNewspaper, label: "Contents" },
     { path: "/admin/telekonsulta", icon: FaStethoscope, label: "Telekonsulta" },
     { path: "/admin/users", icon: FaUsers, label: "Users" },
-    { path: "/admin/settings", icon: FaCog, label: "Settings" },
   ];
 
   const isExpanded = isHovered || !isCollapsed;

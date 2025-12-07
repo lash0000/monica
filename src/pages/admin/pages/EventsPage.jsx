@@ -4,49 +4,11 @@ import {
   FaArrowUp,
   FaCalendarAlt,
   FaChevronLeft,
+  FaPlus,
   FaChevronRight,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
-
-// Temporary seed data for admin events table.
-// Replace with API data when backend endpoint is ready.
-const SEED_EVENTS = [
-  {
-    id: "EVT-20251201-01",
-    title: "Barangay Fiesta Celebration",
-    createdBy: "Admin – Brgy. Santa Monica",
-    status: "Published",
-    scheduledAt: "2025-12-01T09:00:00",
-  },
-  {
-    id: "EVT-20251205-02",
-    title: "Community Health Fair 2024",
-    createdBy: "Health Committee",
-    status: "Draft",
-    scheduledAt: "2025-12-05T08:30:00",
-  },
-  {
-    id: "EVT-20251207-03",
-    title: "Telekonsulta Orientation for Residents",
-    createdBy: "Telekonsulta Team",
-    status: "Scheduled",
-    scheduledAt: "2025-12-07T14:00:00",
-  },
-  {
-    id: "EVT-20251210-04",
-    title: "Clean-up Drive: Coastal Road",
-    createdBy: "Youth Volunteers",
-    status: "Published",
-    scheduledAt: "2025-12-10T06:00:00",
-  },
-  {
-    id: "EVT-20251212-05",
-    title: "Senior Citizens Appreciation Day",
-    createdBy: "Senior Citizens Council",
-    status: "Archived",
-    scheduledAt: "2025-12-12T15:00:00",
-  },
-];
+import { Link, useNavigate } from "react-router-dom";
+import { useEventsStore } from "../stores/events.store";
 
 const statusStyles = {
   Draft: "bg-gray-100 text-gray-700",
@@ -71,9 +33,8 @@ function formatDateTime(date) {
 function StatusBadge({ status }) {
   return (
     <span
-      className={`px-3 py-1 rounded-full text-xs font-semibold ${
-        statusStyles[status] || "bg-gray-100 text-gray-600"
-      }`}
+      className={`px-3 py-1 rounded-full text-xs font-semibold ${statusStyles[status] || "bg-gray-100 text-gray-600"
+        }`}
     >
       {status}
     </span>
@@ -81,26 +42,68 @@ function StatusBadge({ status }) {
 }
 
 export default function EventsPage() {
-  const [events] = useState(SEED_EVENTS);
+  const navigate = useNavigate();
+
+  // Zustand imports
+  const { allEvents, events, loading } = useEventsStore();
+
+  // Table state
   const [sortDirection, setSortDirection] = useState("desc");
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
 
+  // Fetch events on load
+  useEffect(() => {
+    allEvents();
+  }, [allEvents]);
+
+  /**
+   * MAP BACKEND RESPONSE INTO TABLE-FRIENDLY FORMAT
+   */
+  const mappedEvents = useMemo(() => {
+    return (events || []).map((evt) => {
+      const creatorName =
+        evt.EventCreator?.UserProfile?.name?.first &&
+          evt.EventCreator?.UserProfile?.name?.last
+          ? `${evt.EventCreator.UserProfile.name.first} ${evt.EventCreator.UserProfile.name.last}`
+          : evt.EventCreator?.email || "Unknown";
+
+      let status = "Scheduled";
+      if (evt.is_published) status = "Published";
+      else if (evt.date_ended) status = "Archived";
+
+      return {
+        id: evt.id,
+        title: evt.title,
+        createdBy: creatorName,
+        status,
+        scheduledAt: evt.date_scheduled,
+      };
+    });
+  }, [events]);
+
+  /**
+   * FILTER BY SEARCH + STATUS
+   */
   const filteredEvents = useMemo(() => {
-    return events.filter((evt) => {
+    return mappedEvents.filter((evt) => {
       const matchesSearch =
         !searchTerm ||
         evt.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         evt.createdBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
         evt.id.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesStatus = filterStatus === "all" || evt.status === filterStatus;
+      const matchesStatus =
+        filterStatus === "all" || evt.status === filterStatus;
 
       return matchesSearch && matchesStatus;
     });
-  }, [events, searchTerm, filterStatus]);
+  }, [mappedEvents, searchTerm, filterStatus]);
 
+  /**
+   * SORT DATA
+   */
   const sortedEvents = useMemo(() => {
     return [...filteredEvents].sort((a, b) => {
       const aDate = new Date(a.scheduledAt).getTime();
@@ -109,7 +112,13 @@ export default function EventsPage() {
     });
   }, [filteredEvents, sortDirection]);
 
-  const totalPages = Math.max(1, Math.ceil(sortedEvents.length / itemsPerPage));
+  /**
+   * PAGINATION
+   */
+  const totalPages = Math.max(
+    1,
+    Math.ceil(sortedEvents.length / itemsPerPage)
+  );
 
   useEffect(() => {
     setCurrentPage((prev) => Math.min(prev, totalPages));
@@ -120,8 +129,8 @@ export default function EventsPage() {
   const pageEvents = sortedEvents.slice(pageSliceStart, pageSliceEnd);
 
   return (
-    <div className="space-y-6">
-      {/* Header card (similar to Telekonsulta) */}
+    <div className="space-y-6 my-6">
+      {/* Header card */}
       <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
@@ -130,7 +139,7 @@ export default function EventsPage() {
             </p>
             <h1 className="text-3xl font-bold text-gray-900">Events Management</h1>
             <p className="text-sm text-gray-600 mt-1 max-w-2xl">
-              View upcoming events, monitor status, and keep your barangay
+              View upcoming events, monitor status, and keep barangay
               announcements organized in one place.
             </p>
           </div>
@@ -145,13 +154,6 @@ export default function EventsPage() {
             <label className="text-sm font-medium text-gray-700">
               All events
             </label>
-            <select
-              className="text-sm border border-gray-300 rounded-lg px-3 py-1.5"
-              value="all"
-              readOnly
-            >
-              <option value="all">Events (default)</option>
-            </select>
           </div>
 
           <div className="flex-1 flex flex-wrap gap-3 justify-end">
@@ -163,7 +165,7 @@ export default function EventsPage() {
                 setSearchTerm(e.target.value);
               }}
               placeholder="Search events, admins, IDs"
-              className="flex-1 min-w-[200px] text-sm border border-gray-300 rounded-lg px-3 py-1.5"
+              className="w-[360px] text-sm border border-gray-300 rounded-lg px-3 py-1.5"
             />
 
             <select
@@ -184,25 +186,30 @@ export default function EventsPage() {
             <div className="inline-flex rounded-lg overflow-hidden border border-gray-300">
               <button
                 onClick={() => setSortDirection("asc")}
-                className={`px-3 py-1.5 text-sm flex items-center gap-1 ${
-                  sortDirection === "asc"
+                className={`px-3 py-1.5 text-sm flex items-center gap-1 ${sortDirection === "asc"
                     ? "bg-gray-900 text-white"
                     : "bg-white text-gray-600"
-                }`}
+                  }`}
               >
                 <FaArrowUp /> Asc
               </button>
               <button
                 onClick={() => setSortDirection("desc")}
-                className={`px-3 py-1.5 text-sm flex items-center gap-1 border-l border-gray-300 ${
-                  sortDirection === "desc"
+                className={`px-3 py-1.5 text-sm flex items-center gap-1 border-l border-gray-300 ${sortDirection === "desc"
                     ? "bg-gray-900 text-white"
                     : "bg-white text-gray-600"
-                }`}
+                  }`}
               >
                 <FaArrowDown /> Desc
               </button>
             </div>
+
+            <button
+              onClick={() => navigate("add")}
+              className="px-3 py-1.5 text-sm flex items-center gap-2 bg-blue-500 text-white rounded-lg"
+            >
+              <FaPlus /> Create Event
+            </button>
           </div>
         </div>
 
@@ -218,43 +225,52 @@ export default function EventsPage() {
                 <th className="px-6 py-3 text-right">Actions</th>
               </tr>
             </thead>
+
             <tbody className="divide-y divide-gray-100 text-sm">
-              {pageEvents.map((evt) => (
-                <tr
-                  key={evt.id}
-                  className="transition-colors hover:bg-gray-50"
-                >
-                  <td className="px-6 py-4">
-                    <p className="font-semibold text-gray-900">{evt.title}</p>
-                    <p className="text-xs text-gray-500">{evt.id}</p>
-                  </td>
-                  <td className="px-6 py-4">
-                    <p className="font-medium text-gray-900">
-                      {evt.createdBy}
-                    </p>
-                  </td>
-                  <td className="px-6 py-4">
-                    <StatusBadge status={evt.status} />
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-gray-900 font-medium">
-                      <FaCalendarAlt className="text-gray-400" />
-                      {formatDateTime(evt.scheduledAt)}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <Link
-                      to={`/admin/events/${evt.id}`}
-                      state={{ event: evt }}
-                      className="inline-flex items-center px-4 py-1.5 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-100"
-                    >
-                      View
-                    </Link>
+              {loading && (
+                <tr>
+                  <td colSpan={5} className="px-6 py-12 text-center">
+                    Loading events...
                   </td>
                 </tr>
-              ))}
+              )}
 
-              {pageEvents.length === 0 && (
+              {!loading &&
+                pageEvents.map((evt) => (
+                  <tr key={evt.id} className="transition-colors hover:bg-gray-50">
+                    <td className="px-6 py-4">
+                      <p className="font-semibold text-gray-900">{evt.title}</p>
+                      <p className="text-xs text-gray-500">{evt.id}</p>
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <p className="font-medium text-gray-900">{evt.createdBy}</p>
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <StatusBadge status={evt.status} />
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2 text-gray-900 font-medium">
+                        <FaCalendarAlt className="text-gray-400" />
+                        {formatDateTime(evt.scheduledAt)}
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 text-right">
+                      <Link
+                        to={`/admin/events/${evt.id}`}
+                        state={{ event: evt }}
+                        className="inline-flex items-center px-4 py-1.5 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-100"
+                      >
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+
+              {!loading && pageEvents.length === 0 && (
                 <tr>
                   <td
                     colSpan={5}
@@ -268,7 +284,7 @@ export default function EventsPage() {
           </table>
         </div>
 
-        {/* Pagination footer */}
+        {/* Pagination */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50 text-xs text-gray-600">
           <p>
             Showing{" "}
@@ -280,25 +296,25 @@ export default function EventsPage() {
               {Math.min(pageSliceEnd, sortedEvents.length)}
             </span>{" "}
             of{" "}
-            <span className="font-semibold">{sortedEvents.length}</span> events
+            <span className="font-semibold">{sortedEvents.length}</span>{" "}
+            events
           </p>
+
           <div className="flex items-center gap-2">
             <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.max(1, prev - 1))
-              }
+              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
               className="px-3 py-1.5 border border-gray-300 rounded-lg text-gray-700 text-sm flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <FaChevronLeft /> Prev
             </button>
+
             <span className="text-gray-500">
               Page {currentPage} / {totalPages}
             </span>
+
             <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-              }
+              onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
               disabled={currentPage === totalPages}
               className="px-3 py-1.5 border border-gray-300 rounded-lg text-gray-700 text-sm flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed"
             >

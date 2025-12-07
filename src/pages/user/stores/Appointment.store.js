@@ -7,6 +7,46 @@ export const useAppointmentStore = create((set) => ({
   loading: false,
   error: null,
   appointments: [],
+  allAppointments: [],
+
+  fetchAllAppointments: async () => {
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      set({ error: "Missing authentication credentials." });
+      return;
+    }
+
+    set({ loading: true, error: null });
+
+    try {
+      const response = await axios.get(
+        `${SOCKET_URL}/api/v1/data/appointments`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data?.success) {
+        set({
+          allAppointments: response.data.appointments || [],
+          loading: false,
+        });
+      } else {
+        set({
+          error: "Failed to fetch all appointments.",
+          loading: false,
+        });
+      }
+    } catch (err) {
+      set({
+        error: err.response?.data?.message || "Request failed.",
+        loading: false,
+      });
+    }
+  },
 
   // Fetch user's appointments
   fetchMyAppointments: async () => {

@@ -16,6 +16,8 @@ import ApplicationRecords from '../pages/ApplicationRecords';
 import ApplicationForReview from '../pages/ApplicationForReview';
 import ErrorPage from '../pages/404'
 import CheckAdmin from '../../../lib/CheckAdmin';
+import CreateEvent from '../pages/CreateEvent';
+import EventInformationPage from '../pages/EventInformationPage';
 
 const AdminRoutes = () => [
   <Route key="admin" path="/admin" element={
@@ -27,6 +29,8 @@ const AdminRoutes = () => [
     <Route path="tickets" element={<Ticket />} />
     <Route path="tickets/:id" element={<TicketDetail />} />
     <Route path="events" element={<Events />} />
+    <Route path="events/add" element={<CreateEvent />} />
+    <Route path="events/:id" element={<EventInformationPage />} />
     <Route path="ayuda" element={<AyudaManagement />} />
     <Route path="landing" element={<LandingManagement />} />
     <Route path="telekonsulta" element={<Telekonsulta />} />
