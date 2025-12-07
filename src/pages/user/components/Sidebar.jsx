@@ -50,7 +50,7 @@ export function Sidebar({ onToggle, isMobileMenuOpen, onMobileMenuClose }) {
       label: "Telekonsulta",
       expandable: true,
       list: ["My Appointments"],
-      listPath: ["/dashboard"]
+      listPath: ["/telekonsulta"]
     },
   ];
 

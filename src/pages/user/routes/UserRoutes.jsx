@@ -31,6 +31,9 @@ import EventsMainPage from '../pages/EventsMainPage';
 import ErrorPage from '../../admin/pages/404';
 import ApplicationDocument from '../pages/ApplicationDocument';
 import Header_Layout from '../layouts/Header';
+import Telekonsulta from '../pages/Telekonsulta';
+import FileAppointment from '../pages/FileAppointment';
+import AppointmentPage from '../pages/AppointmentPage';
 
 const UserRoutes = () => [
   <Route
@@ -63,6 +66,9 @@ const UserRoutes = () => [
     <Route path="blotter-ticket-modal" element={<BlotterTicketModal />} />
     <Route path="normal-ticket-page" element={<ForumThread />} />
     <Route path="traffic" element={<TrafficAdvisory />} />
+    <Route path="telekonsulta" element={<Telekonsulta />} />
+    <Route path="telekonsulta/add" element={<FileAppointment />} />
+    <Route path="telekonsulta/:id" element={<AppointmentPage />} />
     <Route path="*" element={<ErrorPage />} />
   </Route>,
   <Route element={<CheckAuth><Header_Layout /></CheckAuth>}>

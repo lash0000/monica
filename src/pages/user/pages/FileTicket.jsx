@@ -4,6 +4,14 @@ import { FaFileMedical } from 'react-icons/fa6';
 import UserTicketStore from '../stores/Ticket.store';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from '../components/Breadcrumb';
 
 function FileTicket() {
   const navigate = useNavigate();
@@ -117,35 +125,35 @@ function FileTicket() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-      // Allowed file extensions
-      const allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'heif'];
+    // Allowed file extensions
+    const allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'heif'];
 
-      // Validate files
-      if (selectedFiles && selectedFiles.length > 0) {
-        for (const file of selectedFiles) {
-          const ext = file.name.split('.').pop().toLowerCase();
-          if (!allowedTypes.includes(ext)) {
-            alert('Only the following formats are allowed: jpg, jpeg, png, gif, heif.');
-            return;
-          }
+    // Validate files
+    if (selectedFiles && selectedFiles.length > 0) {
+      for (const file of selectedFiles) {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!allowedTypes.includes(ext)) {
+          alert('Only the following formats are allowed: jpg, jpeg, png, gif, heif.');
+          return;
         }
       }
+    }
 
-      const user_id = localStorage.getItem("user_id");
-      const payload = {
-        user_id,
-        subject: formData.subject,
-        category: formData.category,
-        concern_details: formData.description,
-        files: selectedFiles // MUST be "files" no []
-      };
-      const res = await addNewTicket(payload);
-      if (res) {
-        toast.success('Ticket submitted successfully!');
-        navigate(-1);
-      } else {
-        toast.error("Something went wrong submitting your ticket.");
-      }
+    const user_id = localStorage.getItem("user_id");
+    const payload = {
+      user_id,
+      subject: formData.subject,
+      category: formData.category,
+      concern_details: formData.description,
+      files: selectedFiles // MUST be "files" no []
+    };
+    const res = await addNewTicket(payload);
+    if (res) {
+      toast.success('Ticket submitted successfully!');
+      navigate(-1);
+    } else {
+      toast.error("Something went wrong submitting your ticket.");
+    }
   };
 
 
@@ -402,58 +410,6 @@ function FileTicket() {
             )}
           </div>
 
-          {/* Location (commented out to hide from UI) */}
-          {false && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{
-                display: 'block',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                color: '#374151',
-                marginBottom: '0.5rem'
-              }}>
-                Location *
-              </label>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <input
-                  type="text"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  placeholder="Event location"
-                  required
-                  style={{
-                    flex: '1',
-                    padding: '0.75rem',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '6px',
-                    fontSize: '0.875rem',
-                    outline: 'none',
-                    boxSizing: 'border-box'
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowLocationModal(true)}
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    border: '2px solid #4B663B',
-                    borderRadius: '6px',
-                    backgroundColor: '#f0fdf4',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <FaMapMarkerAlt style={{ color: '#4B663B' }} />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Maintenance Needed - removed from UI as requested */}
           {/* Persons Involved — Only for Complaint or Incident Report */}
           {(formData.category === "Complaint" || formData.category === "Incident Report") && (
             <div className="mb-4">
