@@ -33,12 +33,38 @@ export default function UpdateProfile() {
     }
   }, [userId, token]);
 
-  // FIX: Correctly read from profile.userProfile
   useEffect(() => {
-    if (!profile?.userProfile) return;
+    const up = profile?.userProfile;
 
-    const up = profile.userProfile;
+    // NEW USER → initialize blank form
+    if (!up) {
+      setFormData({
+        name: { first: "", middle: "", last: "", suffix: "" },
+        birthdate: "",
+        phone_number: "",
+        type_of_residency: "",
+        civil_status: "",
+        gender: "",
+        nationality: "",
+        address: {
+          street_address: "",
+          house_no: "",
+          street: "",
+          subdivision: "",
+          barangay: "",
+          city: "",
+          province: "",
+          zip_code: "",
+        },
+        contact_person: {
+          number: "",
+          name: ""
+        }
+      });
+      return;
+    }
 
+    // EXISTING PROFILE → prefill
     setFormData({
       name: {
         first: up?.name?.first ?? "",

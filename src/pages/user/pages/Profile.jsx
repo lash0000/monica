@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useAuth } from "../stores/store";
 import UserProfileStore from "../stores/user-profile.store";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -7,9 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 export default function Profile() {
   const { profile, fetchUserProfile } = UserProfileStore();
   const { accessToken, user } = useAuth();
-
-  const [accountEmail, setAccountEmail] = useState(null);
-  const [loadingEmail, setLoadingEmail] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,48 +14,50 @@ export default function Profile() {
   const userId = user?.user_id || localStorage.getItem("user_id");
   const base_path = location.pathname;
 
-  // Extract userProfile safely from the store format
   const userProfile = profile?.userProfile || null;
+  const accountEmail = profile?.account?.email || "Not available";
 
-  // Fetch profile + email lookup
+  // Fetch once — no duplicate request
   useEffect(() => {
-    if (!userId || !accessToken) return;
+    const load = async () => {
+      if (!userId || !accessToken) return;
 
-    fetchUserProfile(userId, accessToken);
-
-    const loadAccount = async () => {
-      try {
-        setLoadingEmail(true);
-        const res = await axios.get(
-          `${import.meta.env.VITE_SOCKET_URL}/api/v1/data/profile/user/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              Accept: "application/json",
-            },
-            withCredentials: true,
-          }
-        );
-
-        if (res?.data) {
-          setAccountEmail(res.data.email || res.data.UserProfile?.email || null);
-        }
-      } catch (err) {
-        console.error("Failed to load account wrapper:", err);
-      } finally {
-        setLoadingEmail(false);
-      }
+      setLoadingPage(true);
+      await fetchUserProfile(userId, accessToken);
+      setLoadingPage(false);
     };
 
-    loadAccount();
+    load();
   }, [userId, accessToken, fetchUserProfile]);
 
-  // Handle loading
-  if (!profile || !userProfile) {
+  // Handle first-time user (no profile yet)
+  if (loadingPage) {
     return (
       <main className="max-w-2xl mx-auto px-3 sm:px-4 lg:px-6 py-8">
         <div className="flex items-center justify-center py-20 text-gray-600">
           Loading profile...
+        </div>
+      </main>
+    );
+  }
+
+  if (!profile || !userProfile) {
+    return (
+      <main className="max-w-2xl mx-auto px-3 sm:px-4 lg:px-6 py-8">
+        <div className="bg-white border rounded-xl p-6 text-center">
+          <h2 className="text-lg font-semibold text-gray-700 mb-3">
+            No Profile Found
+          </h2>
+          <p className="text-gray-600 text-sm mb-5">
+            It looks like you haven't created your personal profile yet.
+          </p>
+
+          <button
+            onClick={() => navigate(`${base_path}/update-profile`)}
+            className="px-4 py-2 text-sm bg-[#20326e] text-white rounded-md hover:bg-[#1a2658]"
+          >
+            Create Profile
+          </button>
         </div>
       </main>
     );
@@ -116,10 +115,9 @@ export default function Profile() {
                   <span>Email Address</span>
                   <span className="text-green-600">✓</span>
                 </div>
-                <div className="text-gray-700">
-                  {loadingEmail ? "Loading..." : accountEmail ?? "Not available"}
-                </div>
+                <div className="text-gray-700">{accountEmail}</div>
               </div>
+
               <button className="px-3 py-1.5 text-xs rounded-md border text-[#20326e] 
                                  flex items-center gap-2 bg-[#eef2ff]">
                 <span className="inline-block w-3 h-3 rounded-sm bg-[#20326e]"></span>
@@ -133,37 +131,20 @@ export default function Profile() {
             <div className="text-sm font-semibold text-gray-800 mb-2">Personal Details</div>
 
             <div className="border rounded-lg overflow-hidden">
-
-              {/* Name Row */}
               <div className="grid grid-cols-4 divide-x">
                 <DetailItem label="First Name" value={userProfile.name?.first} />
                 <DetailItem label="Middle Name" value={userProfile.name?.middle} />
                 <DetailItem label="Last Name" value={userProfile.name?.last} />
-                <DetailItem
-                  label="Suffix"
-                  value={
-                    userProfile.name?.suffix && userProfile.name.suffix.trim() !== ""
-                      ? userProfile.name.suffix
-                      : "N/A"
-                  }
-                />
+                <DetailItem label="Suffix" value={userProfile.name?.suffix || "N/A"} />
               </div>
 
-              {/* Birthdate + Gender */}
               <div className="grid grid-cols-2 divide-x border-t">
                 <DetailItem label="Date of Birth" value={birthdate} />
-                <DetailItem
-                  label="Gender"
-                  value={userProfile.gender ? userProfile.gender : "N/A"}
-                />
+                <DetailItem label="Gender" value={userProfile.gender || "N/A"} />
               </div>
 
-              {/* Nationality + Civil Status */}
               <div className="grid grid-cols-2 divide-x border-t">
-                <DetailItem
-                  label="Nationality"
-                  value={userProfile.nationality || "N/A"}
-                />
+                <DetailItem label="Nationality" value={userProfile.nationality || "N/A"} />
                 <DetailItem
                   label="Civil Status"
                   value={
@@ -175,22 +156,17 @@ export default function Profile() {
                 />
               </div>
 
-              {/* Phone + Residency */}
               <div className="grid grid-cols-2 divide-x border-t">
-                <DetailItem
-                  label="Phone Number"
-                  value={userProfile.phone_number || "N/A"}
-                />
+                <DetailItem label="Phone Number" value={userProfile.phone_number || "N/A"} />
 
                 <div className="p-3">
                   <div className="text-[11px] text-gray-500">Type of Residency</div>
                   <div className="inline-block text-[11px] mt-1 px-2 py-1 rounded bg-gray-100 border capitalize">
-                    {userProfile.type_of_residency ?? "N/A"}
+                    {userProfile.type_of_residency || "N/A"}
                   </div>
                 </div>
               </div>
 
-              {/* Address */}
               <div className="border-t p-3">
                 <div className="text-[11px] text-gray-500">Permanent Address</div>
                 <div className="text-sm">
@@ -203,11 +179,10 @@ export default function Profile() {
                 </div>
               </div>
 
-              {/* Emergency Contact */}
               <div className="border-t p-3">
                 <div className="text-[11px] text-gray-500">Emergency Contacts</div>
 
-                {userProfile?.contact_person?.number || userProfile?.contact_person?.name ? (
+                {userProfile?.contact_person?.name || userProfile?.contact_person?.number ? (
                   <div className="text-sm">
                     {userProfile.contact_person?.name ?? "Unnamed"}
                     {userProfile.contact_person?.number
@@ -218,8 +193,6 @@ export default function Profile() {
                   <div className="text-sm">N/A</div>
                 )}
               </div>
-
-
             </div>
           </div>
 
@@ -229,7 +202,6 @@ export default function Profile() {
   );
 }
 
-// Small Reusable Item Component
 function DetailItem({ label, value }) {
   return (
     <div className="p-3">
