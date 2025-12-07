@@ -8,7 +8,42 @@ export const useEventsStore = create((set, get) => ({
   loading: false,
   error: null,
   events: [],
+  publishedEvents: [],
   singleEvent: null,
+
+  allPublishedEvents: async () => {
+    try {
+      set({ loading: true, error: null });
+
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        toast.error("Missing access token.");
+        set({ loading: false });
+        return;
+      }
+
+      const res = await axios.get(
+        `${SOCKET_URL}/api/v1/data/events/published`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res?.data?.success) {
+        set({ publishedEvents: res.data.events });
+      }
+
+      return res.data;
+    } catch (err) {
+      console.error("Fetch Published Events Error:", err);
+      toast.error(err?.response?.data?.message || "Failed to fetch published events");
+      set({ error: err });
+    } finally {
+      set({ loading: false });
+    }
+  },
 
   allEvents: async () => {
     try {

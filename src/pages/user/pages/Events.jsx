@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCalendarAlt, FaClock, FaArrowLeft, FaEye, FaSearch, FaFilter, FaTimes } from 'react-icons/fa';
 import AOS from 'aos';
+import { useEventsStore } from '../../admin/stores/events.store';
 
 function Events() {
   const navigate = useNavigate();
@@ -205,7 +206,7 @@ function Events() {
   const filteredEvents = useMemo(() => {
     return allEvents.filter(event => {
       // Search filter
-      const matchesSearch = searchTerm === '' || 
+      const matchesSearch = searchTerm === '' ||
         event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         event.shortDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
         event.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -248,12 +249,7 @@ function Events() {
       {/* Header */}
       <div className="bg-foreground text-white py-8 xl:py-12">
         <div className="max-w-6xl xl:max-w-7xl mx-auto px-4">
-          <button
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-white hover:text-gray-200 transition-colors mb-4"
-          >
-            <FaArrowLeft /> Back to Home
-          </button>
+
           <h1 className="text-3xl xl:text-4xl font-bold mb-2">All News & Events</h1>
           <p className="text-base xl:text-lg text-gray-200">
             Stay updated with all the latest happenings in Barangay Santa Monica
@@ -349,67 +345,67 @@ function Events() {
         {filteredEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
             {filteredEvents.map((event, index) => (
-            <div
-              key={event.id}
-              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col h-full"
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
-            >
-              <div 
-                className="relative h-48 xl:h-56 overflow-hidden flex-shrink-0"
-                onClick={() => {
-                  if (event.isAyuda) {
-                    navigate('/ayuda-programs');
-                  } else {
-                    openEventModal(event);
-                  }
-                }}
+              <div
+                key={event.id}
+                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col h-full"
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
               >
-                <img
-                  src={event.src}
-                  alt={event.alt}
-                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 className="text-white font-bold text-lg xl:text-xl mb-2 line-clamp-2">
-                    {event.title}
-                  </h3>
-                </div>
-              </div>
-              <div className="p-4 xl:p-6 flex flex-col flex-grow">
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <FaCalendarAlt className="text-gray-400 mr-2" />
-                    <span>{event.date}</span>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <FaClock className="text-gray-400 mr-2" />
-                    <span>{event.time}</span>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-700 line-clamp-3 mb-4">
-                  {event.shortDescription}
-                </p>
-                
-                {/* Spacer to push button to bottom */}
-                <div className="flex-grow"></div>
-                
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
+                <div
+                  className="relative h-48 xl:h-56 overflow-hidden flex-shrink-0"
+                  onClick={() => {
                     if (event.isAyuda) {
                       navigate('/ayuda-programs');
                     } else {
                       openEventModal(event);
                     }
                   }}
-                  className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 mt-auto"
                 >
-                  <FaEye /> View Details
-                </button>
+                  <img
+                    src={event.src}
+                    alt={event.alt}
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <h3 className="text-white font-bold text-lg xl:text-xl mb-2 line-clamp-2">
+                      {event.title}
+                    </h3>
+                  </div>
+                </div>
+                <div className="p-4 xl:p-6 flex flex-col flex-grow">
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <FaCalendarAlt className="text-gray-400 mr-2" />
+                      <span>{event.date}</span>
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <FaClock className="text-gray-400 mr-2" />
+                      <span>{event.time}</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-700 line-clamp-3 mb-4">
+                    {event.shortDescription}
+                  </p>
+
+                  {/* Spacer to push button to bottom */}
+                  <div className="flex-grow"></div>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (event.isAyuda) {
+                        navigate('/ayuda-programs');
+                      } else {
+                        openEventModal(event);
+                      }
+                    }}
+                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 mt-auto"
+                  >
+                    <FaEye /> View Details
+                  </button>
+                </div>
               </div>
-            </div>
             ))}
           </div>
         ) : (
@@ -486,7 +482,7 @@ function Events() {
               </div>
             </div>
 
-         
+
           </div>
         </div>
       )}
