@@ -18,6 +18,8 @@ import ErrorPage from '../pages/404'
 import CheckAdmin from '../../../lib/CheckAdmin';
 import CreateEvent from '../pages/CreateEvent';
 import EventInformationPage from '../pages/EventInformationPage';
+import Document_Layout from '../layouts/DocumentLayout';
+import Admin_ApplicationDocument from '../pages/ApplicationDocument';
 
 const AdminRoutes = () => [
   <Route key="admin" path="/admin" element={
@@ -41,6 +43,9 @@ const AdminRoutes = () => [
     <Route path="applications" element={<ApplicationRecords />} />
     <Route path="applications/:id" element={<ApplicationForReview />} />
     <Route path="*" element={<ErrorPage />} />
+  </Route>,
+  <Route element={<CheckAdmin><Document_Layout /></CheckAdmin>}>
+    <Route path="document/:id" element={<Admin_ApplicationDocument />} />
   </Route>
 ]
 

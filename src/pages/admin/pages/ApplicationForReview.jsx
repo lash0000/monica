@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { User, Check, Copy } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useApplicationStore } from '../../user/stores/Application.store';
 import {
   AlertDialog,
@@ -14,10 +14,12 @@ import {
   AlertDialogFooter,
   AlertDialogDescription
 } from "../../user/components/AlertDialog"
+import { IoIosPaper } from "react-icons/io";
 
 export default function ApplicationForReview() {
   const { id } = useParams();
   const { currentApplication, viewApplication, updateApplication, loading } = useApplicationStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) viewApplication(id);
@@ -70,6 +72,11 @@ export default function ApplicationForReview() {
     }
   };
 
+  const handleView = async () => {
+    await viewApplication(id);
+    navigate(`/document/${id}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-2xl mx-auto">
@@ -108,6 +115,11 @@ export default function ApplicationForReview() {
                   </span>
                 </div>
                 <div className="flex gap-4">
+                  <button onClick={handleView} className=" bg-pink-500 text-white px-6 py-2 rounded-full font-medium flex gap-2 items-center">
+                    <IoIosPaper className="size-4" />
+                    <p>View</p>
+                  </button>
+
                   <button className="border border-gray-300 px-6 py-2 rounded-full font-medium hover:bg-gray-50">
                     Feedback
                   </button>
