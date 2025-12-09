@@ -1,7 +1,51 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import useAnalyticsStore from '../stores/Analytics.store';
 
 function PredictiveTickets() {
-    const [selectedYear, setSelectedYear] = useState('2024');
+    const [selectedYear, setSelectedYear] = useState('2025');
+
+     const { 
+        aiReviews, 
+        isLoadingReviews, 
+        reviewError, 
+        getAIReview 
+    } = useAnalyticsStore();
+
+    // Fetch AI reviews on component mount
+    useEffect(() => {
+        getAIReview();
+    }, [getAIReview]);
+
+    // Get the first review (index 0)
+    const firstReview = aiReviews?.[0];
+
+    const cleanSummary = (summary) => {
+    if (!summary) return '';
+    
+    let cleaned = summary;
+    
+    cleaned = cleaned.replace(/json/g, '');
+    // Remove markdown code blocks with content (``````)
+    cleaned = cleaned.replace(/``````/gi, '');
+    
+    // Remove empty markdown code blocks (`````` or ``````)
+    cleaned = cleaned.replace(/``````/gi, '');
+    
+    // Remove standalone triple backticks
+    cleaned = cleaned.replace(/```/g, '');
+    
+    // Remove the "Recommended Actions" line and similar bold markdown patterns
+    cleaned = cleaned.replace(/\*\*.*?Recommended Actions.*?\*\*/gi, '');
+    cleaned = cleaned.replace(/\*\*.*?JSON array.*?\*\*/gi, '');
+    
+    // Remove extra newlines (more than 2 consecutive)
+    cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
+    
+    // Trim whitespace
+    cleaned = cleaned.trim();
+    
+    return cleaned;
+};
 
     // Icon components
     const TrendingDown = () => (
@@ -144,22 +188,67 @@ function PredictiveTickets() {
                     </div>
                 </div>
 
-                {/* Last 3 Months Section */}
-                <div className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-lg mb-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] cursor-pointer">
-                    <span className="inline-block bg-white bg-opacity-20 text-indigo-700 text-xs px-3 py-1 rounded-full mb-4 font-medium">
-                        Advocacy
-                    </span>
-                    <h2 className="text-3xl font-bold mb-4">Last 3 months</h2>
-                    <p className="text-indigo-100 text-sm leading-relaxed mb-6">
-                        Noong nakaraang anim (6) na buwan, malaking bawas ang naitala nating kabusuang incidente. Nitong ultimo nito sa pagpihit ng planta ng ano ay naibait sa pagbitin ng masiping labanan na ako ng inaasahan ng pananggalun sa naka filing no bilotto report sa ating barangay.
-                    </p>
-                    <p className="text-indigo-100 text-sm leading-relaxed">
-                        Inaasahan na tatanong si Dahilan (5) Buwan sa inaasang malabswang halang tampapalaya ang regular monitoring bawat linggo.
-                    </p>
-                </div>
+               {/* Last 3 Months Section - Dynamic with cleaned summary */}
+                {isLoadingReviews ? (
+                    <div className="bg-white rounded-2xl p-8 shadow-lg mb-6 animate-pulse">
+                        <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+                        <div className="h-8 bg-gray-200 rounded w-1/2 mb-4"></div>
+                        <div className="space-y-3">
+                            <div className="h-4 bg-gray-200 rounded"></div>
+                            <div className="h-4 bg-gray-200 rounded"></div>
+                            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                        </div>
+                    </div>
+                ) : reviewError ? (
+                    <div className="bg-red-50 border border-red-200 rounded-2xl p-8 mb-6">
+                        <p className="text-red-600">Error loading AI review: {reviewError}</p>
+                    </div>
+                ) : firstReview ? (
+                    <div className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-lg mb-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] cursor-pointer">
+                        <span className="inline-block bg-white bg-opacity-20 text-black text-xs px-3 py-1 rounded-full mb-4 font-medium">
+                            AI Advisory
+                        </span>
+                        <h2 className="text-3xl font-bold mb-4">AI-Generated Summary</h2>
+                        
+                        {/* Display cleaned summary */}
+                        <div className="text-indigo-100 text-sm leading-relaxed space-y-4 whitespace-pre-line">
+                            {cleanSummary(firstReview.summary)}
+                        </div>
 
-                {/* Two Column Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {/* Display actions if available */}
+                        {firstReview.actions && firstReview.actions.length > 0 && (
+                            <div className="mt-6 pt-6 border-t border-white border-opacity-20">
+                                <h3 className="text-xl font-semibold mb-3">Recommended Actions:</h3>
+                                {firstReview.actions.map((actionItem, index) => (
+                                    <div key={index} className="mb-4">
+                                        <p className="font-medium mb-2">{actionItem.action}</p>
+                                        <ul className="space-y-2 ml-4">
+                                            {actionItem.details.map((detail, detailIndex) => (
+                                                <li key={detailIndex} className="flex items-start gap-2 text-indigo-100 text-sm">
+                                                    <span className="mt-1.5">•</span>
+                                                    <span>{detail}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Metadata */}
+                        <div className="mt-6 pt-4 border-t border-white border-opacity-20 text-xs text-indigo-200">
+                            <p>Last Updated: {new Date(firstReview.updatedAt).toLocaleString()}</p>
+                            <p>Ticket Category: {firstReview.Ticket?.category || 'N/A'}</p>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 mb-6 text-center">
+                        <p className="text-gray-500">No AI review data available</p>
+                    </div>
+                )}
+
+                <div className="hidden">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Left Column - Prediction */}
                     <div className="bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl p-8 text-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] cursor-pointer">
                         <span className="inline-block bg-white bg-opacity-20 text-indigo-700 text-xs px-3 py-1 rounded-full mb-4 font-medium">
@@ -210,6 +299,8 @@ function PredictiveTickets() {
                         </div>
                     </div>
                 </div>
+                </div>
+                {/* Two Column Section */}
             </div>
         </div>
     );
